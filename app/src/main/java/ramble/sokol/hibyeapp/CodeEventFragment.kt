@@ -90,8 +90,8 @@ class CodeEventFragment : Fragment() {
 
     // Метод для скрытия клавиатуры
     private fun hideKeyboard() {
-        val imm = getSystemService<InputMethodManager>()
-        imm?.hideSoftInputFromWindow(code6.windowToken, 0)
+//        val imm = getSystemService<InputMethodManager>()
+//        imm?.hideSoftInputFromWindow(code6.windowToken, 0)
     }
 
 }
