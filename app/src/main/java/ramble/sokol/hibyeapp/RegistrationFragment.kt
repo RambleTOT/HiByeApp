@@ -40,6 +40,14 @@ class RegistrationFragment : Fragment() {
             transaction.disallowAddToBackStack()
             transaction.commit()
         }
+
+        binding!!.buttonRegistration.setOnClickListener {
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            val codeEventFragment = CodeEventFragment()
+            transaction.replace(R.id.layout_fragment, codeEventFragment)
+            transaction.disallowAddToBackStack()
+            transaction.commit()
+        }
     }
 
 }
