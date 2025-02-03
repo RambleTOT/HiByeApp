@@ -1,5 +1,6 @@
 package ramble.sokol.hibyeapp
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -88,10 +89,13 @@ class CodeEventFragment : Fragment() {
         override fun afterTextChanged(s: Editable?) {}
     }
 
-    // Метод для скрытия клавиатуры
     private fun hideKeyboard() {
-//        val imm = getSystemService<InputMethodManager>()
-//        imm?.hideSoftInputFromWindow(code6.windowToken, 0)
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        var view = requireActivity().currentFocus
+        if (view == null) {
+            view = View(requireActivity()) // Создаем dummy View, если фокус не установлен
+        }
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 }

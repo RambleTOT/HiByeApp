@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HiByeApp</string>
+    <string name="app_name">HiBye</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_login">Войти</string>
     <string name="text_registration">Зарегистрироваться</string>
@@ -8,4 +8,7 @@
     <string name="text_password_repeat">Повторите пароль</string>
     <string name="text_event_code">Код мероприятия:</string>
     <string name="text_event_login">Войти в мероприятие</string>
+    <string name="text_schedule">Расписание</string>
+    <string name="text_networking">Нетворкинг</string>
+    <string name="text_chats">Чаты</string>
 </resources>

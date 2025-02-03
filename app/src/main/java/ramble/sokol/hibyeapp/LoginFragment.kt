@@ -40,6 +40,15 @@ class LoginFragment : Fragment() {
             transaction.disallowAddToBackStack()
             transaction.commit()
         }
+
+        binding!!.buttonLogin.setOnClickListener {
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            val bottomNavBarFragment = BottomNavBarFragment(NetworkingFragment())
+            transaction.replace(R.id.layout_fragment, bottomNavBarFragment)
+            transaction.disallowAddToBackStack()
+            transaction.commit()
+        }
+
     }
 
 }
