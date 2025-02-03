@@ -1,14 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegistrationFragment">
+    tools:context=".RegistrationFragment"
+    android:background="@color/white">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</FrameLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/image_login"
+            android:layout_marginHorizontal="85dp"
+            android:adjustViewBounds="true"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="40dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="40dp"
+                android:textColorHint="@color/text_hint_color"
+                app:counterTextColor="@color/black"
+                app:cursorColor="@color/black"
+                app:hintEnabled="false"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edit_text_background"
+                    android:fontFamily="@font/sfp_regular"
+                    android:textFontWeight="600"
+                    android:includeFontPadding="false"
+                    android:hint="@string/text_phone_number"
+                    android:inputType="phone"
+                    android:minHeight="60dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/text_hint_color"
+                    android:maxLength="18"
+                    android:textCursorDrawable="@drawable/cursor_style_background"
+                    android:textSize="18sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:textColorHint="@color/text_hint_color"
+                app:counterTextColor="@color/black"
+                app:cursorColor="@color/black"
+                app:hintEnabled="false"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edit_text_background"
+                    android:fontFamily="@font/sfp_regular"
+                    android:textFontWeight="600"
+                    android:includeFontPadding="false"
+                    android:hint="@string/text_password"
+                    android:inputType="textPassword"
+                    android:minHeight="60dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/text_hint_color"
+                    android:textCursorDrawable="@drawable/cursor_style_background"
+                    android:textSize="18sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:textColorHint="@color/text_hint_color"
+                app:counterTextColor="@color/black"
+                app:cursorColor="@color/black"
+                app:hintEnabled="false"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_password_repeat"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edit_text_background"
+                    android:fontFamily="@font/sfp_regular"
+                    android:textFontWeight="600"
+                    android:includeFontPadding="false"
+                    android:hint="@string/text_password_repeat"
+                    android:inputType="textPassword"
+                    android:minHeight="60dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/text_hint_color"
+                    android:textCursorDrawable="@drawable/cursor_style_background"
+                    android:textSize="18sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_registration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/main_color"
+            android:fontFamily="@font/sfp_semibold"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="4sp"
+            android:paddingHorizontal="31dp"
+            android:paddingVertical="16dp"
+            android:text="@string/text_registration"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:cornerRadius="12dp"/>
+
+        <TextView
+            android:id="@+id/text_button_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/text_login"
+            android:includeFontPadding="false"
+            android:textSize="18sp"
+            android:textColor="@color/main_color"
+            android:layout_gravity="center"
+            android:fontFamily="@font/sfp_regular"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@
     <string name="text_registration">Зарегистрироваться</string>
     <string name="text_phone_number">Номер телефона</string>
     <string name="text_password">Пароль</string>
+    <string name="text_password_repeat">Повторите пароль</string>
     <string name="text_event_code">Код мероприятия:</string>
-    <string name="text_even_login">Войти в мероприятие</string>
+    <string name="text_event_login">Войти в мероприятие</string>
 </resources>
