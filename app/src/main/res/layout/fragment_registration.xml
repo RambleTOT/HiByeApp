@@ -35,9 +35,7 @@
                 android:layout_marginTop="40dp"
                 android:textColorHint="@color/text_hint_color"
                 app:counterTextColor="@color/black"
-                app:cursorColor="@color/black"
-                app:hintEnabled="false"
-                >
+                app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_text_phone"
@@ -65,7 +63,6 @@
                 android:layout_marginTop="8dp"
                 android:textColorHint="@color/text_hint_color"
                 app:counterTextColor="@color/black"
-                app:cursorColor="@color/black"
                 app:hintEnabled="false"
                 >
 
@@ -94,7 +91,6 @@
                 android:layout_marginTop="8dp"
                 android:textColorHint="@color/text_hint_color"
                 app:counterTextColor="@color/black"
-                app:cursorColor="@color/black"
                 app:hintEnabled="false"
                 >
 

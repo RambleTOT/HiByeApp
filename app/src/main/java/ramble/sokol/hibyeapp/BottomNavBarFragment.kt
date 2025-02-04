@@ -25,17 +25,25 @@ class BottomNavBarFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        replaceFragment(currentFragment)
         binding!!.bottomNavigationView.setOnItemSelectedListener {
-            when (it.itemId){
-                R.id.navbar_schedule -> replaceFragment(ScheduleFragment())
-                R.id.navbar_networking -> replaceFragment(NetworkingFragment())
-                R.id.navbar_chats -> replaceFragment(ChatsFragment())
-                else -> {}
+            when (it.itemId) {
+                R.id.navbar_schedule -> {
+                    replaceFragment(ScheduleFragment())
+                }
+                R.id.navbar_networking -> {
+                    replaceFragment(NetworkingFragment())
+                }
+                R.id.navbar_chats -> {
+                    replaceFragment(ChatsFragment())
+                }
+                else -> false
             }
             true
         }
 
+        binding!!.bottomNavigationView.selectedItemId = R.id.navbar_networking
+
+        replaceFragment(currentFragment)
 
     }
 

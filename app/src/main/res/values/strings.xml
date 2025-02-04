@@ -11,4 +11,5 @@
     <string name="text_schedule">Расписание</string>
     <string name="text_networking">Нетворкинг</string>
     <string name="text_chats">Чаты</string>
+    <string name="text_find_chat">Найти случайного собеседника</string>
 </resources>

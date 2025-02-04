@@ -31,11 +31,10 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:textColorHint="@color/text_hint_color"
                 app:counterTextColor="@color/black"
-                app:cursorColor="@color/black"
                 app:hintEnabled="false"
                 app:hintAnimationEnabled="true"
                 style="@style/CustomTextInputLayout"
@@ -69,7 +68,6 @@
                 android:layout_marginTop="8dp"
                 android:textColorHint="@color/text_hint_color"
                 app:counterTextColor="@color/black"
-                app:cursorColor="@color/black"
                 app:hintEnabled="false"
                 app:hintAnimationEnabled="true"
                 style="@style/CustomTextInputLayout"

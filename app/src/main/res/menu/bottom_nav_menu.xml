@@ -3,20 +3,20 @@
 
     <item
         android:id="@+id/navbar_schedule"
-        android:title="@string/text_schedule"
         android:icon="@drawable/icon_schedule"
+        android:title="@string/text_schedule"
         />
 
     <item
         android:id="@+id/navbar_networking"
-        android:title="@string/text_networking"
         android:icon="@drawable/icon_networking"
+        android:title="@string/text_networking"
         />
 
     <item
         android:title="@string/text_chats"
-        android:id="@+id/navbar_chats"
         android:icon="@drawable/icon_chats"
+        android:id="@+id/navbar_chats"
         />
 
 </menu>
