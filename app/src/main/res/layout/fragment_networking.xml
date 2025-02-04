@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,49 +9,49 @@
     android:background="@color/edit_text_background_nav_bar">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/top_menu_background"
+        android:orientation="horizontal"
         android:paddingHorizontal="16dp"
-        android:paddingBottom="16dp"
         android:paddingTop="32dp"
+        android:paddingBottom="16dp"
+        android:weightSum="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal"
-        android:weightSum="1">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:src="@drawable/icon_profile"/>
+            android:src="@drawable/icon_profile" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="1"
             android:layout_gravity="center"
-            android:gravity="center"
             android:layout_marginHorizontal="12dp"
-            >
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="14dp"
                 android:layout_height="14dp"
-                android:src="@drawable/icon_all_events"
-                android:layout_marginEnd="4dp"/>
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/icon_all_events" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
-                android:fontFamily="@font/sfp_semibold"
-                android:includeFontPadding="false"
-                android:text="Мероприятия"
-                android:maxLines="1"
                 android:layout_marginStart="4dp"
+                android:fontFamily="@font/sfp_semibold"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:text="Мероприятия"
                 android:textColor="@color/black"
                 android:textSize="22sp" />
 
@@ -59,7 +60,168 @@
         <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:src="@drawable/icon_chat"/>
+            android:src="@drawable/icon_chat" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    android:layout_marginHorizontal="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="start"
+                        android:fontFamily="@font/sfp_bold"
+                        android:includeFontPadding="false"
+                        android:text="@string/text_participant"
+                        android:maxLines="1"
+                        android:layout_weight="1"
+                        android:textColor="@color/black"
+                        android:textSize="26sp" />
+
+                    <TextView
+                        android:id="@+id/text_button_all_participant"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/text_all"
+                        android:textSize="18sp"
+                        android:textColor="@color/main_color"
+                        android:layout_gravity="center"
+                        android:includeFontPadding="false"
+                        android:layout_centerInParent="true"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/sfp_regular"/>
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_sections"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/item_participant"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="16dp"
+                    tools:itemCount="2"
+                    android:layout_marginStart="16dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginHorizontal="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="start"
+                        android:fontFamily="@font/sfp_bold"
+                        android:includeFontPadding="false"
+                        android:text="@string/text_meetings"
+                        android:maxLines="1"
+                        android:layout_weight="1"
+                        android:textColor="@color/black"
+                        android:textSize="26sp" />
+
+                    <TextView
+                        android:id="@+id/text_button_create"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/text_create"
+                        android:textSize="18sp"
+                        android:textColor="@color/main_color"
+                        android:layout_gravity="center"
+                        android:includeFontPadding="false"
+                        android:layout_centerInParent="true"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/sfp_regular"/>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center">
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginStart="16dp">
+
+                            <ramble.sokol.hibyeapp.CustomCheckBox
+                                android:id="@+id/customCheckBox1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                            <ramble.sokol.hibyeapp.CustomCheckBox
+                                android:id="@+id/customCheckBox2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"/>
+
+                            <ramble.sokol.hibyeapp.CustomCheckBox
+                                android:id="@+id/customCheckBox3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"/>
+
+                        </LinearLayout>
+
+                    </HorizontalScrollView>
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/item_meets"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp"
+                    tools:itemCount="3"
+                    android:layout_marginStart="16dp"/>
+
+            </LinearLayout>
+
+        </ScrollView>
 
     </LinearLayout>
 
