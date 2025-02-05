@@ -17,4 +17,8 @@
     <string name="text_meetings">Встречи</string>
     <string name="text_create">Создать</string>
     <string name="text_back">Назад</string>
+    <string name="text_filters">Фильтры</string>
+    <string name="text_event_2">Событие</string>
+    <string name="text_list_speaker">Список спикеров</string>
+    <string name="text_add_favorite">Добавить в избранное</string>
 </resources>
