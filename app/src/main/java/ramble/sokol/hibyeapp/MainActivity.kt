@@ -16,13 +16,13 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        val loginFragment = LoginFragment()
+        val splashScreenFragment = SplashScreenFragment()
         val fragment : Fragment? =
             supportFragmentManager.findFragmentByTag(LoginFragment::class.java.simpleName)
 
-        if (fragment !is LoginFragment){
+        if (fragment !is SplashScreenFragment){
             supportFragmentManager.beginTransaction()
-                .add(R.id.layout_fragment, loginFragment, LoginFragment::class.java.simpleName)
+                .add(R.id.layout_fragment, splashScreenFragment, SplashScreenFragment::class.java.simpleName)
                 .commit()
         }
     }
