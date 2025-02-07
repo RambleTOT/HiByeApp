@@ -8,4 +8,5 @@
     <color name="edit_text_background_nav_bar">#F3F2F8</color>
     <color name="back_navbar_false">#C6C6C6</color>
     <color name="selected_background_color">#EDE0FF</color>
+    <color name="color_error">#FF6262</color>
 </resources>

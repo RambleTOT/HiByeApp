@@ -1,0 +1,30 @@
+package ramble.sokol.hibyeapp.view_model
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import ramble.sokol.hibyeapp.data.AuthRepository
+import ramble.sokol.hibyeapp.data.model.TokenResponse
+
+class AuthViewModel(private val authRepository: AuthRepository) : ViewModel() {
+
+    private val _loginResult = MutableLiveData<Result<TokenResponse>>()
+    val loginResult: LiveData<Result<TokenResponse>> get() = _loginResult
+
+    private val _registerResult = MutableLiveData<Result<TokenResponse>>()
+    val registerResult: LiveData<Result<TokenResponse>> get() = _registerResult
+
+    fun login(phone: String, password: String) {
+        viewModelScope.launch {
+            _loginResult.value = authRepository.login(phone, password)
+        }
+    }
+
+    fun register(phone: String, password: String) {
+        viewModelScope.launch {
+            _registerResult.value = authRepository.register(phone, password)
+        }
+    }
+}

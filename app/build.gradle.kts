@@ -13,8 +13,8 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+            buildConfigField("String", "BASE_URL", "\"${project.findProperty("BASE_URL") ?: "https://default.url/"}\"")
     }
 
     buildTypes {
@@ -28,6 +28,7 @@ android {
     }
 
     buildFeatures {
+        buildConfig = true
         viewBinding = true
     }
 
@@ -50,4 +51,11 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+    implementation(libs.androidx.security.crypto)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
 }
