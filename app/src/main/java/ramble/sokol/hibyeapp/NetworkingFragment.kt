@@ -57,6 +57,15 @@ class NetworkingFragment : Fragment() {
             transaction.disallowAddToBackStack()
             transaction.commit()
         }
+        binding!!.textButtonCreate.setOnClickListener {
+            binding!!.textButtonAllParticipant.startAnimation(scaleDown)
+            binding!!.textButtonAllParticipant.startAnimation(scaleUp)
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            val newEventFragment = NewEventFragment()
+            transaction.replace(R.id.layout_fragment, newEventFragment)
+            transaction.disallowAddToBackStack()
+            transaction.commit()
+        }
     }
 
     private fun setChecked(selectedCheckBox: CustomCheckBox) {

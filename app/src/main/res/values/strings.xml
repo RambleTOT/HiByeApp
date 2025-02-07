@@ -22,4 +22,14 @@
     <string name="text_list_speaker">Список спикеров</string>
     <string name="text_add_favorite">Добавить в избранное</string>
     <string name="text_error_login">Неверный телефон или пароль</string>
+    <string name="text_meet">Встреча</string>
+    <string name="text_close_meet">Отменить</string>
+    <string name="text_name_event">Название встречи</string>
+    <string name="text_description_event">Описание встречи</string>
+    <string name="text_meet_time">Время встречи</string>
+    <string name="text_choose_time">Выбрать дату</string>
+    <string name="text_limit_participant">Ограничение по участникам</string>
+    <string name="text_count_particiopant">Количество участников</string>
+    <string name="text_meet_end">Встреча закончилась</string>
+    <string name="text_meet_not_begin">Встреча не состоялась</string>
 </resources>

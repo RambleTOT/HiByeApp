@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".QuickMeetFragment"
+    android:background="@color/edit_text_background_nav_bar"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SFProText-Medium.ttf" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginHorizontal="16dp">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/icon_back" />
+
+                    <TextView
+                        android:id="@+id/text_button_create"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="2dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/sfp_regular"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:text="@string/text_back"
+                        android:textColor="@color/main_color"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/sfp_semibold"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:text="@string/text_event_2"
+                    android:textColor="@color/black"
+                    android:textSize="22sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/current_event_background"
+                android:layout_marginTop="24dp"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="24dp"
+                android:layout_marginHorizontal="16dp"
+                android:paddingBottom="32dp">
+
+                <ImageView
+                    android:id="@+id/image_participant"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_profile"/>
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:fontFamily="@font/sfp_semibold"
+                    android:includeFontPadding="false"
+                    android:text="Андрей Лосюков"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:layout_marginTop="16dp"/>
+
+                <TextView
+                    android:id="@+id/description_meet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:fontFamily="@font/sfp_regular"
+                    android:includeFontPadding="false"
+                    android:layout_marginHorizontal="8dp"
+                    android:text="CEO HiBye, работаю в Pyrus, люблю собак"
+                    android:textColor="@color/text_hint_color"
+                    android:textSize="16sp"
+                    android:layout_marginTop="8dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingTop="16dp"
+                            android:paddingBottom="12dp"
+                            android:paddingHorizontal="8dp"
+                            android:layout_marginEnd="4dp"
+                            android:background="@drawable/card_meet_background">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:src="@drawable/meet_end"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="8dp"/>
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_gravity="center"
+                                android:fontFamily="@font/sfp_medium"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:text="@string/text_meet_end"
+                                android:textColor="@color/main_color"
+                                android:textSize="12sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingVertical="8dp"
+                            android:paddingHorizontal="8dp"
+                            android:layout_marginStart="4dp"
+                            android:background="@drawable/card_meet_background">
+
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
