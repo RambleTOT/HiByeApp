@@ -20,6 +20,7 @@
     <string name="text_filters">Фильтры</string>
     <string name="text_event_2">Событие</string>
     <string name="text_list_speaker">Список спикеров</string>
+    <string name="text_all_participant">Все участники</string>
     <string name="text_add_favorite">Добавить в избранное</string>
     <string name="text_error_login">Неверный телефон или пароль</string>
     <string name="text_meet">Встреча</string>
@@ -32,4 +33,8 @@
     <string name="text_count_particiopant">Количество участников</string>
     <string name="text_meet_end">Встреча закончилась</string>
     <string name="text_meet_not_begin">Встреча не состоялась</string>
+    <string name="text_go_to_chat">Перейти в чат</string>
+    <string name="text_login_group">Вступить</string>
+    <string name="text_quick_meet">Быстрая встреча</string>
+    <string name="text_group_meet">Групповая встреча</string>
 </resources>

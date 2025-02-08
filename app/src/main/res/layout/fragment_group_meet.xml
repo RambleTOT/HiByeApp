@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".QuickMeetFragment"
+    tools:context=".GroupMeetFragment"
     android:background="@color/edit_text_background_nav_bar"
     android:orientation="vertical">
 
@@ -72,7 +72,7 @@
                     android:gravity="start"
                     android:fontFamily="@font/sfp_bold"
                     android:includeFontPadding="false"
-                    android:text="@string/text_quick_meet"
+                    android:text="@string/text_group_meet"
                     android:maxLines="1"
                     android:layout_marginTop="16dp"
                     android:layout_marginHorizontal="16dp"
@@ -90,12 +90,18 @@
                     android:paddingTop="24dp"
                     android:paddingBottom="32dp">
 
-                    <ImageView
-                        android:id="@+id/image_participant"
+                    <FrameLayout
                         android:layout_width="150dp"
                         android:layout_height="150dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/icon_profile" />
+                        android:layout_gravity="center">
+
+<!--                        <ImageView-->
+<!--                            android:id="@+id/image_participant"-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="150dp"-->
+<!--                            android:src="@drawable/image_count_participant_meet" />-->
+
+                    </FrameLayout>
 
                     <TextView
                         android:id="@+id/name"
@@ -107,7 +113,7 @@
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:maxLines="1"
-                        android:text="Андрей Лосюков"
+                        android:text="Нетворкаемся)"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
 
@@ -120,7 +126,7 @@
                         android:fontFamily="@font/sfp_regular"
                         android:gravity="center"
                         android:includeFontPadding="false"
-                        android:text="CEO HiBye, работаю в Pyrus, люблю собак"
+                        android:text="В перерыве хочу найти группу инициативных участников для общения"
                         android:textColor="@color/text_hint_color"
                         android:textSize="16sp" />
 
@@ -204,6 +210,26 @@
 
                     </LinearLayout>
 
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_filters"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/selected_background_color"
+                        android:fontFamily="@font/sfp_semibold"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="4sp"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="16dp"
+                        android:text="@string/text_all_participant"
+                        android:textColor="@color/main_color"
+                        android:textSize="16sp"
+                        app:cornerRadius="12dp"
+                        android:layout_marginTop="4dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+
                 </LinearLayout>
 
             </LinearLayout>
@@ -223,7 +249,7 @@
         android:lineSpacingExtra="4sp"
         android:paddingHorizontal="16dp"
         android:paddingVertical="16dp"
-        android:text="@string/text_go_to_chat"
+        android:text="@string/text_login_group"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:cornerRadius="12dp"
