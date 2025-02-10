@@ -70,9 +70,18 @@ class LoginFragment : Fragment() {
             transaction.commit()
         }
 
+        binding!!.editTextPassword.setOnClickListener {
+            binding!!.textErrorLogin.visibility = View.GONE
+        }
+
+        binding!!.editTextPhone.setOnClickListener {
+            binding!!.textErrorLogin.visibility = View.GONE
+        }
+
         binding!!.buttonLogin.setOnClickListener {
             binding!!.buttonLogin.visibility = View.INVISIBLE
             binding!!.progressLogin.visibility = View.VISIBLE
+            binding!!.textErrorLogin.visibility = View.GONE
             val phone = binding!!.editTextPhone.text.toString()
             val password = binding!!.editTextPassword.text.toString()
             authViewModel.login(phone, password)
@@ -96,17 +105,33 @@ class LoginFragment : Fragment() {
                 transaction.disallowAddToBackStack()
                 transaction.commit()
             }else if (result.isFailure){
+                binding!!.textErrorLogin.visibility = View.VISIBLE
                 val exception = result.exceptionOrNull()
-                Toast.makeText(context, "Login failed: ${exception!!.message}", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(context, "Login failed: ${exception!!.message}", Toast.LENGTH_SHORT).show()
             }
         })
 
+    }
+
+    private val passwordTextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            TODO("Not yet implemented")
+        }
+
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+        }
+
+        override fun afterTextChanged(p0: Editable?) {
+            TODO("Not yet implemented")
+        }
     }
 
     private val phoneTextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            binding!!.textErrorLogin.visibility = View.GONE
         }
 
         override fun afterTextChanged(editable: Editable?) {
