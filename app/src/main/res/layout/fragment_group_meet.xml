@@ -95,11 +95,23 @@
                         android:layout_height="150dp"
                         android:layout_gravity="center">
 
-<!--                        <ImageView-->
-<!--                            android:id="@+id/image_participant"-->
-<!--                            android:layout_width="150dp"-->
-<!--                            android:layout_height="150dp"-->
-<!--                            android:src="@drawable/image_count_participant_meet" />-->
+                        <ImageView
+                            android:id="@+id/image_participant"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:src="@drawable/image_count_participant" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/sfp_bold"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:maxLines="1"
+                            android:text="2 из 5"
+                            android:textColor="@color/white"
+                            android:textSize="24sp" />
 
                     </FrameLayout>
 
