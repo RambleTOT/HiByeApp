@@ -11,7 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import ramble.sokol.hibyeapp.databinding.FragmentLoginBinding
 import ramble.sokol.hibyeapp.databinding.FragmentRegistrationBinding
@@ -146,21 +148,45 @@ class RegistrationFragment : Fragment() {
             }
             if (password.isNotEmpty() && phone.length > 2 && passwordRepeat.isNotEmpty() && isPhoneValid(phone) && password.length >= 8) {
                 if (password != passwordRepeat){
+                    Log.d("MyLog", "${password} ${passwordRepeat}")
                     binding!!.textErrorLogin.setText(R.string.text_error_password)
                     binding!!.textErrorLogin.visibility = View.VISIBLE
                 }else{
                     binding!!.buttonRegistration.visibility = View.INVISIBLE
                     binding!!.progressLogin.visibility = View.VISIBLE
                     binding!!.textErrorLogin.visibility = View.GONE
+                    authViewModel.register(phone, password)
                 }
             }
 
+            authViewModel.registerResult.observe(viewLifecycleOwner, Observer { result ->
 
-//            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-//            val codeEventFragment = CodeEventFragment()
-//            transaction.replace(R.id.layout_fragment, codeEventFragment)
-//            transaction.disallowAddToBackStack()
-//            transaction.commit()
+                Log.d("MyLog", result.toString())
+                binding!!.buttonRegistration.visibility = View.VISIBLE
+                binding!!.progressLogin.visibility = View.INVISIBLE
+                if (result.isSuccess) {
+                    val tokenResponse = result.getOrNull()
+                    Toast.makeText(
+                        context,
+                        "Вы успешно зарегистрировались!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                    val codeEventFragment = CodeEventFragment()
+                    transaction.replace(R.id.layout_fragment, codeEventFragment)
+                    transaction.disallowAddToBackStack()
+                    transaction.commit()
+                }else if (result.isFailure){
+                    binding!!.textErrorLogin.setText(R.string.text_error_registration)
+                    binding!!.textErrorLogin.visibility = View.VISIBLE
+                    val exception = result.exceptionOrNull()
+                    Log.d("MyLog", exception.toString())
+                    //Toast.makeText(context, "Login failed: ${exception!!.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+
+
+
         }
     }
 

@@ -18,7 +18,7 @@ class AuthRepository(
             if (response.isSuccessful && response.body() != null) {
                 Result.success(response.body()!!)
             } else {
-                Result.failure(Exception("Login failed"))
+                Result.failure(Exception("Login failed: ${response.message()}"))
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -31,7 +31,7 @@ class AuthRepository(
             if (response.isSuccessful && response.body() != null) {
                 Result.success(response.body()!!)
             } else {
-                Result.failure(Exception("Registration failed"))
+                Result.failure(Exception("Registration failed: ${response.message()}"))
             }
         } catch (e: Exception) {
             Result.failure(e)
