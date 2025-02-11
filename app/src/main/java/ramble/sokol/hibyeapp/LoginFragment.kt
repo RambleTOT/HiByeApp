@@ -1,5 +1,6 @@
 package ramble.sokol.hibyeapp
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -70,6 +72,24 @@ class LoginFragment : Fragment() {
             transaction.replace(R.id.layout_fragment, registrationFragment)
             transaction.disallowAddToBackStack()
             transaction.commit()
+        }
+
+        binding!!.editTextPhone.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_NEXT) {
+                binding!!.editTextPassword.requestFocus() // Переход к editText2
+                true
+            } else {
+                false
+            }
+        }
+
+        binding!!.editTextPassword.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE) {
+                hideKeyboard()
+                true
+            } else {
+                false
+            }
         }
 
         binding!!.editTextPassword.setOnClickListener {
@@ -208,6 +228,15 @@ class LoginFragment : Fragment() {
         }
 
         return sb.toString()
+    }
+
+    private fun hideKeyboard() {
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        var view = requireActivity().currentFocus
+        if (view == null) {
+            view = View(requireActivity()) // Создаем dummy View, если фокус не установлен
+        }
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 }
