@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputEditText
@@ -58,6 +59,7 @@ class LoginFragment : Fragment() {
             }
         }
         binding!!.editTextPhone.addTextChangedListener(phoneTextWatcher)
+        binding!!.editTextPassword.addTextChangedListener(passwordTextWatcher)
         val scaleDown = AnimationUtils.loadAnimation(requireActivity(), R.anim.text_click_anim)
         val scaleUp = AnimationUtils.loadAnimation(requireActivity(), R.anim.text_click_anim_back)
         binding!!.textButtonRegistration.setOnClickListener {
@@ -72,19 +74,31 @@ class LoginFragment : Fragment() {
 
         binding!!.editTextPassword.setOnClickListener {
             binding!!.textErrorLogin.visibility = View.GONE
+            binding!!.editTextPhone.background = ContextCompat.getDrawable(requireActivity(), R.drawable.edit_text_background)
+            binding!!.editTextPassword.background = ContextCompat.getDrawable(requireActivity(), R.drawable.edit_text_background)
         }
 
         binding!!.editTextPhone.setOnClickListener {
             binding!!.textErrorLogin.visibility = View.GONE
+            binding!!.editTextPhone.background = ContextCompat.getDrawable(requireActivity(), R.drawable.edit_text_background)
+            binding!!.editTextPassword.background = ContextCompat.getDrawable(requireActivity(), R.drawable.edit_text_background)
         }
 
         binding!!.buttonLogin.setOnClickListener {
-            binding!!.buttonLogin.visibility = View.INVISIBLE
-            binding!!.progressLogin.visibility = View.VISIBLE
-            binding!!.textErrorLogin.visibility = View.GONE
             val phone = binding!!.editTextPhone.text.toString()
             val password = binding!!.editTextPassword.text.toString()
-            authViewModel.login(phone, password)
+            if (phone.length <= 2){
+                binding!!.editTextPhone.background = ContextCompat.getDrawable(requireActivity(), R.drawable.edit_text_background_error)
+            }
+            if (password.isEmpty()){
+                binding!!.editTextPassword.background = ContextCompat.getDrawable(requireActivity(), R.drawable.edit_text_background_error)
+            }
+            if (password.isNotEmpty() && phone.length > 2) {
+                binding!!.buttonLogin.visibility = View.INVISIBLE
+                binding!!.progressLogin.visibility = View.VISIBLE
+                binding!!.textErrorLogin.visibility = View.GONE
+                authViewModel.login(phone, password)
+            }
         }
 
         authViewModel.loginResult.observe(viewLifecycleOwner, Observer { result ->
@@ -115,15 +129,17 @@ class LoginFragment : Fragment() {
 
     private val passwordTextWatcher = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            TODO("Not yet implemented")
+
         }
 
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
+            binding!!.textErrorLogin.visibility = View.GONE
+            binding!!.editTextPassword.background = ContextCompat.getDrawable(requireActivity(), R.drawable.edit_text_background)
+            binding!!.editTextPhone.background = ContextCompat.getDrawable(requireActivity(), R.drawable.edit_text_background)
         }
 
         override fun afterTextChanged(p0: Editable?) {
-            TODO("Not yet implemented")
+
         }
     }
 
@@ -132,6 +148,8 @@ class LoginFragment : Fragment() {
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             binding!!.textErrorLogin.visibility = View.GONE
+            binding!!.editTextPhone.background = ContextCompat.getDrawable(requireActivity(), R.drawable.edit_text_background)
+            binding!!.editTextPassword.background = ContextCompat.getDrawable(requireActivity(), R.drawable.edit_text_background)
         }
 
         override fun afterTextChanged(editable: Editable?) {

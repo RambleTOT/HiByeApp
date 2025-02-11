@@ -37,4 +37,8 @@
     <string name="text_login_group">Вступить</string>
     <string name="text_quick_meet">Быстрая встреча</string>
     <string name="text_group_meet">Групповая встреча</string>
+    <string name="text_error_password">Пароли не сопадают</string>
+    <string name="text_error_phone">Введите корректный телефон</string>
+    <string name="text_error_registration">Пользователь с таким телефоном уже существует</string>
+    <string name="text_error_len_password">Пароль должен быть минимум из 8 символов</string>
 </resources>
