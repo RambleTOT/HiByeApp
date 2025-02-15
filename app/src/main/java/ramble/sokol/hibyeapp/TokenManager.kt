@@ -1,6 +1,5 @@
-package ramble.sokol.hibyeapp
-
 import android.content.Context
+import android.util.Log
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 
@@ -16,6 +15,7 @@ class TokenManager(context: Context) {
 
     fun saveTokens(accessToken: String, refreshToken: String) {
         sharedPreferences.edit().apply {
+            Log.d("MyLog", "$accessToken $refreshToken")
             putString("access_token", accessToken)
             putString("refresh_token", refreshToken)
             apply()
@@ -36,5 +36,9 @@ class TokenManager(context: Context) {
             remove("refresh_token")
             apply()
         }
+    }
+
+    fun isLoggedIn(): Boolean {
+        return !getAccessToken().isNullOrEmpty()
     }
 }

@@ -1,6 +1,9 @@
 package ramble.sokol.hibyeapp.data
 
-import ramble.sokol.hibyeapp.TokenManager
+import TokenManager
+import android.util.Log
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import ramble.sokol.hibyeapp.data.api.AuthApi
 import ramble.sokol.hibyeapp.data.model.LoginEntity
 import ramble.sokol.hibyeapp.data.model.RegistrationEntity
@@ -16,6 +19,9 @@ class AuthRepository(
         return try {
             val response = authApi.login(LoginEntity(phone, password)).awaitResponse()
             if (response.isSuccessful && response.body() != null) {
+                val tokens = response.body()!!
+                Log.d("MyLog", "$tokens")
+                tokenManager.saveTokens(tokens.accessToken, tokens.refreshToken)
                 Result.success(response.body()!!)
             } else {
                 Result.failure(Exception("Login failed: ${response.message()}"))
@@ -29,6 +35,8 @@ class AuthRepository(
         return try {
             val response = authApi.register(RegistrationEntity(phone, password)).awaitResponse()
             if (response.isSuccessful && response.body() != null) {
+                val tokens = response.body()!!
+                tokenManager.saveTokens(tokens.accessToken, tokens.refreshToken)
                 Result.success(response.body()!!)
             } else {
                 Result.failure(Exception("Registration failed: ${response.message()}"))
@@ -38,31 +46,23 @@ class AuthRepository(
         }
     }
 
-    suspend fun refreshToken(refreshToken: String): Result<TokenResponse> {
-        return try {
-            val response = authApi.refreshToken(refreshToken).awaitResponse()
-            if (response.isSuccessful && response.body() != null) {
-                Result.success(response.body()!!)
-            } else {
-                Result.failure(Exception("Token refresh failed"))
+    suspend fun refreshToken(): Result<TokenResponse> {
+        return  withContext(Dispatchers.IO) {
+            try {
+                val refreshToken = tokenManager.getRefreshToken() ?: return@withContext Result.failure(Exception("No refresh token"))
+                val response = authApi.refreshToken(refreshToken).awaitResponse()
+                Log.d("MyLog", response.toString())
+                if (response.isSuccessful && response.body() != null) {
+                    val tokens = response.body()!!
+                    tokenManager.saveTokens(tokens.accessToken, tokens.refreshToken)
+                    Result.success(response.body()!!)
+                } else {
+                    Result.failure(Exception("Token refresh failed: ${response.message()}"))
+                }
+            } catch (e: Exception) {
+                Result.failure(e)
             }
-        } catch (e: Exception) {
-            Result.failure(e)
         }
     }
 
-    suspend fun refreshTokens(): Result<TokenResponse> {
-        val refreshToken = tokenManager.getRefreshToken() ?: return Result.failure(Exception("No refresh token"))
-        return try {
-            val response = authApi.refreshToken(refreshToken).awaitResponse()
-            if (response.isSuccessful && response.body() != null) {
-                tokenManager.saveTokens(response.body()!!.accessToken, response.body()!!.refreshToken)
-                Result.success(response.body()!!)
-            } else {
-                Result.failure(Exception("Token refresh failed"))
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
 }

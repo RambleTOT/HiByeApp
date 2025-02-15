@@ -57,5 +57,6 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.androidx.security.crypto)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.converter.scalars)
 
 }

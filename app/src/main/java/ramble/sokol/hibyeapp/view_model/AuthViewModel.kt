@@ -16,6 +16,9 @@ class AuthViewModel(private val authRepository: AuthRepository) : ViewModel() {
     private val _registerResult = MutableLiveData<Result<TokenResponse>>()
     val registerResult: LiveData<Result<TokenResponse>> get() = _registerResult
 
+    private val _refreshTokenResult = MutableLiveData<Result<TokenResponse>>()
+    val refreshTokenResult: LiveData<Result<TokenResponse>> get() = _refreshTokenResult
+
     fun login(phone: String, password: String) {
         viewModelScope.launch {
             _loginResult.value = authRepository.login(phone, password)
@@ -25,6 +28,12 @@ class AuthViewModel(private val authRepository: AuthRepository) : ViewModel() {
     fun register(phone: String, password: String) {
         viewModelScope.launch {
             _registerResult.value = authRepository.register(phone, password)
+        }
+    }
+
+    fun refreshToken() {
+        viewModelScope.launch {
+            _refreshTokenResult.value = authRepository.refreshToken()
         }
     }
 }
