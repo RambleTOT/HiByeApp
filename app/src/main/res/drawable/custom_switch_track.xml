@@ -1,0 +1,14 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/main_color" /> <!-- Фиолетовый фон -->
+            <corners android:radius="20dp" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/color_back_switch" /> <!-- Серый фон -->
+            <corners android:radius="20dp" />
+        </shape>
+    </item>
+</selector>

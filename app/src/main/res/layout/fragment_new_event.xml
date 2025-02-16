@@ -20,7 +20,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="36dp"
                 android:layout_marginHorizontal="16dp">
 
                 <TextView
@@ -128,19 +128,184 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_text_description_event"
                         android:layout_width="match_parent"
-                        android:layout_height="60dp"
+                        android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_event_background"
                         android:fontFamily="@font/sfp_regular"
                         android:includeFontPadding="false"
                         android:textFontWeight="500"
                         android:hint="@string/text_description_event"
-                        android:inputType="text"
+                        android:scrollbars="vertical"
                         android:minHeight="60dp"
                         android:singleLine="true"
+                        android:inputType="textMultiLine"
                         android:textColor="@color/black"
                         android:textColorHint="@color/color_hint_event"
                         android:textCursorDrawable="@drawable/cursor_style_background"
                         android:textSize="18sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:fontFamily="@font/sfp_regular"
+                        android:includeFontPadding="false"
+                        android:text="@string/text_meet_time"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:gravity="center"/>
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/CustomSwitch"
+                        android:layout_gravity="end"
+                        app:track="@drawable/custom_switch_track"
+                        app:thumbTint="@color/white"/>
+
+                </FrameLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_choose_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/main_color"
+                    android:fontFamily="@font/sfp_semibold"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="4sp"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="16dp"
+                    android:text="@string/text_choose_time"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:cornerRadius="12dp"
+                    android:layout_marginTop="12dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_event_background"
+                        android:paddingVertical="8dp"
+                        android:paddingHorizontal="12dp"
+                        android:layout_gravity="center">
+
+                        <TextView
+                            android:id="@+id/textDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:fontFamily="@font/sfp_regular"
+                            android:includeFontPadding="false"
+                            android:text="11 мая 2024 г."
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            android:gravity="center"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_event_background"
+                        android:paddingVertical="8dp"
+                        android:paddingHorizontal="12dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_gravity="center">
+
+                        <TextView
+                            android:id="@+id/textTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:fontFamily="@font/sfp_regular"
+                            android:includeFontPadding="false"
+                            android:text="12:00"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            android:gravity="center"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:fontFamily="@font/sfp_regular"
+                        android:includeFontPadding="false"
+                        android:text="@string/text_limit_participant"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:gravity="center"/>
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/CustomSwitch"
+                        android:layout_gravity="end"
+                        app:track="@drawable/custom_switch_track"
+                        app:thumbTint="@color/white"/>
+
+                </FrameLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColorHint="@color/color_hint_event"
+                    app:counterTextColor="@color/black"
+                    app:hintEnabled="false"
+                    app:hintAnimationEnabled="true"
+                    style="@style/CustomTextInputLayout"
+                    android:layout_marginTop="8dp"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_text_count"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_event_background"
+                        android:fontFamily="@font/sfp_regular"
+                        android:includeFontPadding="false"
+                        android:textFontWeight="500"
+                        android:hint="@string/text_count_particiopant"
+                        android:scrollbars="vertical"
+                        android:minHeight="60dp"
+                        android:singleLine="true"
+                        android:inputType="number"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/color_hint_event"
+                        android:textCursorDrawable="@drawable/cursor_style_background"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 

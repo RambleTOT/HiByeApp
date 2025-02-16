@@ -20,6 +20,7 @@ class SplashScreenFragment : Fragment() {
 
     private var binding: FragmentSplashScreenBinding? = null
     private lateinit var authViewModel: AuthViewModel
+    private lateinit var profileAndCodeManager: ProfileAndCodeManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +41,8 @@ class SplashScreenFragment : Fragment() {
             this,
             AuthViewModelFactory((requireActivity().application as MyApplication).authRepository)
         ).get(AuthViewModel::class.java)
+
+        profileAndCodeManager = ProfileAndCodeManager(requireActivity())
 
         checkTokenAndNavigate()
 

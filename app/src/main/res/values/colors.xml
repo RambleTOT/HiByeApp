@@ -10,4 +10,5 @@
     <color name="selected_background_color">#EDE0FF</color>
     <color name="color_error">#FF6262</color>
     <color name="color_hint_event">#C6C6C6</color>
+    <color name="color_back_switch">#D3D3D3</color>
 </resources>

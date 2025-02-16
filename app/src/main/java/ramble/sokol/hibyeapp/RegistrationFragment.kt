@@ -165,17 +165,21 @@ class RegistrationFragment : Fragment() {
                 binding!!.buttonRegistration.visibility = View.VISIBLE
                 binding!!.progressLogin.visibility = View.INVISIBLE
                 if (result.isSuccess) {
-                    val tokenResponse = result.getOrNull()
                     Toast.makeText(
                         context,
                         "Вы успешно зарегистрировались!",
                         Toast.LENGTH_SHORT
                     ).show()
                     val transaction = requireActivity().supportFragmentManager.beginTransaction()
-                    val codeEventFragment = CodeEventFragment()
-                    transaction.replace(R.id.layout_fragment, codeEventFragment)
+                    val profileFragment = CreateProfileFragment()
+                    transaction.replace(R.id.layout_fragment, profileFragment)
                     transaction.disallowAddToBackStack()
                     transaction.commit()
+//                    val transaction = requireActivity().supportFragmentManager.beginTransaction()
+//                    val codeEventFragment = CodeEventFragment()
+//                    transaction.replace(R.id.layout_fragment, codeEventFragment)
+//                    transaction.disallowAddToBackStack()
+//                    transaction.commit()
                 }else if (result.isFailure){
                     binding!!.textErrorLogin.setText(R.string.text_error_registration)
                     binding!!.textErrorLogin.visibility = View.VISIBLE

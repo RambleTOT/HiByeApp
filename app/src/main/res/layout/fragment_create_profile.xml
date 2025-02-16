@@ -30,7 +30,7 @@
                     android:text="@string/text_create_profile_titlt"
                     android:textColor="@color/black"
                     android:textSize="16sp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="32dp"
                     android:layout_marginHorizontal="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

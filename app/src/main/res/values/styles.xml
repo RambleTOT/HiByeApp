@@ -34,4 +34,10 @@
         <item name="android:includeFontPadding">false</item> <!-- Убираем внутренние отступы шрифта -->
     </style>
 
+    <style name="CustomSwitch" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/main_color</item> <!-- Цвет активированного состояния -->
+        <item name="colorSwitchThumbNormal">@color/white</item> <!-- Цвет круга в неактивном состоянии -->
+        <item name="android:colorForeground">@color/color_back_switch</item> <!-- Цвет фона в неактивном состоянии -->
+    </style>
+
 </resources>
