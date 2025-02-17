@@ -58,5 +58,6 @@ dependencies {
     implementation(libs.androidx.security.crypto)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.converter.scalars)
+    implementation(libs.auth0.java.jwt)
 
 }

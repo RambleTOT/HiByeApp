@@ -30,6 +30,17 @@ class TokenManager(context: Context) {
         return sharedPreferences.getString("refresh_token", null)
     }
 
+    fun saveUserId(userId: Int) {
+        sharedPreferences.edit().apply {
+            putInt("user_id", userId)
+            apply()
+        }
+    }
+
+    fun getUserId(): Int? {
+        return sharedPreferences.getInt("user_id", -1).takeIf { it != -1 }
+    }
+
     fun clearTokens() {
         sharedPreferences.edit().apply {
             remove("access_token")

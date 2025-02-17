@@ -1,5 +1,6 @@
 package ramble.sokol.hibyeapp
 
+import TokenManager
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -25,6 +26,7 @@ class LoginFragment : Fragment() {
 
     private var binding: FragmentLoginBinding? = null
     private lateinit var authViewModel: AuthViewModel
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,7 +47,7 @@ class LoginFragment : Fragment() {
 
         val authRepository = (requireActivity().application as MyApplication).authRepository
         authViewModel = ViewModelProvider(this, AuthViewModelFactory(authRepository)).get(AuthViewModel::class.java)
-
+        tokenManager = (requireActivity().application as MyApplication).tokenManager
         binding!!.editTextPhone.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 // Если поле получает фокус и пустое, добавляем +7
@@ -128,6 +130,8 @@ class LoginFragment : Fragment() {
             binding!!.progressLogin.visibility = View.INVISIBLE
             if (result.isSuccess) {
                 val tokenResponse = result.getOrNull()
+                val userId = tokenManager.getUserId()
+                Log.d("MyLog", userId.toString())
                 Toast.makeText(
                     context,
                     "Вы успешно вошли!",

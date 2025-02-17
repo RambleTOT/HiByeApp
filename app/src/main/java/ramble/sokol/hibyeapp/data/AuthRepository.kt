@@ -8,6 +8,7 @@ import ramble.sokol.hibyeapp.data.api.AuthApi
 import ramble.sokol.hibyeapp.data.model.LoginEntity
 import ramble.sokol.hibyeapp.data.model.RegistrationEntity
 import ramble.sokol.hibyeapp.data.model.TokenResponse
+import ramble.sokol.hibyeapp.getUserIdFromToken
 import retrofit2.awaitResponse
 
 class AuthRepository(
@@ -22,6 +23,7 @@ class AuthRepository(
                 val tokens = response.body()!!
                 Log.d("MyLog", "$tokens")
                 tokenManager.saveTokens(tokens.accessToken, tokens.refreshToken)
+                extractAndSaveUserId(tokens.accessToken)
                 Result.success(response.body()!!)
             } else {
                 Result.failure(Exception("Login failed: ${response.message()}"))
@@ -37,6 +39,7 @@ class AuthRepository(
             if (response.isSuccessful && response.body() != null) {
                 val tokens = response.body()!!
                 tokenManager.saveTokens(tokens.accessToken, tokens.refreshToken)
+                extractAndSaveUserId(tokens.accessToken)
                 Result.success(response.body()!!)
             } else {
                 Result.failure(Exception("Registration failed: ${response.message()}"))
@@ -55,6 +58,7 @@ class AuthRepository(
                 if (response.isSuccessful && response.body() != null) {
                     val tokens = response.body()!!
                     tokenManager.saveTokens(tokens.accessToken, tokens.refreshToken)
+                    extractAndSaveUserId(tokens.accessToken)
                     Result.success(response.body()!!)
                 } else {
                     Result.failure(Exception("Token refresh failed: ${response.message()}"))
@@ -62,6 +66,13 @@ class AuthRepository(
             } catch (e: Exception) {
                 Result.failure(e)
             }
+        }
+    }
+
+    private fun extractAndSaveUserId(accessToken: String) {
+        val userId = getUserIdFromToken(accessToken)
+        if (userId != null) {
+            tokenManager.saveUserId(userId)
         }
     }
 
