@@ -103,7 +103,19 @@ class SplashScreenFragment : Fragment() {
             authViewModel.refreshTokenResult.observe(viewLifecycleOwner, Observer { result ->
                 Log.d("MyLog", "${result}")
                 if (result.isSuccess){
-                    navigateToHome()
+                    if (profileAndCodeManager.getRegistr() == true){
+                        if (profileAndCodeManager.getProfile() == true){
+                            if (profileAndCodeManager.getCode() == true){
+                                navigateToHome()
+                            }else{
+                                navigateToCode()
+                            }
+                        }else{
+                            navigateToProfile()
+                        }
+                    }else {
+                        navigateToHome()
+                    }
                 }else if (result.isFailure){
                     navigateToLogin()
                 }
@@ -121,6 +133,26 @@ class SplashScreenFragment : Fragment() {
                 transaction.disallowAddToBackStack()
                 transaction.commit()
             }, 3000)
+    }
+
+    private fun navigateToProfile() {
+        Handler().postDelayed(Runnable {
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            val profileFragment = CreateProfileFragment()
+            transaction.replace(R.id.layout_fragment, profileFragment)
+            transaction.disallowAddToBackStack()
+            transaction.commit()
+        }, 3000)
+    }
+
+    private fun navigateToCode() {
+        Handler().postDelayed(Runnable {
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            val codeEventFragment = CodeEventFragment()
+            transaction.replace(R.id.layout_fragment, codeEventFragment)
+            transaction.disallowAddToBackStack()
+            transaction.commit()
+        }, 3000)
     }
 
     private fun navigateToLogin() {

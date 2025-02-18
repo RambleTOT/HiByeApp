@@ -12,11 +12,13 @@ import androidx.core.content.ContextCompat
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.databinding.FragmentCreateProfileBinding
 import ramble.sokol.hibyeapp.managers.NameAndPhotoManager
+import ramble.sokol.hibyeapp.managers.ProfileAndCodeManager
 
 class CreateProfileFragment : Fragment() {
 
     private var binding: FragmentCreateProfileBinding? = null
     private lateinit var nameAndPhotoManager: NameAndPhotoManager
+    private lateinit var profileAndCodeManager: ProfileAndCodeManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +37,7 @@ class CreateProfileFragment : Fragment() {
 
     private fun init(){
 
+        profileAndCodeManager = ProfileAndCodeManager(requireActivity())
         nameAndPhotoManager = NameAndPhotoManager(requireActivity())
 
         binding!!.editTextName.addTextChangedListener(nameTextWatcher)
@@ -55,6 +58,7 @@ class CreateProfileFragment : Fragment() {
                 binding!!.buttonSave.visibility = View.INVISIBLE
                 binding!!.progressLogin.visibility = View.VISIBLE
                 nameAndPhotoManager.saveName(name)
+                profileAndCodeManager.saveProfile(true)
                 Log.d("MyLog", nameAndPhotoManager.getName().toString())
                 val transaction = requireActivity().supportFragmentManager.beginTransaction()
                 val codeEventFragment = CodeEventFragment()

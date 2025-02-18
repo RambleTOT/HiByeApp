@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.databinding.FragmentRegistrationBinding
+import ramble.sokol.hibyeapp.managers.ProfileAndCodeManager
 import ramble.sokol.hibyeapp.view_model.AuthViewModel
 import ramble.sokol.hibyeapp.view_model.AuthViewModelFactory
 
@@ -24,6 +25,7 @@ class RegistrationFragment : Fragment() {
 
     private var binding: FragmentRegistrationBinding? = null
     private lateinit var authViewModel: AuthViewModel
+    private lateinit var profileAndCodeManager: ProfileAndCodeManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +44,7 @@ class RegistrationFragment : Fragment() {
 
     private fun init(){
         val authRepository = (requireActivity().application as MyApplication).authRepository
+        profileAndCodeManager = ProfileAndCodeManager(requireActivity())
         authViewModel = ViewModelProvider(this, AuthViewModelFactory(authRepository)).get(AuthViewModel::class.java)
         binding!!.editTextPhone.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
@@ -189,6 +192,7 @@ class RegistrationFragment : Fragment() {
                 binding!!.buttonRegistration.visibility = View.VISIBLE
                 binding!!.progressLogin.visibility = View.INVISIBLE
                 if (result.isSuccess) {
+                    profileAndCodeManager.saveRegistr(true)
                     Toast.makeText(
                         context,
                         "Вы успешно зарегистрировались!",

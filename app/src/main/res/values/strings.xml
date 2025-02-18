@@ -2,6 +2,7 @@
     <string name="app_name">HiBye</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_login">Войти</string>
+    <string name="text_login_code">Вернуться на экран входа</string>
     <string name="text_registration">Зарегистрироваться</string>
     <string name="text_phone_number">Номер телефона</string>
     <string name="text_password">Пароль</string>

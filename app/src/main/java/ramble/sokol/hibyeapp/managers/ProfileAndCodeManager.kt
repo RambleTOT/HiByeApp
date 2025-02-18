@@ -37,4 +37,16 @@ class ProfileAndCodeManager(context: Context) {
         return sPrefProfile.getBoolean(PROFILE_ENTRY, false)
     }
 
+    private var sPrefCode = context.getSharedPreferences(PREF_CODE_ENTRY, Context.MODE_PRIVATE)
+
+    fun saveCode(entry: Boolean){
+        val editor = sPrefCode.edit()
+        editor.putBoolean(PREF_CODE_ENTRY, entry)
+        editor.apply()
+    }
+
+    fun getCode() : Boolean? {
+        return sPrefCode.getBoolean(CODE_ENTRY, false)
+    }
+
 }

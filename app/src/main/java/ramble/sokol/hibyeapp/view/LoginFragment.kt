@@ -18,6 +18,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.databinding.FragmentLoginBinding
+import ramble.sokol.hibyeapp.managers.ProfileAndCodeManager
 import ramble.sokol.hibyeapp.view_model.AuthViewModel
 import ramble.sokol.hibyeapp.view_model.AuthViewModelFactory
 
@@ -27,6 +28,7 @@ class LoginFragment : Fragment() {
     private var binding: FragmentLoginBinding? = null
     private lateinit var authViewModel: AuthViewModel
     private lateinit var tokenManager: TokenManager
+    private lateinit var profileAndCodeManager: ProfileAndCodeManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +47,7 @@ class LoginFragment : Fragment() {
 
     private fun init(){
 
+        profileAndCodeManager = ProfileAndCodeManager(requireActivity())
         val authRepository = (requireActivity().application as MyApplication).authRepository
         authViewModel = ViewModelProvider(this, AuthViewModelFactory(authRepository)).get(AuthViewModel::class.java)
         tokenManager = (requireActivity().application as MyApplication).tokenManager
@@ -141,6 +144,9 @@ class LoginFragment : Fragment() {
             binding!!.buttonLogin.visibility = View.VISIBLE
             binding!!.progressLogin.visibility = View.INVISIBLE
             if (result.isSuccess) {
+                profileAndCodeManager.saveProfile(false)
+                profileAndCodeManager.saveRegistr(false)
+                profileAndCodeManager.saveCode(false)
                 val tokenResponse = result.getOrNull()
                 val userId = tokenManager.getUserId()
                 Log.d("MyLog", userId.toString())

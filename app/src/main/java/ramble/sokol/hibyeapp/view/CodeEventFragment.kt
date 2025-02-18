@@ -8,8 +8,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.databinding.FragmentCodeEventBinding
 
 
@@ -39,6 +41,20 @@ class CodeEventFragment : Fragment() {
     }
 
     private fun init(){
+
+        binding!!.textButtonLogin.setOnClickListener {
+
+            val scaleDown = AnimationUtils.loadAnimation(requireActivity(), R.anim.text_click_anim)
+            val scaleUp = AnimationUtils.loadAnimation(requireActivity(), R.anim.text_click_anim_back)
+            binding!!.textButtonLogin.startAnimation(scaleDown)
+            binding!!.textButtonLogin.startAnimation(scaleUp)
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            val loginFragment = LoginFragment()
+            transaction.replace(R.id.layout_fragment, loginFragment)
+            transaction.disallowAddToBackStack()
+            transaction.commit()
+        }
+
         code1 = binding!!.code1
         code2 = binding!!.code2
         code3 = binding!!.code3
