@@ -1,4 +1,4 @@
-package ramble.sokol.hibyeapp
+package ramble.sokol.hibyeapp.view
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import ramble.sokol.hibyeapp.databinding.FragmentNetworkingBinding
+import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.databinding.FragmentNewEventBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar

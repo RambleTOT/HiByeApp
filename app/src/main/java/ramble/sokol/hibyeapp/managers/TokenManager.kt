@@ -1,3 +1,5 @@
+package ramble.sokol.hibyeapp.managers
+
 import android.content.Context
 import android.util.Log
 import androidx.security.crypto.EncryptedSharedPreferences

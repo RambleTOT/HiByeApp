@@ -1,10 +1,11 @@
-package ramble.sokol.hibyeapp
+package ramble.sokol.hibyeapp.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import ramble.sokol.hibyeapp.R
 
 class ParticipantFragment : Fragment() {
 

@@ -1,6 +1,6 @@
-package ramble.sokol.hibyeapp
+package ramble.sokol.hibyeapp.view
 
-import TokenManager
+import ramble.sokol.hibyeapp.managers.TokenManager
 import android.app.Application
 import ramble.sokol.hibyeapp.data.AuthRepository
 import ramble.sokol.hibyeapp.data.RetrofitClient

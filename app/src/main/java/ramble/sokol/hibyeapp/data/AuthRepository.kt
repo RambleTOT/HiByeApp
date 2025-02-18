@@ -1,6 +1,6 @@
 package ramble.sokol.hibyeapp.data
 
-import TokenManager
+import ramble.sokol.hibyeapp.managers.TokenManager
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -8,7 +8,7 @@ import ramble.sokol.hibyeapp.data.api.AuthApi
 import ramble.sokol.hibyeapp.data.model.LoginEntity
 import ramble.sokol.hibyeapp.data.model.RegistrationEntity
 import ramble.sokol.hibyeapp.data.model.TokenResponse
-import ramble.sokol.hibyeapp.getUserIdFromToken
+import ramble.sokol.hibyeapp.view.getUserIdFromToken
 import retrofit2.awaitResponse
 
 class AuthRepository(
@@ -71,6 +71,7 @@ class AuthRepository(
 
     private fun extractAndSaveUserId(accessToken: String) {
         val userId = getUserIdFromToken(accessToken)
+        Log.d("MyLog", userId.toString())
         if (userId != null) {
             tokenManager.saveUserId(userId)
         }

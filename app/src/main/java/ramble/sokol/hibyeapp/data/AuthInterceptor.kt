@@ -1,6 +1,6 @@
 //package ramble.sokol.hibyeapp.data
 //
-//import TokenManager
+//import ramble.sokol.hibyeapp.managers.TokenManager
 //import androidx.lifecycle.ViewModel
 //import androidx.lifecycle.viewModelScope
 //import kotlinx.coroutines.launch
@@ -12,7 +12,7 @@
 //import java.io.IOException
 //
 //class AuthInterceptor(
-//    private val tokenManager: TokenManager,
+//    private val tokenManager: ramble.sokol.hibyeapp.managers.TokenManager,
 //    private val authRepository: AuthRepository
 //) : ViewModel(), Interceptor {
 //

@@ -1,4 +1,4 @@
-package ramble.sokol.hibyeapp
+package ramble.sokol.hibyeapp.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.TextView
-import ramble.sokol.hibyeapp.databinding.FragmentLoginBinding
+import ramble.sokol.hibyeapp.CustomCheckBox
+import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.databinding.FragmentNetworkingBinding
 
 class NetworkingFragment : Fragment() {

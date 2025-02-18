@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".QuickMeetFragment"
+    tools:context=".view.QuickMeetFragment"
     android:background="@color/edit_text_background_nav_bar"
     android:orientation="vertical">
 

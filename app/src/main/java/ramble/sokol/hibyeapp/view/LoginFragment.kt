@@ -1,6 +1,6 @@
-package ramble.sokol.hibyeapp
+package ramble.sokol.hibyeapp.view
 
-import TokenManager
+import ramble.sokol.hibyeapp.managers.TokenManager
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -16,7 +16,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.textfield.TextInputEditText
+import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.databinding.FragmentLoginBinding
 import ramble.sokol.hibyeapp.view_model.AuthViewModel
 import ramble.sokol.hibyeapp.view_model.AuthViewModelFactory
@@ -96,24 +96,36 @@ class LoginFragment : Fragment() {
 
         binding!!.editTextPassword.setOnClickListener {
             binding!!.textErrorLogin.visibility = View.GONE
-            binding!!.editTextPhone.background = ContextCompat.getDrawable(requireActivity(), R.drawable.edit_text_background)
-            binding!!.editTextPassword.background = ContextCompat.getDrawable(requireActivity(), R.drawable.edit_text_background)
+            binding!!.editTextPhone.background = ContextCompat.getDrawable(requireActivity(),
+                R.drawable.edit_text_background
+            )
+            binding!!.editTextPassword.background = ContextCompat.getDrawable(requireActivity(),
+                R.drawable.edit_text_background
+            )
         }
 
         binding!!.editTextPhone.setOnClickListener {
             binding!!.textErrorLogin.visibility = View.GONE
-            binding!!.editTextPhone.background = ContextCompat.getDrawable(requireActivity(), R.drawable.edit_text_background)
-            binding!!.editTextPassword.background = ContextCompat.getDrawable(requireActivity(), R.drawable.edit_text_background)
+            binding!!.editTextPhone.background = ContextCompat.getDrawable(requireActivity(),
+                R.drawable.edit_text_background
+            )
+            binding!!.editTextPassword.background = ContextCompat.getDrawable(requireActivity(),
+                R.drawable.edit_text_background
+            )
         }
 
         binding!!.buttonLogin.setOnClickListener {
             val phone = binding!!.editTextPhone.text.toString()
             val password = binding!!.editTextPassword.text.toString()
             if (phone.length <= 2){
-                binding!!.editTextPhone.background = ContextCompat.getDrawable(requireActivity(), R.drawable.edit_text_background_error)
+                binding!!.editTextPhone.background = ContextCompat.getDrawable(requireActivity(),
+                    R.drawable.edit_text_background_error
+                )
             }
             if (password.isEmpty()){
-                binding!!.editTextPassword.background = ContextCompat.getDrawable(requireActivity(), R.drawable.edit_text_background_error)
+                binding!!.editTextPassword.background = ContextCompat.getDrawable(requireActivity(),
+                    R.drawable.edit_text_background_error
+                )
             }
             if (password.isNotEmpty() && phone.length > 2) {
                 binding!!.buttonLogin.visibility = View.INVISIBLE
@@ -158,8 +170,12 @@ class LoginFragment : Fragment() {
 
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             binding!!.textErrorLogin.visibility = View.GONE
-            binding!!.editTextPassword.background = ContextCompat.getDrawable(requireActivity(), R.drawable.edit_text_background)
-            binding!!.editTextPhone.background = ContextCompat.getDrawable(requireActivity(), R.drawable.edit_text_background)
+            binding!!.editTextPassword.background = ContextCompat.getDrawable(requireActivity(),
+                R.drawable.edit_text_background
+            )
+            binding!!.editTextPhone.background = ContextCompat.getDrawable(requireActivity(),
+                R.drawable.edit_text_background
+            )
         }
 
         override fun afterTextChanged(p0: Editable?) {
@@ -172,8 +188,12 @@ class LoginFragment : Fragment() {
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             binding!!.textErrorLogin.visibility = View.GONE
-            binding!!.editTextPhone.background = ContextCompat.getDrawable(requireActivity(), R.drawable.edit_text_background)
-            binding!!.editTextPassword.background = ContextCompat.getDrawable(requireActivity(), R.drawable.edit_text_background)
+            binding!!.editTextPhone.background = ContextCompat.getDrawable(requireActivity(),
+                R.drawable.edit_text_background
+            )
+            binding!!.editTextPassword.background = ContextCompat.getDrawable(requireActivity(),
+                R.drawable.edit_text_background
+            )
         }
 
         override fun afterTextChanged(editable: Editable?) {

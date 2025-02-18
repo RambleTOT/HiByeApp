@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NetworkingFragment"
+    tools:context=".view.NetworkingFragment"
     android:background="@color/edit_text_background_nav_bar">
 
     <LinearLayout

@@ -1,4 +1,4 @@
-package ramble.sokol.hibyeapp
+package ramble.sokol.hibyeapp.managers
 
 import android.content.Context
 

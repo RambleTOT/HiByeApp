@@ -1,6 +1,5 @@
-package ramble.sokol.hibyeapp
+package ramble.sokol.hibyeapp.view
 
-import TokenManager
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -11,8 +10,9 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import ramble.sokol.hibyeapp.databinding.FragmentLoginBinding
+import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.databinding.FragmentSplashScreenBinding
+import ramble.sokol.hibyeapp.managers.ProfileAndCodeManager
 import ramble.sokol.hibyeapp.view_model.AuthViewModel
 import ramble.sokol.hibyeapp.view_model.AuthViewModelFactory
 
@@ -34,7 +34,9 @@ class SplashScreenFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val fadeInAnimation = AnimationUtils.loadAnimation(requireActivity(), R.anim.splash_screen_animation)
+        val fadeInAnimation = AnimationUtils.loadAnimation(requireActivity(),
+            R.anim.splash_screen_animation
+        )
         binding!!.linearSplash.startAnimation(fadeInAnimation)
 
         authViewModel = ViewModelProvider(
