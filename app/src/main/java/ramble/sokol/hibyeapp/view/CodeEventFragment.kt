@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.databinding.FragmentCodeEventBinding
+import ramble.sokol.hibyeapp.managers.NameAndPhotoManager
 
 
 class CodeEventFragment : Fragment() {
@@ -24,6 +25,7 @@ class CodeEventFragment : Fragment() {
     private lateinit var code4: EditText
     private lateinit var code5: EditText
     private lateinit var code6: EditText
+    private lateinit var nameAndPhotoManager: NameAndPhotoManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +43,10 @@ class CodeEventFragment : Fragment() {
     }
 
     private fun init(){
+
+        nameAndPhotoManager = NameAndPhotoManager(requireActivity())
+        val userName = nameAndPhotoManager.getName()
+        binding!!.textHelloCode.text = "Привет, ${userName}!"
 
         binding!!.textButtonLogin.setOnClickListener {
 

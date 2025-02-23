@@ -16,6 +16,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/text_hello_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:fontFamily="@font/sfp_semibold"
+            android:includeFontPadding="false"
+            tools:text="Привет, Артём!"
+            android:textColor="@color/black"
+            android:textSize="22sp" />
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
