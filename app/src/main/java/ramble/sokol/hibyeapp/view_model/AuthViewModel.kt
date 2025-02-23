@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ramble.sokol.hibyeapp.data.AuthRepository
-import ramble.sokol.hibyeapp.data.model.RegistrationTelegramEntity
-import ramble.sokol.hibyeapp.data.model.TokenResponse
+import ramble.sokol.hibyeapp.data.repository.AuthRepository
+import ramble.sokol.hibyeapp.data.model.auth.RegistrationTelegramEntity
+import ramble.sokol.hibyeapp.data.model.auth.TokenResponse
 
 class AuthViewModel(private val authRepository: AuthRepository) : ViewModel() {
 

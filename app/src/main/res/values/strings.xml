@@ -24,6 +24,7 @@
     <string name="text_all_participant">Все участники</string>
     <string name="text_add_favorite">Добавить в избранное</string>
     <string name="text_error_login">Неверный телефон или пароль</string>
+    <string name="text_error_code">Неверный код мероприятия</string>
     <string name="text_meet">Встреча</string>
     <string name="text_create_profile_titlt">Анкета</string>
     <string name="text_close_meet">Отменить</string>

@@ -1,9 +1,9 @@
 package ramble.sokol.hibyeapp.data.api
 
-import ramble.sokol.hibyeapp.data.model.LoginEntity
-import ramble.sokol.hibyeapp.data.model.RegistrationEntity
-import ramble.sokol.hibyeapp.data.model.RegistrationTelegramEntity
-import ramble.sokol.hibyeapp.data.model.TokenResponse
+import ramble.sokol.hibyeapp.data.model.auth.LoginEntity
+import ramble.sokol.hibyeapp.data.model.auth.RegistrationEntity
+import ramble.sokol.hibyeapp.data.model.auth.RegistrationTelegramEntity
+import ramble.sokol.hibyeapp.data.model.auth.TokenResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST

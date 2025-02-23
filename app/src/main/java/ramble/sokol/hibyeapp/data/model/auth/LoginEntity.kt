@@ -1,4 +1,4 @@
-package ramble.sokol.hibyeapp.data.model
+package ramble.sokol.hibyeapp.data.model.auth
 
 import com.google.gson.annotations.SerializedName
 

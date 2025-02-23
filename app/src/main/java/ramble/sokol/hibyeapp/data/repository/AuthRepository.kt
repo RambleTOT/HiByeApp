@@ -1,14 +1,14 @@
-package ramble.sokol.hibyeapp.data
+package ramble.sokol.hibyeapp.data.repository
 
 import ramble.sokol.hibyeapp.managers.TokenManager
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ramble.sokol.hibyeapp.data.api.AuthApi
-import ramble.sokol.hibyeapp.data.model.LoginEntity
-import ramble.sokol.hibyeapp.data.model.RegistrationEntity
-import ramble.sokol.hibyeapp.data.model.RegistrationTelegramEntity
-import ramble.sokol.hibyeapp.data.model.TokenResponse
+import ramble.sokol.hibyeapp.data.model.auth.LoginEntity
+import ramble.sokol.hibyeapp.data.model.auth.RegistrationEntity
+import ramble.sokol.hibyeapp.data.model.auth.RegistrationTelegramEntity
+import ramble.sokol.hibyeapp.data.model.auth.TokenResponse
 import ramble.sokol.hibyeapp.view.getExpFromToken
 import ramble.sokol.hibyeapp.view.getUserIdFromToken
 import retrofit2.awaitResponse

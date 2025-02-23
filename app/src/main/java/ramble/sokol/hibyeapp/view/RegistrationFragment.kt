@@ -11,12 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import ramble.sokol.hibyeapp.R
-import ramble.sokol.hibyeapp.data.model.RegistrationTelegramEntity
+import ramble.sokol.hibyeapp.data.model.auth.RegistrationTelegramEntity
 import ramble.sokol.hibyeapp.databinding.FragmentRegistrationBinding
 import ramble.sokol.hibyeapp.managers.ProfileAndCodeManager
 import ramble.sokol.hibyeapp.managers.TokenManager
@@ -202,14 +201,16 @@ class RegistrationFragment : Fragment() {
                     val exp = tokenManager.getExp()!!.toLong()
                     val telegramId = "${userId}${999888777666}".toLong()
 
-                    authViewModel.registerTelegram(RegistrationTelegramEntity(
+                    authViewModel.registerTelegram(
+                        RegistrationTelegramEntity(
                         userId = userId,
                         telegramId = telegramId,
                         telegramName = "null",
                         photoLink = "null",
                         miniPhotoLink = "null",
                         telegramUrl = "null"
-                    ))
+                    )
+                    )
                 }else {
 
                     Log.d("MyLog", result.toString())
@@ -258,14 +259,16 @@ class RegistrationFragment : Fragment() {
                     val exp = tokenManager.getExp()!!.toLong()
                     val telegramId = "${userId}${999888777666}".toLong()
 
-                    authViewModel.registerTelegram(RegistrationTelegramEntity(
+                    authViewModel.registerTelegram(
+                        RegistrationTelegramEntity(
                         userId = userId,
                         telegramId = telegramId,
                         telegramName = "null",
                         photoLink = "null",
                         miniPhotoLink = "null",
                         telegramUrl = "null"
-                    ))
+                    )
+                    )
 
                 }else if (result.isFailure){
                     binding!!.textErrorLogin.setText(R.string.text_error_registration)
