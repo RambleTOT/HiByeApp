@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ramble.sokol.hibyeapp.data.AuthRepository
+import ramble.sokol.hibyeapp.data.model.RegistrationTelegramEntity
 import ramble.sokol.hibyeapp.data.model.TokenResponse
 
 class AuthViewModel(private val authRepository: AuthRepository) : ViewModel() {
@@ -15,6 +16,9 @@ class AuthViewModel(private val authRepository: AuthRepository) : ViewModel() {
 
     private val _registerResult = MutableLiveData<Result<TokenResponse>>()
     val registerResult: LiveData<Result<TokenResponse>> get() = _registerResult
+
+    private val _registerTelegramResult = MutableLiveData<Result<RegistrationTelegramEntity>>()
+    val registerTelegramResult: LiveData<Result<RegistrationTelegramEntity>> get() = _registerTelegramResult
 
     private val _refreshTokenResult = MutableLiveData<Result<TokenResponse>>()
     val refreshTokenResult: LiveData<Result<TokenResponse>> get() = _refreshTokenResult
@@ -28,6 +32,12 @@ class AuthViewModel(private val authRepository: AuthRepository) : ViewModel() {
     fun register(phone: String, password: String) {
         viewModelScope.launch {
             _registerResult.value = authRepository.register(phone, password)
+        }
+    }
+
+    fun registerTelegram(registrationTelegramEntity: RegistrationTelegramEntity) {
+        viewModelScope.launch {
+            _registerTelegramResult.value = authRepository.registerTelegram(registrationTelegramEntity)
         }
     }
 

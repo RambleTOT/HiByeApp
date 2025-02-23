@@ -16,8 +16,10 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import ramble.sokol.hibyeapp.R
+import ramble.sokol.hibyeapp.data.model.RegistrationTelegramEntity
 import ramble.sokol.hibyeapp.databinding.FragmentRegistrationBinding
 import ramble.sokol.hibyeapp.managers.ProfileAndCodeManager
+import ramble.sokol.hibyeapp.managers.TokenManager
 import ramble.sokol.hibyeapp.view_model.AuthViewModel
 import ramble.sokol.hibyeapp.view_model.AuthViewModelFactory
 
@@ -26,6 +28,8 @@ class RegistrationFragment : Fragment() {
     private var binding: FragmentRegistrationBinding? = null
     private lateinit var authViewModel: AuthViewModel
     private lateinit var profileAndCodeManager: ProfileAndCodeManager
+    private lateinit var tokenManager: TokenManager
+    private var countRequest: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +49,8 @@ class RegistrationFragment : Fragment() {
     private fun init(){
         val authRepository = (requireActivity().application as MyApplication).authRepository
         profileAndCodeManager = ProfileAndCodeManager(requireActivity())
+        tokenManager = TokenManager(requireActivity())
+        countRequest = 0
         authViewModel = ViewModelProvider(this, AuthViewModelFactory(authRepository)).get(AuthViewModel::class.java)
         binding!!.editTextPhone.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
@@ -186,29 +192,82 @@ class RegistrationFragment : Fragment() {
                 }
             }
 
-            authViewModel.registerResult.observe(viewLifecycleOwner, Observer { result ->
+            authViewModel.registerTelegramResult.observe(viewLifecycleOwner, Observer{ result ->
 
-                Log.d("MyLog", result.toString())
-                binding!!.buttonRegistration.visibility = View.VISIBLE
-                binding!!.progressLogin.visibility = View.INVISIBLE
-                if (result.isSuccess) {
-                    profileAndCodeManager.saveRegistr(true)
-                    Toast.makeText(
-                        context,
-                        "Вы успешно зарегистрировались!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    val transaction = requireActivity().supportFragmentManager.beginTransaction()
-                    val profileFragment = CreateProfileFragment()
-                    transaction.replace(R.id.layout_fragment, profileFragment)
-                    transaction.disallowAddToBackStack()
-                    transaction.commit()
+                if (countRequest == 0){
+                    countRequest++
+                    val userId = tokenManager.getUserId()!!.toLong()
+                    val exp = tokenManager.getExp()!!.toLong()
+                    val telegramId = "${userId}${exp}${666}".toLong()
+
+                    authViewModel.registerTelegram(RegistrationTelegramEntity(
+                        userId = userId,
+                        telegramId = telegramId,
+                        telegramName = "null",
+                        photoLink = "null",
+                        miniPhotoLink = "null",
+                        telegramUrl = "null"
+                    ))
+                }else {
+
+                    Log.d("MyLog", result.toString())
+                    binding!!.buttonRegistration.visibility = View.VISIBLE
+                    binding!!.progressLogin.visibility = View.INVISIBLE
+
+                    if (result.isSuccess) {
+
+                        profileAndCodeManager.saveRegistr(true)
+                        profileAndCodeManager.saveProfile(false)
+                        profileAndCodeManager.saveCode(false)
+                        Toast.makeText(
+                            context,
+                            "Вы успешно зарегистрировались!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        val transaction =
+                            requireActivity().supportFragmentManager.beginTransaction()
+                        val profileFragment = CreateProfileFragment()
+                        transaction.replace(R.id.layout_fragment, profileFragment)
+                        transaction.disallowAddToBackStack()
+                        transaction.commit()
 //                    val transaction = requireActivity().supportFragmentManager.beginTransaction()
 //                    val codeEventFragment = CodeEventFragment()
 //                    transaction.replace(R.id.layout_fragment, codeEventFragment)
 //                    transaction.disallowAddToBackStack()
 //                    transaction.commit()
+
+                    } else if (result.isFailure) {
+                        binding!!.textErrorLogin.setText(R.string.text_error_registration)
+                        binding!!.textErrorLogin.visibility = View.VISIBLE
+                        val exception = result.exceptionOrNull()
+                        Log.d("MyLog", exception.toString())
+                        //Toast.makeText(context, "Login failed: ${exception!!.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
+
+            authViewModel.registerResult.observe(viewLifecycleOwner, Observer { result ->
+
+                Log.d("MyLog", result.toString())
+                if (result.isSuccess) {
+
+                    Log.d("MyLog", tokenManager.getUserId().toString())
+                    val userId = tokenManager.getUserId()!!.toLong()
+                    val exp = tokenManager.getExp()!!.toLong()
+                    val telegramId = "${userId}${exp}${666}".toLong()
+
+                    authViewModel.registerTelegram(RegistrationTelegramEntity(
+                        userId = userId,
+                        telegramId = telegramId,
+                        telegramName = "null",
+                        photoLink = "null",
+                        miniPhotoLink = "null",
+                        telegramUrl = "null"
+                    ))
+
                 }else if (result.isFailure){
+                    binding!!.buttonRegistration.visibility = View.VISIBLE
+                    binding!!.progressLogin.visibility = View.INVISIBLE
                     binding!!.textErrorLogin.setText(R.string.text_error_registration)
                     binding!!.textErrorLogin.visibility = View.VISIBLE
                     val exception = result.exceptionOrNull()

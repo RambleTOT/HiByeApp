@@ -12,3 +12,13 @@ fun getUserIdFromToken(accessToken: String): Int? {
         null
     }
 }
+
+fun getExpFromToken(accessToken: String): Long? {
+    return try {
+        val jwt: DecodedJWT = JWT.decode(accessToken)
+        jwt.getClaim("exp").asLong()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+}

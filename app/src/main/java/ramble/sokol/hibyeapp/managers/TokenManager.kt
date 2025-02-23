@@ -43,6 +43,39 @@ class TokenManager(context: Context) {
         return sharedPreferences.getInt("user_id", -1).takeIf { it != -1 }
     }
 
+    fun saveExp(exp: Long) {
+        sharedPreferences.edit().apply {
+            putLong("exp", exp)
+            apply()
+        }
+    }
+
+    fun getExp(): Long? {
+        return sharedPreferences.getLong("exp", -1).takeIf { it != (-1).toLong() }
+    }
+
+    fun saveUserIdTelegram(userIdTelegram: Long) {
+        sharedPreferences.edit().apply {
+            putLong("user_id_telegram", userIdTelegram)
+            apply()
+        }
+    }
+
+    fun getUserIdTelegram(): Long? {
+        return sharedPreferences.getLong("user_id_telegram", -1).takeIf { it != (-1).toLong() }
+    }
+
+    fun saveTelegramId(telegramId: Long) {
+        sharedPreferences.edit().apply {
+            putLong("telegram_id", telegramId)
+            apply()
+        }
+    }
+
+    fun getTelegramId(): Long? {
+        return sharedPreferences.getLong("telegram_id", -1).takeIf { it != (-1).toLong() }
+    }
+
     fun clearTokens() {
         sharedPreferences.edit().apply {
             remove("access_token")
