@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import ramble.sokol.hibyeapp.R
+import ramble.sokol.hibyeapp.data.model.RegistrationTelegramEntity
 import ramble.sokol.hibyeapp.databinding.FragmentLoginBinding
 import ramble.sokol.hibyeapp.managers.ProfileAndCodeManager
 import ramble.sokol.hibyeapp.view_model.AuthViewModel
@@ -138,18 +139,17 @@ class LoginFragment : Fragment() {
             }
         }
 
-        authViewModel.loginResult.observe(viewLifecycleOwner, Observer { result ->
+        authViewModel.registerTelegramResult.observe(viewLifecycleOwner, Observer { result ->
 
-            Log.d("MyLog", result.toString())
+            Log.d("MyLog", "telegram ${result.toString()}")
             binding!!.buttonLogin.visibility = View.VISIBLE
             binding!!.progressLogin.visibility = View.INVISIBLE
+
             if (result.isSuccess) {
+
                 profileAndCodeManager.saveProfile(false)
                 profileAndCodeManager.saveRegistr(false)
                 profileAndCodeManager.saveCode(false)
-                val tokenResponse = result.getOrNull()
-                val userId = tokenManager.getUserId()
-                Log.d("MyLog", userId.toString())
                 Toast.makeText(
                     context,
                     "Вы успешно вошли!",
@@ -160,7 +160,40 @@ class LoginFragment : Fragment() {
                 transaction.replace(R.id.layout_fragment, bottomNavBarFragment)
                 transaction.disallowAddToBackStack()
                 transaction.commit()
+
+            } else if (result.isFailure) {
+                binding!!.textErrorLogin.visibility = View.VISIBLE
+                val exception = result.exceptionOrNull()
+                //Toast.makeText(context, "Login failed: ${exception!!.message}", Toast.LENGTH_SHORT).show()
+            }
+
+        })
+
+        authViewModel.loginResult.observe(viewLifecycleOwner, Observer { result ->
+
+            Log.d("MyLog", result.toString())
+
+            if (result.isSuccess) {
+                val tokenResponse = result.getOrNull()
+
+                val userId = tokenManager.getUserId()!!.toLong()
+                val exp = tokenManager.getExp()!!.toLong()
+                val telegramId = "${userId}${999888777666}".toLong()
+                Log.d("MyLog", telegramId.toString())
+
+                authViewModel.registerTelegram(
+                    RegistrationTelegramEntity(
+                        userId = userId,
+                        telegramId = telegramId,
+                        telegramName = "null",
+                        photoLink = "null",
+                        miniPhotoLink = "null",
+                        telegramUrl = "null"
+                    )
+                )
             }else if (result.isFailure){
+                binding!!.buttonLogin.visibility = View.VISIBLE
+                binding!!.progressLogin.visibility = View.INVISIBLE
                 binding!!.textErrorLogin.visibility = View.VISIBLE
                 val exception = result.exceptionOrNull()
                 //Toast.makeText(context, "Login failed: ${exception!!.message}", Toast.LENGTH_SHORT).show()

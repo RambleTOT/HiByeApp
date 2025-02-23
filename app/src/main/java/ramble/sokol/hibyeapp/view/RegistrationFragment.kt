@@ -195,10 +195,12 @@ class RegistrationFragment : Fragment() {
             authViewModel.registerTelegramResult.observe(viewLifecycleOwner, Observer{ result ->
 
                 if (countRequest == 0){
+                    binding!!.buttonRegistration.visibility = View.VISIBLE
+                    binding!!.progressLogin.visibility = View.INVISIBLE
                     countRequest++
                     val userId = tokenManager.getUserId()!!.toLong()
                     val exp = tokenManager.getExp()!!.toLong()
-                    val telegramId = "${userId}${exp}${666}".toLong()
+                    val telegramId = "${userId}${999888777666}".toLong()
 
                     authViewModel.registerTelegram(RegistrationTelegramEntity(
                         userId = userId,
@@ -219,11 +221,11 @@ class RegistrationFragment : Fragment() {
                         profileAndCodeManager.saveRegistr(true)
                         profileAndCodeManager.saveProfile(false)
                         profileAndCodeManager.saveCode(false)
-                        Toast.makeText(
-                            context,
-                            "Вы успешно зарегистрировались!",
-                            Toast.LENGTH_SHORT
-                        ).show()
+//                        Toast.makeText(
+//                            context,
+//                            "Вы успешно зарегистрировались!",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
                         val transaction =
                             requireActivity().supportFragmentManager.beginTransaction()
                         val profileFragment = CreateProfileFragment()
@@ -254,7 +256,7 @@ class RegistrationFragment : Fragment() {
                     Log.d("MyLog", tokenManager.getUserId().toString())
                     val userId = tokenManager.getUserId()!!.toLong()
                     val exp = tokenManager.getExp()!!.toLong()
-                    val telegramId = "${userId}${exp}${666}".toLong()
+                    val telegramId = "${userId}${999888777666}".toLong()
 
                     authViewModel.registerTelegram(RegistrationTelegramEntity(
                         userId = userId,
@@ -266,8 +268,6 @@ class RegistrationFragment : Fragment() {
                     ))
 
                 }else if (result.isFailure){
-                    binding!!.buttonRegistration.visibility = View.VISIBLE
-                    binding!!.progressLogin.visibility = View.INVISIBLE
                     binding!!.textErrorLogin.setText(R.string.text_error_registration)
                     binding!!.textErrorLogin.visibility = View.VISIBLE
                     val exception = result.exceptionOrNull()
