@@ -237,7 +237,6 @@ class CodeEventFragment : Fragment() {
             }else if (result.isFailure){
                 binding!!.buttonLoginEvent.visibility = View.VISIBLE
                 binding!!.progressLogin.visibility = View.INVISIBLE
-                binding!!.textErrorLogin.visibility = View.VISIBLE
                 val exception = result.exceptionOrNull()
                 //Toast.makeText(context, "Login failed: ${exception!!.message}", Toast.LENGTH_SHORT).show()
             }

@@ -55,6 +55,7 @@ class NewEventFragment : Fragment() {
         }
 
         binding!!.buttonChooseDate.setOnClickListener {
+            binding!!.textErrorLogin.visibility = View.GONE
             showDateTimePicker()
         }
 
@@ -104,12 +105,15 @@ class NewEventFragment : Fragment() {
             val formattedTime = timeFormat.format(selectedDate!!.time)
             binding!!.textDate.text = formattedDate
             binding!!.textTime.text = formattedTime
+            binding!!.layoutDate.visibility = View.VISIBLE
+            binding!!.layoutTime.visibility = View.VISIBLE
             binding!!.textDate.visibility = View.VISIBLE
             binding!!.textTime.visibility = View.VISIBLE
             Log.d("MyLog","Дата: $formattedDate, Время: $formattedTime")
         } else {
             Log.d("MyLog", "Error")
             println("Ошибка: выберите дату и время в будущем")
+            binding!!.textErrorLogin.visibility = View.VISIBLE
         }
     }
 

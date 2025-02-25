@@ -16,10 +16,21 @@ class EventsViewModel(private val eventsRepository: EventsRepository) : ViewMode
     private val _joinByPinResult = MutableLiveData<Result<EventsEntity>>()
     val joinByPinResult: LiveData<Result<EventsEntity>> get() = _joinByPinResult
 
+    private val _events = MutableLiveData<List<EventsEntity>>()
+    val events: LiveData<List<EventsEntity>> get() = _events
+
+
     fun joinByPin(pin: String, telegramId: Long, userId: Long) {
         viewModelScope.launch {
             _joinByPinResult.value = eventsRepository.joinByPin(pin, telegramId, userId)
         }
     }
+
+    fun fetchEvents(telegramId: Long) {
+        viewModelScope.launch {
+            _events.value = eventsRepository.getEvents(telegramId).getOrNull()
+        }
+    }
+
 
 }

@@ -26,6 +26,8 @@ class EventsRepository(
             val response = eventsApi.joinByPin(JoinByPinEntity(pin, telegramId, userId)).awaitResponse()
             if (response.isSuccessful && response.body() != null) {
                 val result = response.body()!!
+                tokenManager.saveCurrentEvent(result.eventId!!.toLong())
+                tokenManager.saveCurrentScheduleId(result.scheduleId!!.toLong())
                 Log.d("MyLog", "$result")
                 Result.success(response.body()!!)
             } else {
@@ -34,6 +36,19 @@ class EventsRepository(
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    suspend fun getEvents(telegramId: Long): Result<List<EventsEntity>> {
+        return try {
+                val response = eventsApi.getUserEvents(telegramId).awaitResponse()
+                if (response.isSuccessful && response.body() != null) {
+                    Result.success(response.body()!!)
+                } else {
+                    Result.failure(Exception("Failed to fetch events: ${response.message()}"))
+                }
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
     }
 
 }
