@@ -8,68 +8,12 @@
     android:background="@color/edit_text_background_nav_bar">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/top_menu_background"
-        android:orientation="horizontal"
-        android:paddingHorizontal="16dp"
-        android:paddingTop="32dp"
-        android:paddingBottom="16dp"
-        android:weightSum="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:src="@drawable/icon_profile" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="12dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_marginEnd="4dp"
-                android:src="@drawable/icon_all_events" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="4dp"
-                android:fontFamily="@font/sfp_semibold"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:maxLines="1"
-                android:text="Мероприятия"
-                android:textColor="@color/black"
-                android:textSize="22sp" />
-
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:src="@drawable/icon_chat" />
-
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -78,32 +22,32 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="24dp">
+                android:layout_marginTop="44dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:gravity="start"
-                    android:fontFamily="@font/sfp_bold"
-                    android:includeFontPadding="false"
-                    android:text="@string/text_schedule"
-                    android:maxLines="1"
+                    android:layout_marginHorizontal="16dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/sfp_bold"
+                    android:gravity="start"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:text="@string/text_schedule"
                     android:textColor="@color/black"
-                    android:textSize="26sp"
-                    android:layout_marginHorizontal="16dp"/>
+                    android:textSize="26sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:listitem="@layout/item_meets_event"
-                    android:orientation="horizontal"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="12dp"
+                    android:orientation="horizontal"
                     tools:itemCount="4"
-                    android:layout_marginStart="16dp"/>
+                    tools:listitem="@layout/item_meets_event" />
 
             </LinearLayout>
 

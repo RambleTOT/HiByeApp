@@ -12,7 +12,7 @@ interface EventsApi {
     @POST("/events/join_by_pin")
     fun joinByPin(@Body request: JoinByPinEntity): Call<EventsEntity>
 
-    @POST("/events/join_by_pin")
+    @POST("/events/telegram")
     fun getUserEvents(@Body telegramId: Long): Call<List<EventsEntity>>
 
 }
