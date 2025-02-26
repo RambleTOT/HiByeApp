@@ -3,10 +3,12 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:paddingHorizontal="24dp"
+    android:paddingVertical="32dp"
     android:layout_gravity="center"
     android:layout_marginHorizontal="32dp"
-    android:background="@drawable/dialog_background">
+    android:background="@drawable/dialog_background"
+    >
 
     <TextView
         android:layout_width="wrap_content"
@@ -27,7 +29,7 @@
         android:layout_marginTop="16dp" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_add_favorite"
+        android:id="@+id/button_add_new_event_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/main_color"

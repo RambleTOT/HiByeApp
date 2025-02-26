@@ -22,7 +22,11 @@ class AllEventsAdapter(
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         val event = events[position]
         holder.bind(event)
+        val scaleDown = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.text_click_anim)
+        val scaleUp = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.text_click_anim_back)
         holder.itemView.setOnClickListener {
+            holder.itemView.startAnimation(scaleDown)
+            holder.itemView.startAnimation(scaleUp)
             onItemClick(event)
         }
     }
