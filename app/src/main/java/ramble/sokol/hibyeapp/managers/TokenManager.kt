@@ -98,6 +98,17 @@ class TokenManager(context: Context) {
         return sharedPreferences.getLong("current_schedule_id", -1).takeIf { it != (-1).toLong() }
     }
 
+    fun saveEventName(name: String) {
+        sharedPreferences.edit().apply {
+            putString("event_name", name)
+            apply()
+        }
+    }
+
+    fun getEventName(): String? {
+        return sharedPreferences.getString("event_name", null)
+    }
+
     fun clearTokens() {
         sharedPreferences.edit().apply {
             remove("access_token")

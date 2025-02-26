@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.data.model.events.EventsEntity
+import ramble.sokol.hibyeapp.managers.TokenManager
 
 class AllEventsAdapter(
     private val events: List<EventsEntity>,
@@ -24,10 +25,14 @@ class AllEventsAdapter(
         holder.bind(event)
         val scaleDown = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.text_click_anim)
         val scaleUp = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.text_click_anim_back)
+        val tokenManager = TokenManager(holder.itemView.context)
         holder.itemView.setOnClickListener {
             holder.itemView.startAnimation(scaleDown)
             holder.itemView.startAnimation(scaleUp)
             onItemClick(event)
+            tokenManager.saveCurrentEvent(event.eventId!!.toLong())
+            tokenManager.saveCurrentScheduleId(event.scheduleId!!.toLong())
+            tokenManager.saveEventName(event.eventName!!)
         }
     }
 

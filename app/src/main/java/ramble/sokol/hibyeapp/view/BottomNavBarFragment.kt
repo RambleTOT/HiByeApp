@@ -24,6 +24,7 @@ class BottomNavBarFragment(
     private var binding: FragmentBottomNavBarBinding? = null
     private lateinit var eventViewModel: EventsViewModel
     private lateinit var tokenManager: TokenManager
+    private lateinit var currentF: Fragment
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,8 +38,11 @@ class BottomNavBarFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        currentF = currentFragment
         tokenManager = TokenManager(requireActivity())
         val tgId = tokenManager.getTelegramId()
+        val nameEvent = tokenManager.getEventName()
+        binding!!.eventName.text = nameEvent
         eventViewModel = ViewModelProvider(
             this,
             EventsViewModelFactory((requireActivity().application as MyApplication).eventsRepository)
@@ -49,12 +53,15 @@ class BottomNavBarFragment(
         binding!!.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.navbar_schedule -> {
+                    currentF = ScheduleFragment()
                     replaceFragment(ScheduleFragment())
                 }
                 R.id.navbar_networking -> {
+                    currentF = NetworkingFragment()
                     replaceFragment(NetworkingFragment())
                 }
                 R.id.navbar_chats -> {
+                    currentF = ChatsFragment()
                     replaceFragment(ChatsFragment())
                 }
                 else -> false
@@ -70,6 +77,7 @@ class BottomNavBarFragment(
             if (events != null) {
                 AllEventsDialog(events) { event ->
                     Log.d("MyLog", "Selected Event ID: ${event.eventId}, Schedule ID: ${event.scheduleId}")
+                    refreshFragment()
                 }.show(parentFragmentManager, "EventsDialog")
             }
         })
@@ -89,6 +97,15 @@ class BottomNavBarFragment(
         fragmentTransition.replace(R.id.frame_layout, fragment)
         fragmentTransition.commit()
 
+    }
+
+    private fun refreshFragment() {
+        // Обновляем фрагмент
+        parentFragmentManager.beginTransaction().apply {
+            replace(R.id.layout_fragment, BottomNavBarFragment(currentF)) // Заменяем текущий фрагмент на новый экземпляр
+            addToBackStack(null) // Добавляем в back stack (опционально)
+            commit() // Фиксируем транзакцию
+        }
     }
 
 }

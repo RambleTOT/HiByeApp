@@ -27,6 +27,7 @@ class EventsRepository(
             if (response.isSuccessful && response.body() != null) {
                 val result = response.body()!!
                 tokenManager.saveCurrentEvent(result.eventId!!.toLong())
+                tokenManager.saveEventName(result.eventName!!)
                 tokenManager.saveCurrentScheduleId(result.scheduleId!!.toLong())
                 Log.d("MyLog", "$result")
                 Result.success(response.body()!!)

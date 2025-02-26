@@ -36,6 +36,7 @@ import ramble.sokol.hibyeapp.view_model.EventsViewModel
 import ramble.sokol.hibyeapp.view_model.EventsViewModelFactory
 
 class AddEventsDialog(
+    private val onDismiss: () -> Unit
 ) : DialogFragment() {
 
     private lateinit var code1: EditText
@@ -223,11 +224,7 @@ class AddEventsDialog(
                     Toast.LENGTH_SHORT
                 ).show()
                 dismiss()
-                val transaction = requireActivity().supportFragmentManager.beginTransaction()
-                val bottomNavBarFragment = BottomNavBarFragment(NetworkingFragment())
-                transaction.replace(R.id.layout_fragment, bottomNavBarFragment)
-                transaction.disallowAddToBackStack()
-                transaction.commit()
+                onDismiss()
 
             }else if (result.isFailure){
                 buttonLogin.visibility = View.VISIBLE

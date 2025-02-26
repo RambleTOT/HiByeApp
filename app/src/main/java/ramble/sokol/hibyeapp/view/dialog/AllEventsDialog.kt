@@ -25,11 +25,17 @@ class AllEventsDialog(
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewEvents)
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = AllEventsAdapter(events, onItemClick)
+        recyclerView.adapter = AllEventsAdapter(events){ event ->
+            dismiss()
+            onItemClick(event)
+        }
 
         val buttonCode = view.findViewById<MaterialButton>(R.id.button_add_new_event_dialog)
         buttonCode.setOnClickListener {
-            AddEventsDialog().show(parentFragmentManager, "Code5Dialog")
+            AddEventsDialog(){
+                dismiss() // Закрываем первое диалоговое окно
+                onItemClick(events[0]) // Вызываем лямбду для обновления фрагмента
+            }.show(parentFragmentManager, "Code5Dialog")
         }
 
         return AlertDialog.Builder(requireContext())
