@@ -5,6 +5,7 @@ import android.app.Application
 import ramble.sokol.hibyeapp.data.repository.AuthRepository
 import ramble.sokol.hibyeapp.data.RetrofitClient
 import ramble.sokol.hibyeapp.data.repository.EventsRepository
+import ramble.sokol.hibyeapp.data.repository.MeetsRepository
 
 class MyApplication : Application() {
 
@@ -18,5 +19,9 @@ class MyApplication : Application() {
 
     val eventsRepository: EventsRepository by lazy {
         EventsRepository(RetrofitClient.instanceEvents, tokenManager)
+    }
+
+    val meetsRepository: MeetsRepository by lazy {
+        MeetsRepository(RetrofitClient.instanceMeets, tokenManager)
     }
 }

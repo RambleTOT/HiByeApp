@@ -21,13 +21,17 @@ import ramble.sokol.hibyeapp.view.adapters.FirstItemMarginDecoration
 import ramble.sokol.hibyeapp.view.adapters.ParticipantsAdapter
 import ramble.sokol.hibyeapp.view_model.EventsViewModel
 import ramble.sokol.hibyeapp.view_model.EventsViewModelFactory
+import ramble.sokol.hibyeapp.view_model.MeetsViewModel
+import ramble.sokol.hibyeapp.view_model.MeetsViewModelFactory
 
 class NetworkingFragment : Fragment() {
 
     private var binding: FragmentNetworkingBinding? = null
     private lateinit var eventViewModel: EventsViewModel
+    private lateinit var meetsViewModel: MeetsViewModel
     private lateinit var tokenManager: TokenManager
     private lateinit var participantsAdapter: ParticipantsAdapter
+    private var isViewButtonFastMeetings: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,20 +52,24 @@ class NetworkingFragment : Fragment() {
 
         tokenManager = TokenManager(requireActivity())
         val eventId = tokenManager.getCurrentEventId()
+        val userId = tokenManager.getUserIdTelegram()!!
         eventViewModel = ViewModelProvider(
             this,
             EventsViewModelFactory((requireActivity().application as MyApplication).eventsRepository)
         ).get(EventsViewModel::class.java)
 
+        meetsViewModel = ViewModelProvider(
+            this,
+            MeetsViewModelFactory((requireActivity().application as MyApplication).meetsRepository)
+        ).get(MeetsViewModel::class.java)
+
         participantsAdapter = ParticipantsAdapter(emptyList()) { participant ->
-            // Обработка нажатия на элемент
             navigateToParticipantDetails(participant)
         }
 
         binding?.recyclerViewSections?.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = participantsAdapter
-            // Добавляем кастомный ItemDecoration для отступа первого элемента
             val marginStart = resources.getDimensionPixelSize(R.dimen.margin_start) // 16dp
             addItemDecoration(FirstItemMarginDecoration(marginStart))
         }
@@ -80,14 +88,20 @@ class NetworkingFragment : Fragment() {
             }
         })
 
-        eventViewModel.getAllUsersEvent.observe(viewLifecycleOwner, Observer { result ->
+        meetsViewModel.isFastMeetings(eventId, userId)
+        meetsViewModel.isFastMeetings.observe(viewLifecycleOwner, Observer { result ->
             if (result.isSuccess) {
-                Log.d("MyLog", "$result")
+                isViewButtonFastMeetings = result.getOrNull()!!
+                if (isViewButtonFastMeetings){
+                    binding!!.buttonFindChat.visibility = View.VISIBLE
+                }else{
+                    binding!!.buttonFindChat.visibility = View.GONE
+                }
+
             } else if (result.isFailure) {
                 val exception = result.exceptionOrNull()
-                //Toast.makeText(context, "Login failed: ${exception!!.message}", Toast.LENGTH_SHORT).show()
+                Log.e("NetworkingFragment", "Error loading participants: ${exception?.message}")
             }
-
         })
 
         binding!!.customCheckBox1.findViewById<TextView>(R.id.checkbox_custom_text).text = "Мои встречи"
