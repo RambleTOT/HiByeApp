@@ -8,6 +8,8 @@ import kotlinx.coroutines.launch
 import ramble.sokol.hibyeapp.data.repository.AuthRepository
 import ramble.sokol.hibyeapp.data.model.auth.RegistrationTelegramEntity
 import ramble.sokol.hibyeapp.data.model.auth.TokenResponse
+import ramble.sokol.hibyeapp.data.model.events.CreateUserEntity
+import ramble.sokol.hibyeapp.data.model.events.CreateUserResponse
 import ramble.sokol.hibyeapp.data.model.events.EventsEntity
 import ramble.sokol.hibyeapp.data.repository.EventsRepository
 
@@ -19,6 +21,11 @@ class EventsViewModel(private val eventsRepository: EventsRepository) : ViewMode
     private val _events = MutableLiveData<List<EventsEntity>>()
     val events: LiveData<List<EventsEntity>> get() = _events
 
+    private val _createUser = MutableLiveData<Result<CreateUserResponse>>()
+    val createUser: LiveData<Result<CreateUserResponse>> get() = _createUser
+
+    private val _getUser = MutableLiveData<Result<CreateUserResponse>>()
+    val getUser: LiveData<Result<CreateUserResponse>> get() = _getUser
 
     fun joinByPin(pin: String, telegramId: Long, userId: Long) {
         viewModelScope.launch {
@@ -32,5 +39,16 @@ class EventsViewModel(private val eventsRepository: EventsRepository) : ViewMode
         }
     }
 
+    fun createUser(eventId: Long, userId: Long, createUserEntity: CreateUserEntity){
+        viewModelScope.launch {
+            _createUser.value = eventsRepository.createUser(eventId, userId, createUserEntity)
+        }
+    }
+
+    fun getUser(eventId: Long, userId: Long){
+        viewModelScope.launch {
+            _getUser.value = eventsRepository.getUser(eventId, userId)
+        }
+    }
 
 }

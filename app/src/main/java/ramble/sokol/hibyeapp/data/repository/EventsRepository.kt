@@ -10,6 +10,8 @@ import ramble.sokol.hibyeapp.data.model.auth.LoginEntity
 import ramble.sokol.hibyeapp.data.model.auth.RegistrationEntity
 import ramble.sokol.hibyeapp.data.model.auth.RegistrationTelegramEntity
 import ramble.sokol.hibyeapp.data.model.auth.TokenResponse
+import ramble.sokol.hibyeapp.data.model.events.CreateUserEntity
+import ramble.sokol.hibyeapp.data.model.events.CreateUserResponse
 import ramble.sokol.hibyeapp.data.model.events.EventsEntity
 import ramble.sokol.hibyeapp.data.model.events.JoinByPinEntity
 import ramble.sokol.hibyeapp.view.getExpFromToken
@@ -50,6 +52,36 @@ class EventsRepository(
             } catch (e: Exception) {
                 Result.failure(e)
             }
+    }
+
+    suspend fun createUser(eventId: Long, userId: Long, createUserEntity: CreateUserEntity): Result<CreateUserResponse> {
+        return try {
+            val response = eventsApi.createUserForEvent(eventId, userId, createUserEntity).awaitResponse()
+            if (response.isSuccessful && response.body() != null) {
+                val result = response.body()!!
+                Result.success(response.body()!!)
+            } else {
+                Result.failure(Exception("Login failed: ${response.message()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun getUser(eventId: Long, userId: Long): Result<CreateUserResponse> {
+        return try {
+            val response = eventsApi.getUserForEvent(eventId, userId).awaitResponse()
+            if (response.isSuccessful && response.body() != null) {
+                val result = response.body()!!
+                Log.d("MyLog", "Resullt^ ==: $result")
+                Result.success(response.body()!!)
+            } else {
+                Log.d("MyLog", "Response^ ==: $response")
+                Result.failure(Exception("${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
 }

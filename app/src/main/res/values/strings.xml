@@ -32,6 +32,7 @@
     <string name="text_error_new_event">Выберите время в будущем</string>
     <string name="text_meet">Встреча</string>
     <string name="text_create_profile_titlt">Анкета</string>
+    <string name="text_create_user_title">Заполните данные о себе для текущего мероприятия</string>
     <string name="text_close_meet">Отменить</string>
     <string name="text_name_event">Название встречи</string>
     <string name="text_description_event">Описание встречи</string>
