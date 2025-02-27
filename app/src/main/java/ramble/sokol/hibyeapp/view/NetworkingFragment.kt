@@ -10,11 +10,14 @@ import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import ramble.sokol.hibyeapp.CustomCheckBox
 import ramble.sokol.hibyeapp.R
+import ramble.sokol.hibyeapp.data.model.events.CreateUserResponse
 import ramble.sokol.hibyeapp.databinding.FragmentNetworkingBinding
 import ramble.sokol.hibyeapp.managers.NameAndPhotoManager
 import ramble.sokol.hibyeapp.managers.TokenManager
+import ramble.sokol.hibyeapp.view.adapters.ParticipantsAdapter
 import ramble.sokol.hibyeapp.view_model.EventsViewModel
 import ramble.sokol.hibyeapp.view_model.EventsViewModelFactory
 
@@ -23,6 +26,7 @@ class NetworkingFragment : Fragment() {
     private var binding: FragmentNetworkingBinding? = null
     private lateinit var eventViewModel: EventsViewModel
     private lateinit var tokenManager: TokenManager
+    private lateinit var participantsAdapter: ParticipantsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,9 +52,29 @@ class NetworkingFragment : Fragment() {
             EventsViewModelFactory((requireActivity().application as MyApplication).eventsRepository)
         ).get(EventsViewModel::class.java)
 
-        eventViewModel.getAllUsersEvent(
-            eventId = eventId!!
-        )
+        participantsAdapter = ParticipantsAdapter(emptyList()) { participant ->
+            // Обработка нажатия на элемент
+            navigateToParticipantDetails(participant)
+        }
+
+        binding?.recyclerViewSections?.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = participantsAdapter
+        }
+
+        eventViewModel.getAllUsersEvent(eventId!!)
+        eventViewModel.getAllUsersEvent.observe(viewLifecycleOwner, Observer { result ->
+            if (result.isSuccess) {
+                val participants = result.getOrNull() ?: emptyList()
+                participantsAdapter = ParticipantsAdapter(participants) { participant ->
+                    navigateToParticipantDetails(participant)
+                }
+                binding?.recyclerViewSections?.adapter = participantsAdapter
+            } else if (result.isFailure) {
+                val exception = result.exceptionOrNull()
+                Log.e("NetworkingFragment", "Error loading participants: ${exception?.message}")
+            }
+        })
 
         eventViewModel.getAllUsersEvent.observe(viewLifecycleOwner, Observer { result ->
             if (result.isSuccess) {
@@ -106,6 +130,21 @@ class NetworkingFragment : Fragment() {
         binding!!.customCheckBox3.setChecked(false)
 
         selectedCheckBox.setChecked(true)
+    }
+
+    private fun navigateToParticipantDetails(participant: CreateUserResponse) {
+
+        val bundle = Bundle().apply {
+            putLong("userId", participant.userId ?: -1)
+            putString("userName", participant.userName)
+            putString("userInfo", participant.userInfo)
+            putString("photoLink", participant.photoLink)
+        }
+
+        val participantDetailsFragment = ParticipantFragment().apply {
+            arguments = bundle
+        }
+
     }
 
 }
