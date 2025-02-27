@@ -17,6 +17,7 @@ import ramble.sokol.hibyeapp.data.model.events.CreateUserResponse
 import ramble.sokol.hibyeapp.databinding.FragmentNetworkingBinding
 import ramble.sokol.hibyeapp.managers.NameAndPhotoManager
 import ramble.sokol.hibyeapp.managers.TokenManager
+import ramble.sokol.hibyeapp.view.adapters.FirstItemMarginDecoration
 import ramble.sokol.hibyeapp.view.adapters.ParticipantsAdapter
 import ramble.sokol.hibyeapp.view_model.EventsViewModel
 import ramble.sokol.hibyeapp.view_model.EventsViewModelFactory
@@ -60,6 +61,9 @@ class NetworkingFragment : Fragment() {
         binding?.recyclerViewSections?.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = participantsAdapter
+            // Добавляем кастомный ItemDecoration для отступа первого элемента
+            val marginStart = resources.getDimensionPixelSize(R.dimen.margin_start) // 16dp
+            addItemDecoration(FirstItemMarginDecoration(marginStart))
         }
 
         eventViewModel.getAllUsersEvent(eventId!!)
