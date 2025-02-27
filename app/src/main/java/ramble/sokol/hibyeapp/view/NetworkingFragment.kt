@@ -1,19 +1,28 @@
 package ramble.sokol.hibyeapp.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.TextView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import ramble.sokol.hibyeapp.CustomCheckBox
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.databinding.FragmentNetworkingBinding
+import ramble.sokol.hibyeapp.managers.NameAndPhotoManager
+import ramble.sokol.hibyeapp.managers.TokenManager
+import ramble.sokol.hibyeapp.view_model.EventsViewModel
+import ramble.sokol.hibyeapp.view_model.EventsViewModelFactory
 
 class NetworkingFragment : Fragment() {
 
     private var binding: FragmentNetworkingBinding? = null
+    private lateinit var eventViewModel: EventsViewModel
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,6 +40,28 @@ class NetworkingFragment : Fragment() {
     }
 
     private fun init(){
+
+        tokenManager = TokenManager(requireActivity())
+        val eventId = tokenManager.getCurrentEventId()
+        eventViewModel = ViewModelProvider(
+            this,
+            EventsViewModelFactory((requireActivity().application as MyApplication).eventsRepository)
+        ).get(EventsViewModel::class.java)
+
+        eventViewModel.getAllUsersEvent(
+            eventId = eventId!!
+        )
+
+        eventViewModel.getAllUsersEvent.observe(viewLifecycleOwner, Observer { result ->
+            if (result.isSuccess) {
+                Log.d("MyLog", "$result")
+            } else if (result.isFailure) {
+                val exception = result.exceptionOrNull()
+                //Toast.makeText(context, "Login failed: ${exception!!.message}", Toast.LENGTH_SHORT).show()
+            }
+
+        })
+
         binding!!.customCheckBox1.findViewById<TextView>(R.id.checkbox_custom_text).text = "Мои встречи"
         binding!!.customCheckBox2.findViewById<TextView>(R.id.checkbox_custom_text).text = "Доступные встречи"
         binding!!.customCheckBox3.findViewById<TextView>(R.id.checkbox_custom_text).text = "История"

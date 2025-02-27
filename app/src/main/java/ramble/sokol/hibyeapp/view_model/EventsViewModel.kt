@@ -27,6 +27,9 @@ class EventsViewModel(private val eventsRepository: EventsRepository) : ViewMode
     private val _getUser = MutableLiveData<Result<CreateUserResponse>>()
     val getUser: LiveData<Result<CreateUserResponse>> get() = _getUser
 
+    private val _getAllUsersEvent = MutableLiveData<Result<List<CreateUserResponse>>>()
+    val getAllUsersEvent: LiveData<Result<List<CreateUserResponse>>> get() = _getAllUsersEvent
+
     fun joinByPin(pin: String, telegramId: Long, userId: Long) {
         viewModelScope.launch {
             _joinByPinResult.value = eventsRepository.joinByPin(pin, telegramId, userId)
@@ -48,6 +51,12 @@ class EventsViewModel(private val eventsRepository: EventsRepository) : ViewMode
     fun getUser(eventId: Long, userId: Long){
         viewModelScope.launch {
             _getUser.value = eventsRepository.getUser(eventId, userId)
+        }
+    }
+
+    fun getAllUsersEvent(eventId: Long){
+        viewModelScope.launch {
+            _getAllUsersEvent.value = eventsRepository.getAllUsersEvents(eventId)
         }
     }
 

@@ -11,6 +11,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface EventsApi {
     @POST("/events/join_by_pin")
@@ -31,6 +32,11 @@ interface EventsApi {
         @Path("eventId") eventId: Long,
         @Path("userId") userId: Long
     ): Call<CreateUserResponse>
+
+    @GET("/users")
+    fun getAllUsersEvent(
+        @Query("eventId") eventId: Long
+    ): Call<List<CreateUserResponse>>
 
 }
 

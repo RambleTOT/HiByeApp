@@ -84,4 +84,20 @@ class EventsRepository(
         }
     }
 
+    suspend fun getAllUsersEvents(eventId: Long): Result<List<CreateUserResponse>> {
+        return try {
+            val response = eventsApi.getAllUsersEvent(eventId).awaitResponse()
+            if (response.isSuccessful && response.body() != null) {
+                val result = response.body()!!
+                Log.d("MyLog", "$result")
+                Result.success(response.body()!!)
+            } else {
+                Log.d("MyLog", "$response")
+                Result.failure(Exception("${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 }
