@@ -97,10 +97,15 @@ class ParticipantFragment : Fragment() {
             putString("photoLink", participant.photoLink)
         }
 
-        val participantDetailsFragment = ParticipantFragment().apply {
+        val participantDetailsFragment = QuickMeetFragment(ParticipantFragment()).apply {
             arguments = bundle
         }
 
-    }
+        parentFragmentManager.beginTransaction().apply {
+            replace(R.id.layout_fragment, participantDetailsFragment)
+            addToBackStack(null)
+            commit()
+        }
 
+    }
 }
