@@ -46,7 +46,7 @@ class QuickMeetFragment(
             binding!!.textButtonBack.startAnimation(scaleDown)
             binding!!.textButtonBack.startAnimation(scaleUp)
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.layout_fragment, lastFragment)
+            transaction.replace(R.id.layout_fragment, BottomNavBarFragment(lastFragment))
             transaction.disallowAddToBackStack()
             transaction.commit()
         }

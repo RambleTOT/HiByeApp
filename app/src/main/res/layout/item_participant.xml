@@ -38,6 +38,7 @@
         android:includeFontPadding="false"
         android:text="Дизайнер HiBye скоро иду в Сколково"
         android:maxLines="2"
+        android:minLines="2"
         android:ellipsize="end"
         android:textColor="@color/text_hint_color"
         android:textSize="12sp"/>

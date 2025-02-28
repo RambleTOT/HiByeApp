@@ -1,6 +1,8 @@
 package ramble.sokol.hibyeapp.view
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +12,7 @@ import android.view.animation.AnimationUtils
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import ramble.sokol.hibyeapp.NonScrollLinearLayoutManager
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.data.model.events.CreateUserResponse
 import ramble.sokol.hibyeapp.databinding.FragmentNetworkingBinding
@@ -68,9 +71,22 @@ class ParticipantFragment : Fragment() {
         }
 
         binding?.recyclerView?.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            layoutManager = NonScrollLinearLayoutManager(requireContext()) // Используем кастомный LayoutManager
             adapter = participantsAdapter
+            isNestedScrollingEnabled = false
         }
+
+        // Слушатель для поиска
+        binding?.editTextSearch?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Фильтрация списка при изменении текста
+                filterParticipants(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
 
         eventViewModel.getAllUsersEvent(eventId!!)
         eventViewModel.getAllUsersEvent.observe(viewLifecycleOwner, Observer { result ->
@@ -108,4 +124,18 @@ class ParticipantFragment : Fragment() {
         }
 
     }
+
+    private fun filterParticipants(query: String) {
+        val filteredList = if (query.isEmpty()) {
+            eventViewModel.getAllUsersEvent.value?.getOrNull() ?: emptyList()
+        } else {
+            eventViewModel.getAllUsersEvent.value?.getOrNull()?.filter { participant ->
+                participant.userName?.contains(query, ignoreCase = true) == true ||
+                        participant.userInfo?.contains(query, ignoreCase = true) == true
+            } ?: emptyList()
+        }
+
+        participantsAdapter.updateData(filteredList)
+    }
+
 }

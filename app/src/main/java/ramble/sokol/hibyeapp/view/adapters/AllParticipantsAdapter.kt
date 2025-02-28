@@ -9,7 +9,7 @@ import ramble.sokol.hibyeapp.databinding.ItemParticipantAllBinding
 import ramble.sokol.hibyeapp.databinding.ItemParticipantBinding
 
 class AllParticipantsAdapter(
-    private val participants: List<CreateUserResponse>,
+    private var participants: List<CreateUserResponse>,
     private val onItemClick: (CreateUserResponse) -> Unit // Лямбда для обработки нажатий
 ) : RecyclerView.Adapter<AllParticipantsAdapter.ParticipantViewHolder>() {
 
@@ -28,6 +28,11 @@ class AllParticipantsAdapter(
         holder.itemView.setOnClickListener {
             onItemClick(participant)
         }
+    }
+
+    fun updateData(newParticipants: List<CreateUserResponse>) {
+        participants = newParticipants
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int = participants.size

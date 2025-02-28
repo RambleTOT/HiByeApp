@@ -6,6 +6,7 @@
     <string name="text_back_choose_event">Вернуться к выбору мероприятий</string>
     <string name="text_registration">Зарегистрироваться</string>
     <string name="text_phone_number">Номер телефона</string>
+    <string name="text_search_participant">Ищите по имени, профессии, интересам</string>
     <string name="text_password">Пароль</string>
     <string name="text_password_repeat">Повторите пароль</string>
     <string name="text_event_code">Код мероприятия:</string>
