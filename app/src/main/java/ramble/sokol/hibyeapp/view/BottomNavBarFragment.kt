@@ -128,6 +128,16 @@ class BottomNavBarFragment(
             eventViewModel.fetchEvents(tgId!!)
         }
 
+        binding!!.buttonProfile.setOnClickListener{
+            binding!!.buttonNewAddEvent.startAnimation(scaleDown)
+            binding!!.buttonNewAddEvent.startAnimation(scaleUp)
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            val profileFragment = ProfileFragment(currentF)
+            transaction.replace(R.id.layout_fragment, profileFragment)
+            transaction.disallowAddToBackStack()
+            transaction.commit()
+        }
+
     }
 
     private fun replaceFragment(fragment: Fragment){
@@ -142,7 +152,7 @@ class BottomNavBarFragment(
     private fun refreshFragment() {
         // Обновляем фрагмент
         parentFragmentManager.beginTransaction().apply {
-            replace(R.id.layout_fragment, BottomNavBarFragment(currentF)) // Заменяем текущий фрагмент на новый экземпляр
+            replace(R.id.layout_fragment, BottomNavBarFragment(currentF))
             addToBackStack(null) // Добавляем в back stack (опционально)
             commit() // Фиксируем транзакцию
         }

@@ -29,7 +29,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="24dp">
+                    android:layout_marginTop="32dp">
 
                     <LinearLayout
                         android:id="@+id/text_button_back"
@@ -38,7 +38,8 @@
                         android:orientation="horizontal"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:paddingVertical="4dp">
 
                         <ImageView
                             android:layout_width="20dp"
