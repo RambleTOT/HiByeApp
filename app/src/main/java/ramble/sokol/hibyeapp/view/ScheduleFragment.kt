@@ -22,6 +22,10 @@ import ramble.sokol.hibyeapp.view_model.EventsViewModel
 import ramble.sokol.hibyeapp.view_model.EventsViewModelFactory
 import ramble.sokol.hibyeapp.view_model.ScheduleViewModel
 import ramble.sokol.hibyeapp.view_model.ScheduleViewModelFactory
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.TimeZone
 
 
 class ScheduleFragment : Fragment() {
@@ -98,14 +102,14 @@ class ScheduleFragment : Fragment() {
             putStringArrayList("tags", ArrayList(item.tags))
         }
 
-//        val detailsFragment = ScheduleDetailsFragment().apply {
-//            arguments = bundle
-//        }
+        val detailsFragment = CurrentEventFragment().apply {
+            arguments = bundle
+        }
 
-//        parentFragmentManager.beginTransaction()
-//            .replace(R.id.layout_fragment, detailsFragment)
-//            .addToBackStack(null)
-//            .commit()
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.layout_fragment, detailsFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
 }
