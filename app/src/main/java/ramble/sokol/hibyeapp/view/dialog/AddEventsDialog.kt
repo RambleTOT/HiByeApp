@@ -229,6 +229,7 @@ class AddEventsDialog(
             }else if (result.isFailure){
                 buttonLogin.visibility = View.VISIBLE
                 progressLogin.visibility = View.INVISIBLE
+                errorLogin.visibility = View.VISIBLE
                 val exception = result.exceptionOrNull()
                 //Toast.makeText(context, "Login failed: ${exception!!.message}", Toast.LENGTH_SHORT).show()
             }
@@ -267,7 +268,6 @@ class AddEventsDialog(
                 }
             }
 
-            // Скрытие клавиатуры при заполнении последнего блока
             if (currentEditText == code6 && s?.length == 1) {
                 hideKeyboard()
             }
@@ -280,7 +280,7 @@ class AddEventsDialog(
         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         var view = requireActivity().currentFocus
         if (view == null) {
-            view = View(requireActivity()) // Создаем dummy View, если фокус не установлен
+            view = View(requireActivity())
         }
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }

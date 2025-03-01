@@ -6,6 +6,7 @@ import ramble.sokol.hibyeapp.BuildConfig
 import ramble.sokol.hibyeapp.data.api.AuthApi
 import ramble.sokol.hibyeapp.data.api.EventsApi
 import ramble.sokol.hibyeapp.data.api.MeetsApi
+import ramble.sokol.hibyeapp.data.api.ScheduleApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -50,6 +51,15 @@ object RetrofitClient {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(MeetsApi::class.java)
+    }
+
+    val instanceSchedule: ScheduleApi by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ScheduleApi::class.java)
     }
 
 }

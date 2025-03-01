@@ -6,6 +6,7 @@ import ramble.sokol.hibyeapp.data.repository.AuthRepository
 import ramble.sokol.hibyeapp.data.RetrofitClient
 import ramble.sokol.hibyeapp.data.repository.EventsRepository
 import ramble.sokol.hibyeapp.data.repository.MeetsRepository
+import ramble.sokol.hibyeapp.data.repository.ScheduleRepository
 
 class MyApplication : Application() {
 
@@ -24,4 +25,9 @@ class MyApplication : Application() {
     val meetsRepository: MeetsRepository by lazy {
         MeetsRepository(RetrofitClient.instanceMeets, tokenManager)
     }
+
+    val scheduleRepository: ScheduleRepository by lazy {
+        ScheduleRepository(RetrofitClient.instanceSchedule, tokenManager)
+    }
+
 }
