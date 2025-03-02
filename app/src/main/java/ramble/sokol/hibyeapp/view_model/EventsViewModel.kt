@@ -18,8 +18,8 @@ class EventsViewModel(private val eventsRepository: EventsRepository) : ViewMode
     private val _joinByPinResult = MutableLiveData<Result<EventsEntity>>()
     val joinByPinResult: LiveData<Result<EventsEntity>> get() = _joinByPinResult
 
-    private val _events = MutableLiveData<List<EventsEntity>>()
-    val events: LiveData<List<EventsEntity>> get() = _events
+    private val _events = MutableLiveData<List<EventsEntity>?>()
+    val events: MutableLiveData<List<EventsEntity>?> get() = _events
 
     private val _createUser = MutableLiveData<Result<CreateUserResponse>>()
     val createUser: LiveData<Result<CreateUserResponse>> get() = _createUser

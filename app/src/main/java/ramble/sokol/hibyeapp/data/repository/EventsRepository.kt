@@ -45,6 +45,7 @@ class EventsRepository(
         return try {
                 val response = eventsApi.getUserEvents(telegramId).awaitResponse()
                 if (response.isSuccessful && response.body() != null) {
+                    Log.d("MyLog", "$response")
                     Result.success(response.body()!!)
                 } else {
                     Result.failure(Exception("Failed to fetch events: ${response.message()}"))

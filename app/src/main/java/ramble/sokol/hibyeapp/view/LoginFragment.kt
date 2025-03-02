@@ -19,9 +19,13 @@ import androidx.lifecycle.ViewModelProvider
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.data.model.auth.RegistrationTelegramEntity
 import ramble.sokol.hibyeapp.databinding.FragmentLoginBinding
+import ramble.sokol.hibyeapp.managers.EmptyEventsManager
 import ramble.sokol.hibyeapp.managers.ProfileAndCodeManager
+import ramble.sokol.hibyeapp.view.dialog.AllEventsDialog
 import ramble.sokol.hibyeapp.view_model.AuthViewModel
 import ramble.sokol.hibyeapp.view_model.AuthViewModelFactory
+import ramble.sokol.hibyeapp.view_model.EventsViewModel
+import ramble.sokol.hibyeapp.view_model.EventsViewModelFactory
 
 
 class LoginFragment : Fragment() {
@@ -30,6 +34,8 @@ class LoginFragment : Fragment() {
     private lateinit var authViewModel: AuthViewModel
     private lateinit var tokenManager: TokenManager
     private lateinit var profileAndCodeManager: ProfileAndCodeManager
+    private lateinit var emptyEventsManager: EmptyEventsManager
+    private lateinit var eventViewModel: EventsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,15 +58,18 @@ class LoginFragment : Fragment() {
         val authRepository = (requireActivity().application as MyApplication).authRepository
         authViewModel = ViewModelProvider(this, AuthViewModelFactory(authRepository)).get(AuthViewModel::class.java)
         tokenManager = (requireActivity().application as MyApplication).tokenManager
+        emptyEventsManager = EmptyEventsManager(requireActivity())
+        eventViewModel = ViewModelProvider(
+            this,
+            EventsViewModelFactory((requireActivity().application as MyApplication).eventsRepository)
+        ).get(EventsViewModel::class.java)
         binding!!.editTextPhone.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                // Если поле получает фокус и пустое, добавляем +7
                 if (binding!!.editTextPhone.text.isNullOrEmpty()) {
                     binding!!.editTextPhone.setText("+7")
-                    binding!!.editTextPhone.setSelection(2) // Устанавливаем курсор после +7
+                    binding!!.editTextPhone.setSelection(2)
                 }
             } else {
-                // Если поле теряет фокус и содержит только +7, очищаем его
                 if (binding!!.editTextPhone.text.toString() == "+7") {
                     binding!!.editTextPhone.text?.clear()
                 }
@@ -150,16 +159,17 @@ class LoginFragment : Fragment() {
                 profileAndCodeManager.saveProfile(false)
                 profileAndCodeManager.saveRegistr(false)
                 profileAndCodeManager.saveCode(false)
-                Toast.makeText(
-                    context,
-                    "Вы успешно вошли!",
-                    Toast.LENGTH_SHORT
-                ).show()
-                val transaction = requireActivity().supportFragmentManager.beginTransaction()
-                val bottomNavBarFragment = BottomNavBarFragment(NetworkingFragment())
-                transaction.replace(R.id.layout_fragment, bottomNavBarFragment)
-                transaction.disallowAddToBackStack()
-                transaction.commit()
+
+//                Toast.makeText(
+//                    context,
+//                    "Вы успешно вошли!",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+
+                emptyEventsManager.saveLogin(true)
+
+                eventViewModel.fetchEvents(tokenManager.getTelegramId()!!.toLong())
+
 
             } else if (result.isFailure) {
                 binding!!.textErrorLogin.visibility = View.VISIBLE
@@ -167,6 +177,32 @@ class LoginFragment : Fragment() {
                 //Toast.makeText(context, "Login failed: ${exception!!.message}", Toast.LENGTH_SHORT).show()
             }
 
+        })
+
+        eventViewModel.events.observe(viewLifecycleOwner, Observer { events ->
+
+            Log.d("MyLog", "events ${events.toString()}")
+
+            if (events != null) {
+                if (events.isEmpty()){
+
+                    val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                    val eventEmptyEventCodeFragment = EmptyEventCodeFragment()
+                    transaction.replace(R.id.layout_fragment, eventEmptyEventCodeFragment)
+                    transaction.disallowAddToBackStack()
+                    transaction.commit()
+
+                }else{
+
+                    emptyEventsManager.saveEmptyEvent(true)
+                    val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                    val bottomNavBarFragment = BottomNavBarFragment(NetworkingFragment())
+                    transaction.replace(R.id.layout_fragment, bottomNavBarFragment)
+                    transaction.disallowAddToBackStack()
+                    transaction.commit()
+                }
+
+            }
         })
 
         authViewModel.loginResult.observe(viewLifecycleOwner, Observer { result ->

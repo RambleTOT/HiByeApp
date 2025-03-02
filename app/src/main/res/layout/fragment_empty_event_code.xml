@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.CodeEventFragment"
+    tools:context=".view.EmptyEventCodeFragment"
     android:background="@color/white">
 
     <LinearLayout
@@ -19,13 +19,13 @@
         <TextView
             android:id="@+id/text_hello_code"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_gravity="center"
-            android:gravity="center"
             android:fontFamily="@font/sfp_semibold"
+            android:gravity="center"
             android:includeFontPadding="false"
-            tools:text="Привет, Артём!"
             android:layout_marginHorizontal="16dp"
+            android:text="У вас пока нет мероприятий, но вы можете их добавить"
             android:textColor="@color/black"
             android:textSize="22sp" />
 

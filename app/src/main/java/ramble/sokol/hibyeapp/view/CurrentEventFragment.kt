@@ -61,29 +61,29 @@ class CurrentEventFragment : Fragment() {
     }
 
     fun formatTime(time: String): Pair<String, String>? {
-        // Шаблон для парсинга времени в формате "2025-01-01T05:11:00Z"
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
-        inputFormat.timeZone = TimeZone.getTimeZone("UTC") // Указываем, что время в UTC
+        inputFormat.timeZone = TimeZone.getTimeZone("UTC")
 
         return try {
-            val date = inputFormat.parse(time) // Парсим строку в объект Date
+            val date = inputFormat.parse(time)
             if (date != null) {
-                // Формат для даты: "11 мая 2024 г."
                 val dateFormat = SimpleDateFormat("d MMMM yyyy г.", Locale.getDefault())
                 val formattedDate = dateFormat.format(date)
 
-                // Формат для времени: "12:00"
                 val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
                 val formattedTime = timeFormat.format(date)
 
-                Pair(formattedDate, formattedTime) // Возвращаем пару (дата, время)
+                Pair(formattedDate, formattedTime)
             } else {
-                null // Если парсинг не удался
+                null
             }
         } catch (e: Exception) {
             Log.e("TimeFormat", "Failed to parse time: ${e.message}")
-            null // В случае ошибки возвращаем null
+            null
         }
     }
 
 }
+
+
+//

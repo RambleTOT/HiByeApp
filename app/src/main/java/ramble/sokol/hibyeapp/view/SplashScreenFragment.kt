@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.databinding.FragmentSplashScreenBinding
+import ramble.sokol.hibyeapp.managers.EmptyEventsManager
 import ramble.sokol.hibyeapp.managers.ProfileAndCodeManager
 import ramble.sokol.hibyeapp.view_model.AuthViewModel
 import ramble.sokol.hibyeapp.view_model.AuthViewModelFactory
@@ -21,6 +22,7 @@ class SplashScreenFragment : Fragment() {
     private var binding: FragmentSplashScreenBinding? = null
     private lateinit var authViewModel: AuthViewModel
     private lateinit var profileAndCodeManager: ProfileAndCodeManager
+    private lateinit var emptyEventsManager: EmptyEventsManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +41,7 @@ class SplashScreenFragment : Fragment() {
         )
         binding!!.linearSplash.startAnimation(fadeInAnimation)
 
+        emptyEventsManager = EmptyEventsManager(requireActivity())
         authViewModel = ViewModelProvider(
             this,
             AuthViewModelFactory((requireActivity().application as MyApplication).authRepository)
@@ -98,6 +101,8 @@ class SplashScreenFragment : Fragment() {
     private fun checkTokenAndNavigate() {
         val tokenManager = (requireActivity().application as MyApplication).tokenManager
 
+        Log.d("MyLog", "${emptyEventsManager.getEmptyEvent()} fff ${emptyEventsManager.getLogin()}")
+
         if (tokenManager.isLoggedIn()) {
             authViewModel.refreshToken()
             authViewModel.refreshTokenResult.observe(viewLifecycleOwner, Observer { result ->
@@ -114,7 +119,15 @@ class SplashScreenFragment : Fragment() {
                             navigateToProfile()
                         }
                     }else {
-                        navigateToHome()
+                        if (emptyEventsManager.getLogin() == true){
+                            if (emptyEventsManager.getEmptyEvent() == false){
+                                navigateToCodeEventEmpty()
+                            }else{
+                                navigateToHome()
+                            }
+                        }else{
+                            navigateToLogin()
+                        }
                     }
                 }else if (result.isFailure){
                     navigateToLogin()
@@ -149,6 +162,16 @@ class SplashScreenFragment : Fragment() {
         Handler().postDelayed(Runnable {
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             val codeEventFragment = CodeEventFragment()
+            transaction.replace(R.id.layout_fragment, codeEventFragment)
+            transaction.disallowAddToBackStack()
+            transaction.commit()
+        }, 3000)
+    }
+
+    private fun navigateToCodeEventEmpty() {
+        Handler().postDelayed(Runnable {
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            val codeEventFragment = EmptyEventCodeFragment()
             transaction.replace(R.id.layout_fragment, codeEventFragment)
             transaction.disallowAddToBackStack()
             transaction.commit()
