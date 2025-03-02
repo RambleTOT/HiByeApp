@@ -11,9 +11,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.TextView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.flexbox.FlexboxLayout
 import ramble.sokol.hibyeapp.R
+import ramble.sokol.hibyeapp.data.model.schedule.ScheduleAddFavoriteEntity
 import ramble.sokol.hibyeapp.databinding.FragmentCurrentEventBinding
+import ramble.sokol.hibyeapp.managers.TokenManager
+import ramble.sokol.hibyeapp.view.adapters.ScheduleAdapter
+import ramble.sokol.hibyeapp.view_model.MeetsViewModel
+import ramble.sokol.hibyeapp.view_model.MeetsViewModelFactory
+import ramble.sokol.hibyeapp.view_model.ScheduleViewModel
+import ramble.sokol.hibyeapp.view_model.ScheduleViewModelFactory
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -22,6 +31,8 @@ import java.util.TimeZone
 class CurrentEventFragment : Fragment() {
 
     private var binding: FragmentCurrentEventBinding? = null
+    private lateinit var scheduleViewModel: ScheduleViewModel
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +50,15 @@ class CurrentEventFragment : Fragment() {
         val scaleDown = AnimationUtils.loadAnimation(requireActivity(), R.anim.text_click_anim)
         val scaleUp = AnimationUtils.loadAnimation(requireActivity(), R.anim.text_click_anim_back)
 
+        scheduleViewModel = ViewModelProvider(
+            this,
+            ScheduleViewModelFactory((requireActivity().application as MyApplication).scheduleRepository)
+        ).get(ScheduleViewModel::class.java)
+
+        tokenManager = (requireActivity().application as MyApplication).tokenManager
+
         val scheduleId = arguments?.getLong("scheduleId", -1) ?: -1
+        val parentId = arguments?.getLong("parentId", -1) ?: -1
         val title = arguments?.getString("title", "") ?: ""
         val time = arguments?.getString("timeStart", "") ?: ""
         val timeEnd = arguments?.getString("timeEnd", "") ?: ""
@@ -70,6 +89,35 @@ class CurrentEventFragment : Fragment() {
             transaction.disallowAddToBackStack()
             transaction.commit()
         }
+
+        binding!!.buttonAddFavorite.setOnClickListener {
+
+            binding!!.buttonAddFavorite.visibility = View.INVISIBLE
+            binding!!.progressLogin.visibility = View.VISIBLE
+
+            if (scheduleId != -1L) {
+                scheduleViewModel.addFavorite(
+                    ScheduleAddFavoriteEntity(
+                        userId = tokenManager.getUserIdTelegram(),
+                        scheduleId = scheduleId
+                    )
+                )
+            }
+        }
+
+        scheduleViewModel.addFavorite.observe(viewLifecycleOwner, Observer { result ->
+            if (result.isSuccess) {
+                binding!!.buttonAddFavorite.visibility = View.INVISIBLE
+                binding!!.progressLogin.visibility = View.INVISIBLE
+                binding!!.textFavorite.visibility = View.VISIBLE
+            } else if (result.isFailure) {
+                binding!!.textFavorite.visibility = View.INVISIBLE
+                binding!!.buttonAddFavorite.visibility = View.VISIBLE
+                binding!!.progressLogin.visibility = View.INVISIBLE
+                // Обработка ошибки
+                Log.e("CurrentEventFragment", "Error adding to favorite: ${result.exceptionOrNull()?.message}")
+            }
+        })
 
     }
 
@@ -104,13 +152,10 @@ class CurrentEventFragment : Fragment() {
             return
         }
 
-        // Очищаем контейнер перед добавлением новых тегов
         layoutTags.removeAllViews()
 
-        // Получаем массив цветов
         val tagColors: TypedArray = resources.obtainTypedArray(R.array.tag_colors)
 
-        // Добавляем каждый тег
         for ((index, tag) in tags.withIndex()) {
             val tagView = LayoutInflater.from(requireContext()).inflate(R.layout.item_tag, layoutTags, false)
 
@@ -121,11 +166,9 @@ class CurrentEventFragment : Fragment() {
             val color = tagColors.getColor(index % tagColors.length(), Color.BLACK)
             cardView.setCardBackgroundColor(color)
 
-            // Добавляем тег в контейнер
             layoutTags.addView(tagView)
         }
 
-        // Освобождаем ресурсы TypedArray
         tagColors.recycle()
     }
 

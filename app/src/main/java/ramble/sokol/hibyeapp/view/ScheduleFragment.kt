@@ -100,6 +100,7 @@ class ScheduleFragment : Fragment() {
             putString("timeStart", item.timeStart)
             putString("timeEnd", item.timeEnd)
             putString("description", item.description)
+            putLong("parentId", item.parentId ?: -1)
             putStringArrayList("tags", ArrayList(item.tags))
         }
 

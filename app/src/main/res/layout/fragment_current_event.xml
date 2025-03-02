@@ -221,6 +221,12 @@
 <!--                    app:layout_constraintEnd_toEndOf="parent"-->
 <!--                    app:layout_constraintStart_toStartOf="parent" />-->
 
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="16dp">
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_add_favorite"
                     android:layout_width="match_parent"
@@ -234,8 +240,32 @@
                     android:text="@string/text_add_favorite"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    app:cornerRadius="12dp"
-                    android:layout_marginTop="16dp"/>
+                    app:cornerRadius="12dp"/>
+
+                    <ProgressBar
+                        android:id="@+id/progress_login"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:indeterminateTint="@color/main_color"
+                        android:visibility="invisible"
+                        tools:visibility="visible"/>
+
+                    <TextView
+                        android:id="@+id/text_favorite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:fontFamily="@font/sfp_semibold"
+                        android:includeFontPadding="false"
+                        android:text="Данное событие уже в избранном"
+                        android:textColor="@color/main_color"
+                        android:visibility="invisible"
+                        android:textSize="18sp"/>
+
+                </FrameLayout>
+
 
             </LinearLayout>
 

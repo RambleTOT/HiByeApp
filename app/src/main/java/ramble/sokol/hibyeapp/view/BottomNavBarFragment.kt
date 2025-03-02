@@ -52,6 +52,9 @@ class BottomNavBarFragment(
         ).get(EventsViewModel::class.java)
         tokenManager = TokenManager(requireActivity())
         val tgId = tokenManager.getTelegramId()
+
+        setSelectedNavigationIcon(currentFragment)
+
         eventViewModel.events.observe(viewLifecycleOwner, Observer { events ->
             if (events != null) {
                 if (emptyEventsManager.getIsEvent() == true) {
@@ -201,6 +204,15 @@ class BottomNavBarFragment(
             binding?.overlay?.visibility = View.GONE
             binding?.overlay?.isClickable = false
             binding?.overlay?.isFocusable = false
+        }
+    }
+
+    private fun setSelectedNavigationIcon(fragment: Fragment) {
+        when (fragment) {
+            is ScheduleFragment -> binding?.bottomNavigationView?.selectedItemId = R.id.navbar_schedule
+            is NetworkingFragment -> binding?.bottomNavigationView?.selectedItemId = R.id.navbar_networking
+            is ChatsFragment -> binding?.bottomNavigationView?.selectedItemId = R.id.navbar_chats
+            else -> binding?.bottomNavigationView?.selectedItemId = R.id.navbar_networking
         }
     }
 
