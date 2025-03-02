@@ -59,5 +59,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.converter.scalars)
     implementation(libs.auth0.java.jwt)
+    implementation(libs.flexbox)
 
 }

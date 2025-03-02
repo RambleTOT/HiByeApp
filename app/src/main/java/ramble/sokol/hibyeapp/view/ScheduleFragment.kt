@@ -93,6 +93,7 @@ class ScheduleFragment : Fragment() {
 
     private fun navigateToScheduleDetails(item: ScheduleItem) {
         // Переход на фрагмент с деталями элемента
+        Log.d("MyLog", ArrayList(item.tags).toString())
         val bundle = Bundle().apply {
             putLong("scheduleId", item.scheduleId ?: -1)
             putString("title", item.title)

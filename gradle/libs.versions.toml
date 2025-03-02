@@ -1,6 +1,7 @@
 [versions]
 agp = "8.5.2"
 converterGson = "2.9.0"
+flexbox = "3.0.0"
 javaJwtVersion = "4.4.0"
 kotlin = "1.9.0"
 coreKtx = "1.15.0"
@@ -22,6 +23,7 @@ androidx-security-crypto = { module = "androidx.security:security-crypto", versi
 auth0-java-jwt = { module = "com.auth0:java-jwt", version.ref = "javaJwtVersion" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "converterGson" }
+flexbox = { module = "com.google.android.flexbox:flexbox", version.ref = "flexbox" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

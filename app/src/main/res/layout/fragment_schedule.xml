@@ -47,6 +47,7 @@
                     android:layout_marginTop="12dp"
                     android:orientation="horizontal"
                     tools:itemCount="4"
+                    android:layout_marginBottom="40dp"
                     tools:listitem="@layout/item_meets_event" />
 
             </LinearLayout>

@@ -1,6 +1,7 @@
 package ramble.sokol.hibyeapp.view.adapters
 
 import android.annotation.SuppressLint
+import android.content.res.TypedArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,22 +35,35 @@ class ScheduleAdapter(
 
         @SuppressLint("MissingInflatedId")
         fun bind(item: ScheduleItem) {
-            // Устанавливаем название
+
             scheduleName.text = item.title
 
             val startTime = item.timeStart?.substring(11, 16)
             val endTime = item.timeEnd?.substring(11, 16)
             scheduleTime.text = "$startTime - $endTime"
 
-            layoutTags.removeAllViews()
+            // Получаем массив цветов
+            val tagColors: TypedArray = itemView.context.resources.obtainTypedArray(R.array.tag_colors)
 
-
-            item.tags?.forEach { tag ->
+            // Добавляем каждый тег
+            item.tags?.forEachIndexed { index, tag ->
                 val tagView = LayoutInflater.from(itemView.context).inflate(R.layout.item_tag, layoutTags, false)
                 val tagText = tagView.findViewById<TextView>(R.id.tag_text)
+                val cardView = tagView.findViewById<androidx.cardview.widget.CardView>(R.id.card_view)
+
+                // Устанавливаем текст тега
                 tagText.text = tag
+
+                // Устанавливаем цвет для CardView
+                val color = tagColors.getColor(index % tagColors.length(), itemView.context.getColor(R.color.main_color))
+                cardView.setCardBackgroundColor(color)
+
+                // Добавляем тег в контейнер
                 layoutTags.addView(tagView)
             }
+
+            // Освобождаем ресурсы TypedArray
+            tagColors.recycle()
         }
     }
 }

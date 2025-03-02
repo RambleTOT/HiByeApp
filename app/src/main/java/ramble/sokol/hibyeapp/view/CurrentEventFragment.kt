@@ -1,5 +1,8 @@
 package ramble.sokol.hibyeapp.view
 
+import android.annotation.SuppressLint
+import android.content.res.TypedArray
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,9 +10,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.TextView
+import com.google.android.flexbox.FlexboxLayout
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.databinding.FragmentCurrentEventBinding
-import ramble.sokol.hibyeapp.databinding.FragmentScheduleBinding
+import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -39,7 +44,7 @@ class CurrentEventFragment : Fragment() {
         val time = arguments?.getString("timeStart", "") ?: ""
         val timeEnd = arguments?.getString("timeEnd", "") ?: ""
         val description = arguments?.getString("description", "") ?: ""
-        val tags = arguments?.getStringArray("tags") ?: ""
+        val tagsList = arguments?.getStringArrayList("tags") ?: ""
         val formattedTime = formatTime(time)
         val (date, timeFinal) = formattedTime!!
 
@@ -47,6 +52,14 @@ class CurrentEventFragment : Fragment() {
         binding!!.date.text = date
         binding!!.time.text = timeFinal
         binding!!.description.text = description
+
+        val tags: Array<String> = if (arguments?.getSerializable("tags") is ArrayList<*>) {
+            @Suppress("UNCHECKED_CAST")
+            (arguments?.getSerializable("tags") as ArrayList<String>).toTypedArray()
+        } else {
+            emptyArray()
+        }
+        setupTags(tags)
 
         binding!!.textButtonBack.setOnClickListener {
             binding!!.textButtonBack.startAnimation(scaleDown)
@@ -81,6 +94,39 @@ class CurrentEventFragment : Fragment() {
             Log.e("TimeFormat", "Failed to parse time: ${e.message}")
             null
         }
+    }
+
+    @SuppressLint("MissingInflatedId")
+    private fun setupTags(tags: Array<String>) {
+        val layoutTags = binding?.layoutTags as? FlexboxLayout
+        if (layoutTags == null) {
+            Log.e("CurrentEventFragment", "layoutTags is null")
+            return
+        }
+
+        // Очищаем контейнер перед добавлением новых тегов
+        layoutTags.removeAllViews()
+
+        // Получаем массив цветов
+        val tagColors: TypedArray = resources.obtainTypedArray(R.array.tag_colors)
+
+        // Добавляем каждый тег
+        for ((index, tag) in tags.withIndex()) {
+            val tagView = LayoutInflater.from(requireContext()).inflate(R.layout.item_tag, layoutTags, false)
+
+            val tagText = tagView.findViewById<TextView>(R.id.tag_text)
+            tagText.text = tag
+
+            val cardView = tagView.findViewById<androidx.cardview.widget.CardView>(R.id.card_view)
+            val color = tagColors.getColor(index % tagColors.length(), Color.BLACK)
+            cardView.setCardBackgroundColor(color)
+
+            // Добавляем тег в контейнер
+            layoutTags.addView(tagView)
+        }
+
+        // Освобождаем ресурсы TypedArray
+        tagColors.recycle()
     }
 
 }
