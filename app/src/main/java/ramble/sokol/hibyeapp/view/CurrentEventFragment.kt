@@ -64,13 +64,24 @@ class CurrentEventFragment : Fragment() {
         val timeEnd = arguments?.getString("timeEnd", "") ?: ""
         val description = arguments?.getString("description", "") ?: ""
         val tagsList = arguments?.getStringArrayList("tags") ?: ""
+        val favoriteScheduleIds = arguments?.getLongArray("favoriteScheduleIds")?.toList() ?: emptyList<Long>()
         val formattedTime = formatTime(time)
         val (date, timeFinal) = formattedTime!!
+
+        Log.d("MyLog", favoriteScheduleIds.toString())
 
         binding!!.name.text = title
         binding!!.date.text = date
         binding!!.time.text = timeFinal
         binding!!.description.text = description
+
+        if (favoriteScheduleIds.contains(scheduleId)) {
+            binding!!.buttonAddFavorite.visibility = View.GONE
+            binding!!.textFavorite.visibility = View.VISIBLE
+        } else {
+            binding!!.buttonAddFavorite.visibility = View.VISIBLE
+            binding!!.textFavorite.visibility = View.GONE
+        }
 
         val tags: Array<String> = if (arguments?.getSerializable("tags") is ArrayList<*>) {
             @Suppress("UNCHECKED_CAST")

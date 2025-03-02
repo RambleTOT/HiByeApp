@@ -42,10 +42,10 @@ class ScheduleRepository(
             val response = scheduleApi.getFavorite(parent, userId).awaitResponse()
             if (response.isSuccessful && response.body() != null) {
                 val result = response.body()!!
-                Log.d("MyLog", "$result")
+                Log.d("MyLog", "fav nice $result")
                 Result.success(response.body()!!)
             } else {
-                Result.failure(Exception("${response.code()}"))
+                Result.failure(Exception("fav error ${response.code()}"))
             }
         } catch (e: Exception) {
             Result.failure(e)

@@ -34,6 +34,7 @@ class ScheduleFragment : Fragment() {
     private lateinit var scheduleViewModel: ScheduleViewModel
     private lateinit var tokenManager: TokenManager
     private lateinit var scheduleAdapter: ScheduleAdapter
+    private lateinit var listFavorite: List<Long>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +49,7 @@ class ScheduleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d("MyLog", "Schedule")
+        listFavorite = arrayListOf()
 
         scheduleViewModel = ViewModelProvider(
             this,
@@ -76,24 +77,42 @@ class ScheduleFragment : Fragment() {
                 // Получаем элементы из `items`
                 val items = scheduleResponse?.items ?: emptyList()
 
+                val par = if (items.size >= 0) items[0].parentId
+                else scheduleResponse!!.parentId
 
                 scheduleAdapter = ScheduleAdapter(items) { item ->
                     navigateToScheduleDetails(item)
                 }
                 binding?.recyclerView?.adapter = scheduleAdapter
+
+                Log.d("MyLog", "${par} ${tokenManager.getUserIdTelegram()}")
+                scheduleViewModel.getFavorite(par!!, tokenManager.getUserIdTelegram()!!)
+
             } else if (result.isFailure) {
                 Log.d("MyLog", "$result")
                 val exception = result.exceptionOrNull()
                 Log.e("NetworkingFragment", "Error loading participants: ${exception?.message}")
             }
         })
+
+
+        scheduleViewModel.getFavorite.observe(viewLifecycleOwner, Observer { result ->
+            if (result.isSuccess) {
+                Log.d("MyLog", result.toString())
+                val favoriteScheduleIds = result.getOrNull() ?: emptyList()
+                listFavorite = favoriteScheduleIds
+            } else if (result.isFailure) {
+                Log.d("MyLog", "$result")
+                val exception = result.exceptionOrNull()
+                Log.e("NetworkingFragment", "Error loading participants: ${exception?.message}")
+            }
+        })
+
     }
-
-
 
     private fun navigateToScheduleDetails(item: ScheduleItem) {
         // Переход на фрагмент с деталями элемента
-        Log.d("MyLog", ArrayList(item.tags).toString())
+        Log.d("MyLog", listFavorite.toString())
         val bundle = Bundle().apply {
             putLong("scheduleId", item.scheduleId ?: -1)
             putString("title", item.title)
@@ -102,6 +121,10 @@ class ScheduleFragment : Fragment() {
             putString("description", item.description)
             putLong("parentId", item.parentId ?: -1)
             putStringArrayList("tags", ArrayList(item.tags))
+            putLongArray("favoriteScheduleIds", listFavorite.toLongArray())
+
+
+
         }
 
         val detailsFragment = CurrentEventFragment().apply {
