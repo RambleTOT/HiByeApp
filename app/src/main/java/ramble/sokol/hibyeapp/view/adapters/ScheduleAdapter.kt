@@ -15,6 +15,13 @@ class ScheduleAdapter(
     private val onItemClick: (ScheduleItem) -> Unit
 ) : RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
 
+    var currentList: List<ScheduleItem> = items
+
+    fun submitList(newList: List<ScheduleItem>) {
+        currentList = newList
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScheduleViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_meets_event, parent, false)
         return ScheduleViewHolder(view)

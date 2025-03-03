@@ -14,6 +14,9 @@ class CustomCheckBox @JvmOverloads constructor(
     private val checkboxContainer: LinearLayout
     private val checkboxText: TextView
 
+    // Слушатель для обработки изменений состояния
+    private var onCheckedChangeListener: ((Boolean) -> Unit)? = null
+
     init {
         // Загружаем макет
         LayoutInflater.from(context).inflate(R.layout.filter_check_box, this, true)
@@ -30,6 +33,7 @@ class CustomCheckBox @JvmOverloads constructor(
     fun toggle() {
         isChecked = !isChecked
         updateUI()
+        onCheckedChangeListener?.invoke(isChecked)
     }
 
     // Обновляем внешний вид
@@ -50,7 +54,14 @@ class CustomCheckBox @JvmOverloads constructor(
 
     // Устанавливаем состояние
     fun setChecked(checked: Boolean) {
-        isChecked = checked
-        updateUI()
+        if (isChecked != checked) {
+            isChecked = checked
+            updateUI()
+        }
+    }
+
+    // Устанавливаем слушатель изменений состояния
+    fun setOnCheckedChangeListener(listener: (Boolean) -> Unit) {
+        this.onCheckedChangeListener = listener
     }
 }

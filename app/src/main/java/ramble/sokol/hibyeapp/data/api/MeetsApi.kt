@@ -25,6 +25,19 @@ interface MeetsApi {
         @Body sendMeetingRequestEntity: SendMeetingRequestEntity
     ): Call<MeetingResponse>
 
+    @POST("/meeting/{eventId}/answer_meeting_request")
+    fun sendMeetingAnswer(
+        @Path("eventId") eventId: Long,
+        @Body sendMeetingRequestEntity: SendMeetingRequestEntity
+    ): Call<MeetingResponse>
+
+    @GET("/meeting/get_user_meetings/{eventId}/{userId}")
+    fun getAllMeets(
+        @Path("eventId") eventId: Long,
+        @Path("userId") userId: Long
+    ): Call<List<MeetingResponse>>
+
+
 }
 
 

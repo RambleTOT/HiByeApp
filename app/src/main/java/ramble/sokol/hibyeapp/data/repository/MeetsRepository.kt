@@ -15,6 +15,8 @@ import ramble.sokol.hibyeapp.data.model.events.CreateUserEntity
 import ramble.sokol.hibyeapp.data.model.events.CreateUserResponse
 import ramble.sokol.hibyeapp.data.model.events.EventsEntity
 import ramble.sokol.hibyeapp.data.model.events.JoinByPinEntity
+import ramble.sokol.hibyeapp.data.model.meets.MeetingResponse
+import ramble.sokol.hibyeapp.data.model.meets.SendMeetingRequestEntity
 import ramble.sokol.hibyeapp.view.getExpFromToken
 import ramble.sokol.hibyeapp.view.getUserIdFromToken
 import retrofit2.awaitResponse
@@ -27,6 +29,54 @@ class MeetsRepository(
     suspend fun isFastMeeting(eventId: Long, userId: Long): Result<Boolean> {
         return try {
             val response = meetsApi.isFastMeetingExist(eventId, userId).awaitResponse()
+            if (response.isSuccessful && response.body() != null) {
+                val result = response.body()!!
+                Log.d("MyLog", "Resullt^ ==: $result")
+                Result.success(response.body()!!)
+            } else {
+                Log.d("MyLog", "Response^ ==: $response")
+                Result.failure(Exception("${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun getAllMeets(eventId: Long, userId: Long): Result<List<MeetingResponse>> {
+        return try {
+            val response = meetsApi.getAllMeets(eventId, userId).awaitResponse()
+            if (response.isSuccessful && response.body() != null) {
+                val result = response.body()!!
+                Log.d("MyLog", "Resullt^ ==: $result")
+                Result.success(response.body()!!)
+            } else {
+                Log.d("MyLog", "Response^ ==: $response")
+                Result.failure(Exception("${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun postMeetingRequest(eventId: Long, sendMeetingRequestEntity: SendMeetingRequestEntity): Result<MeetingResponse> {
+        return try {
+            val response = meetsApi.sendMeetingRequest(eventId, sendMeetingRequestEntity).awaitResponse()
+            if (response.isSuccessful && response.body() != null) {
+                val result = response.body()!!
+                Log.d("MyLog", "Resullt^ ==: $result")
+                Result.success(response.body()!!)
+            } else {
+                Log.d("MyLog", "Response^ ==: $response")
+                Result.failure(Exception("${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun postMeetingAnswer(eventId: Long, sendMeetingRequestEntity: SendMeetingRequestEntity): Result<MeetingResponse> {
+        return try {
+            val response = meetsApi.sendMeetingAnswer(eventId, sendMeetingRequestEntity).awaitResponse()
             if (response.isSuccessful && response.body() != null) {
                 val result = response.body()!!
                 Log.d("MyLog", "Resullt^ ==: $result")

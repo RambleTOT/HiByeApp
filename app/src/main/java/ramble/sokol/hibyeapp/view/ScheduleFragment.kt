@@ -108,6 +108,35 @@ class ScheduleFragment : Fragment() {
             }
         })
 
+        // Инициализация чекбоксов
+        val customCheckBoxAll = binding?.customCheckBoxAll
+        val customCheckBoxFavorite = binding?.customCheckBoxFavorite
+
+        customCheckBoxAll?.setChecked(true)
+        customCheckBoxFavorite?.setChecked(false)
+
+        // Обработка нажатия на чекбокс "Все"
+        customCheckBoxAll?.setOnClickListener {
+            if (!customCheckBoxAll.isChecked()) {
+                customCheckBoxAll.setChecked(true)
+                customCheckBoxFavorite?.setChecked(false)
+                scheduleAdapter.submitList(scheduleViewModel.getSchedule.value?.getOrNull()?.items ?: emptyList())
+            }
+        }
+
+        // Обработка нажатия на чекбокс "Избранное"
+        customCheckBoxFavorite?.setOnClickListener {
+            if (!customCheckBoxFavorite.isChecked()) {
+                customCheckBoxFavorite.setChecked(true)
+                customCheckBoxAll?.setChecked(false)
+                val filteredItems = scheduleAdapter.currentList.filter { item ->
+                    listFavorite.contains(item.scheduleId)
+                }
+                scheduleAdapter.submitList(filteredItems)
+
+            }
+        }
+
     }
 
     private fun navigateToScheduleDetails(item: ScheduleItem) {
