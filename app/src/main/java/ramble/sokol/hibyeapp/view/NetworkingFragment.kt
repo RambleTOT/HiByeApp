@@ -14,10 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ramble.sokol.hibyeapp.CustomCheckBox
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.data.model.events.CreateUserResponse
+import ramble.sokol.hibyeapp.data.model.meets.MeetingResponse
 import ramble.sokol.hibyeapp.databinding.FragmentNetworkingBinding
 import ramble.sokol.hibyeapp.managers.NameAndPhotoManager
 import ramble.sokol.hibyeapp.managers.TokenManager
 import ramble.sokol.hibyeapp.view.adapters.FirstItemMarginDecoration
+import ramble.sokol.hibyeapp.view.adapters.MeetsAdapter
 import ramble.sokol.hibyeapp.view.adapters.ParticipantsAdapter
 import ramble.sokol.hibyeapp.view_model.EventsViewModel
 import ramble.sokol.hibyeapp.view_model.EventsViewModelFactory
@@ -31,6 +33,7 @@ class NetworkingFragment : Fragment() {
     private lateinit var meetsViewModel: MeetsViewModel
     private lateinit var tokenManager: TokenManager
     private lateinit var participantsAdapter: ParticipantsAdapter
+    private lateinit var meetsAdapter: MeetsAdapter
     private var isViewButtonFastMeetings: Boolean = false
 
     override fun onCreateView(
@@ -67,12 +70,24 @@ class NetworkingFragment : Fragment() {
             navigateToParticipantDetails(participant)
         }
 
+        meetsAdapter = MeetsAdapter(emptyList()) { meet ->
+            navigateToMeetDetails(meet)
+        }
+
+
         binding?.recyclerViewSections?.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = participantsAdapter
             val marginStart = resources.getDimensionPixelSize(R.dimen.margin_start) // 16dp
             addItemDecoration(FirstItemMarginDecoration(marginStart))
         }
+
+        binding?.recyclerViewMeets?.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = meetsAdapter
+        }
+
+
 
         eventViewModel.getAllUsersEvent(eventId!!)
         eventViewModel.getAllUsersEvent.observe(viewLifecycleOwner, Observer { result ->
@@ -85,6 +100,20 @@ class NetworkingFragment : Fragment() {
             } else if (result.isFailure) {
                 val exception = result.exceptionOrNull()
                 Log.e("NetworkingFragment", "Error loading participants: ${exception?.message}")
+            }
+        })
+
+        meetsViewModel.getAllMeets(eventId, userId)
+        meetsViewModel.getAllMeets.observe(viewLifecycleOwner, Observer { result ->
+            if (result.isSuccess) {
+                val meets = result.getOrNull() ?: emptyList()
+                meetsAdapter = MeetsAdapter(meets) { meet ->
+                    navigateToMeetDetails(meet)
+                }
+                binding?.recyclerViewMeets?.adapter = meetsAdapter
+            } else if (result.isFailure) {
+                val exception = result.exceptionOrNull()
+                Log.e("NetworkingFragment", "Error loading meets: ${exception?.message}")
             }
         })
 
@@ -169,6 +198,27 @@ class NetworkingFragment : Fragment() {
             commit()
         }
 
+    }
+
+    private fun navigateToMeetDetails(meet: MeetingResponse) {
+
+
+        val bundle = Bundle().apply {
+            putLong("meetingId", meet.meetingId ?: -1)
+            putString("meetName", meet.name)
+            putString("meetDescription", meet.description)
+            putString("meetTime", meet.timeStart)
+        }
+
+//        val meetDetailsFragment = MeetDetailsFragment().apply {
+//            arguments = bundle
+//        }
+//
+//        parentFragmentManager.beginTransaction().apply {
+//            replace(R.id.layout_fragment, meetDetailsFragment)
+//            addToBackStack(null)
+//            commit()
+//        }
     }
 
 }
