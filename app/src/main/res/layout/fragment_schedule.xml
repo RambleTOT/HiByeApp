@@ -7,17 +7,13 @@
     tools:context=".view.ScheduleFragment"
     android:background="@color/edit_text_background_nav_bar">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -30,7 +26,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_weight="1"
                     android:fontFamily="@font/sfp_bold"
                     android:gravity="start"
                     android:includeFontPadding="false"
@@ -69,16 +64,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="12dp"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
+                    android:scrollbars="none"
                     tools:itemCount="4"
                     android:layout_marginBottom="40dp"
                     tools:listitem="@layout/item_meets_event" />
 
             </LinearLayout>
 
-        </ScrollView>
-
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_filters"

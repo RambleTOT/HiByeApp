@@ -37,6 +37,11 @@ interface MeetsApi {
         @Path("userId") userId: Long
     ): Call<List<MeetingResponse>>
 
+    @POST("/meeting/create_custom_meeting/{eventId}")
+    fun createGroupMeeting(
+        @Path("eventId") eventId: Long,
+        @Body meetingResponse: MeetingResponse
+    ): Call<MeetingResponse>
 
 }
 

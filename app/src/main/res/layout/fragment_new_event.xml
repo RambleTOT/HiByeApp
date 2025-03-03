@@ -37,6 +37,7 @@
                     android:text="@string/text_close_meet"
                     android:textColor="@color/main_color"
                     android:textSize="16sp"
+                    android:paddingVertical="4dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -72,6 +73,7 @@
                     android:text="@string/text_create"
                     android:textColor="@color/text_hint_color"
                     android:textSize="16sp"
+                    android:paddingVertical="4dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

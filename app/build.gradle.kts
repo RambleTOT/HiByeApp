@@ -60,5 +60,7 @@ dependencies {
     implementation(libs.converter.scalars)
     implementation(libs.auth0.java.jwt)
     implementation(libs.flexbox)
+    implementation(libs.glide)
+    implementation(libs.aws.android.sdk.s3)
 
 }

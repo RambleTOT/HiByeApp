@@ -1,6 +1,11 @@
 package ramble.sokol.hibyeapp.view
 
+import android.Manifest
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,10 +14,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.data.model.events.CreateUserEntity
 import ramble.sokol.hibyeapp.databinding.FragmentCreateProfileBinding
@@ -29,6 +40,9 @@ class CreateUserFragment : Fragment() {
     private lateinit var tokenManager: TokenManager
     private lateinit var nameAndPhotoManager: NameAndPhotoManager
     private var isPhoto: Boolean = false
+    private var isPhotoImage: Boolean = false
+    private val PICK_IMAGE_REQUEST = 1
+    private val REQUEST_CODE_PERMISSIONS = 100
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,17 +65,35 @@ class CreateUserFragment : Fragment() {
         val eventId = tokenManager.getCurrentEventId()
         val userId = tokenManager.getUserIdTelegram()
         val nameUser = nameAndPhotoManager.getName()
+        val urlImage = nameAndPhotoManager.getPhoto()
         eventViewModel = ViewModelProvider(
             this,
             EventsViewModelFactory((requireActivity().application as MyApplication).eventsRepository)
         ).get(EventsViewModel::class.java)
         isPhoto = nameUser != null
+        isPhotoImage = urlImage != null
 
         if (isPhoto) {
             binding!!.editTextName.setText(nameUser)
             binding!!.editTextName.isEnabled = false
         }else{
             binding!!.editTextName.isEnabled = true
+        }
+
+        if (isPhotoImage) {
+            loadImageWithGlide(urlImage!!)
+            binding!!.imageParticipant.isEnabled = false
+        }else{
+            binding!!.imageParticipant.isEnabled = true
+        }
+
+        val scaleDown = AnimationUtils.loadAnimation(requireActivity(), R.anim.text_click_anim)
+        val scaleUp = AnimationUtils.loadAnimation(requireActivity(), R.anim.text_click_anim_back)
+
+        binding!!.imageParticipant.setOnClickListener {
+            binding!!.imageParticipant.startAnimation(scaleDown)
+            binding!!.imageParticipant.startAnimation(scaleUp)
+            openGallery()
         }
 
         binding!!.editTextName.setOnEditorActionListener { _, actionId, _ ->
@@ -230,6 +262,87 @@ class CreateUserFragment : Fragment() {
             view = View(requireActivity()) // Создаем dummy View, если фокус не установлен
         }
         imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    private fun openGallery() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, PICK_IMAGE_REQUEST)
+        } else {
+            checkPermissions()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
+            val imageUri: Uri? = data.data
+            if (imageUri != null) {
+
+                loadImageWithGlide(imageUri)
+
+                //uploadImageToS3(imageUri)
+            }
+        }
+    }
+
+    private fun checkPermissions() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                REQUEST_CODE_PERMISSIONS
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openGallery()
+            } else {
+                Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun dpToPx(dp: Int): Int {
+        return (dp * requireContext().resources.displayMetrics.density).toInt()
+    }
+
+    private fun loadImageWithGlide(imageUri: Uri) {
+        val sizeInPx = dpToPx(100)
+
+        Glide.with(requireContext())
+            .load(imageUri)
+            .apply(RequestOptions.bitmapTransform(CircleCrop()))
+            .override(sizeInPx, sizeInPx)
+            .into(binding!!.imageParticipant)
+    }
+
+    private fun loadImageWithGlide(imageUrl: String) {
+        val sizeInPx = dpToPx(100)
+
+        Glide.with(requireContext())
+            .load(imageUrl)
+            .apply(RequestOptions.bitmapTransform(CircleCrop()))
+            .override(sizeInPx, sizeInPx)
+            .into(binding!!.imageParticipant)
     }
 
 }

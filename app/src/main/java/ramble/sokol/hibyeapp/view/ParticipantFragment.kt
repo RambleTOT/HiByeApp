@@ -71,7 +71,7 @@ class ParticipantFragment : Fragment() {
         }
 
         binding?.recyclerView?.apply {
-            layoutManager = NonScrollLinearLayoutManager(requireContext()) // Используем кастомный LayoutManager
+            layoutManager = NonScrollLinearLayoutManager(requireContext())
             adapter = participantsAdapter
             isNestedScrollingEnabled = false
         }
@@ -81,7 +81,6 @@ class ParticipantFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // Фильтрация списка при изменении текста
                 filterParticipants(s.toString())
             }
 

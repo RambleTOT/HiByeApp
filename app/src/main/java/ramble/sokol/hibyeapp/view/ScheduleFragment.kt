@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import ramble.sokol.hibyeapp.NonScrollLinearLayoutManager
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.data.model.schedule.ScheduleItem
 import ramble.sokol.hibyeapp.databinding.FragmentLoginBinding
@@ -83,7 +84,12 @@ class ScheduleFragment : Fragment() {
                 scheduleAdapter = ScheduleAdapter(items) { item ->
                     navigateToScheduleDetails(item)
                 }
-                binding?.recyclerView?.adapter = scheduleAdapter
+
+                binding?.recyclerView?.apply {
+                    layoutManager = NonScrollLinearLayoutManager(requireContext())
+                    adapter = scheduleAdapter
+                    isNestedScrollingEnabled = false
+                }
 
                 Log.d("MyLog", "${par} ${tokenManager.getUserIdTelegram()}")
                 scheduleViewModel.getFavorite(par!!, tokenManager.getUserIdTelegram()!!)
@@ -108,14 +114,12 @@ class ScheduleFragment : Fragment() {
             }
         })
 
-        // Инициализация чекбоксов
         val customCheckBoxAll = binding?.customCheckBoxAll
         val customCheckBoxFavorite = binding?.customCheckBoxFavorite
 
         customCheckBoxAll?.setChecked(true)
         customCheckBoxFavorite?.setChecked(false)
 
-        // Обработка нажатия на чекбокс "Все"
         customCheckBoxAll?.setOnClickListener {
             if (!customCheckBoxAll.isChecked()) {
                 customCheckBoxAll.setChecked(true)
@@ -124,7 +128,6 @@ class ScheduleFragment : Fragment() {
             }
         }
 
-        // Обработка нажатия на чекбокс "Избранное"
         customCheckBoxFavorite?.setOnClickListener {
             if (!customCheckBoxFavorite.isChecked()) {
                 customCheckBoxFavorite.setChecked(true)
