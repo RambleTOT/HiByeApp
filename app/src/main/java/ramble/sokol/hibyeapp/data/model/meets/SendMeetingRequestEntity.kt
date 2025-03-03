@@ -4,18 +4,18 @@ import com.google.gson.annotations.SerializedName
 
 data class SendMeetingRequestEntity(
     @SerializedName("eventId")
-    val userId: Long? = null,
-
-    @SerializedName("idFrom")
     val eventId: Long? = null,
 
+    @SerializedName("idFrom")
+    val idFrom: Long? = null,
+
     @SerializedName("idTo")
-    val userInfo: String? = null,
+    val idTo: Long? = null,
 
     @SerializedName("status")
-    val userName: String? = null,
+    val status: String? = null,
 
     @SerializedName("meetingType")
-    val request: String? = null
+    val meetingType: String? = null
 
 )

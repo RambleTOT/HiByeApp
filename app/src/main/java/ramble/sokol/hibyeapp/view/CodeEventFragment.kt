@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.data.model.auth.RegistrationTelegramEntity
 import ramble.sokol.hibyeapp.databinding.FragmentCodeEventBinding
+import ramble.sokol.hibyeapp.managers.EmptyEventsManager
 import ramble.sokol.hibyeapp.managers.NameAndPhotoManager
 import ramble.sokol.hibyeapp.managers.ProfileAndCodeManager
 import ramble.sokol.hibyeapp.managers.TokenManager
@@ -41,6 +42,7 @@ class CodeEventFragment : Fragment() {
     private lateinit var tokenManager: TokenManager
     private lateinit var eventsViewModel: EventsViewModel
     private lateinit var profileAndCodeManager: ProfileAndCodeManager
+    private lateinit var emptyEventsManager: EmptyEventsManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,6 +65,7 @@ class CodeEventFragment : Fragment() {
         eventsViewModel = ViewModelProvider(this, EventsViewModelFactory(eventsRepository)).get(EventsViewModel::class.java)
         nameAndPhotoManager = NameAndPhotoManager(requireActivity())
         tokenManager = TokenManager(requireActivity())
+        emptyEventsManager = EmptyEventsManager(requireActivity())
         profileAndCodeManager = ProfileAndCodeManager(requireActivity())
         val userName = nameAndPhotoManager.getName()
         binding!!.textHelloCode.text = "Привет, ${userName}!"
@@ -223,6 +226,9 @@ class CodeEventFragment : Fragment() {
                 profileAndCodeManager.saveProfile(false)
                 profileAndCodeManager.saveRegistr(false)
                 profileAndCodeManager.saveCode(false)
+                emptyEventsManager.saveEmptyEvent(true)
+                emptyEventsManager.saveLogin(true)
+                emptyEventsManager.saveIsEvent(true)
                 Toast.makeText(
                     context,
                     "Вы успешно вошли!",

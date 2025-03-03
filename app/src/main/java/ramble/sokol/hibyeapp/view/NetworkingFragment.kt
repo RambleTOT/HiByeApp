@@ -35,6 +35,7 @@ class NetworkingFragment : Fragment() {
     private lateinit var participantsAdapter: ParticipantsAdapter
     private lateinit var meetsAdapter: MeetsAdapter
     private var isViewButtonFastMeetings: Boolean = false
+    private lateinit var listMeets: List<MeetingResponse>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,6 +54,7 @@ class NetworkingFragment : Fragment() {
 
     private fun init(){
 
+        listMeets = listOf()
         tokenManager = TokenManager(requireActivity())
         val eventId = tokenManager.getCurrentEventId()
         val userId = tokenManager.getUserIdTelegram()!!
@@ -107,6 +109,7 @@ class NetworkingFragment : Fragment() {
         meetsViewModel.getAllMeets.observe(viewLifecycleOwner, Observer { result ->
             if (result.isSuccess) {
                 val meets = result.getOrNull() ?: emptyList()
+                listMeets = meets
                 meetsAdapter = MeetsAdapter(meets) { meet ->
                     navigateToMeetDetails(meet)
                 }
@@ -179,9 +182,35 @@ class NetworkingFragment : Fragment() {
         selectedCheckBox.setChecked(true)
     }
 
+    fun findCommonMeeting(participantUserId: Long, meets: List<MeetingResponse>): MeetingResponse? {
+        return meets.find { meet ->
+            meet.userIds?.contains(participantUserId) == true
+        }
+    }
+
+    fun findOrgMeeting(participantUserId: Long, meets: List<MeetingResponse>): MeetingResponse? {
+        return meets.find { meet ->
+            meet.organisatorId == participantUserId
+        }
+    }
+
     private fun navigateToParticipantDetails(participant: CreateUserResponse) {
 
         val bundle = Bundle().apply {
+
+            if (findCommonMeeting(participant.userId!!, listMeets) == null){
+                putBoolean("isMeet", false)
+            }else{
+                val stat = findCommonMeeting(participant.userId!!, listMeets)!!.meetingStatus
+                putBoolean("isMeet", true)
+                putString("isStat", stat)
+                if (findOrgMeeting(participant.userId, listMeets) == null){
+                    putBoolean("isOrg", false)
+                }else{
+                    putBoolean("isOrg", true)
+                }
+            }
+
             putLong("userId", participant.userId ?: -1)
             putString("userName", participant.userName)
             putString("userInfo", participant.userInfo)
@@ -202,23 +231,30 @@ class NetworkingFragment : Fragment() {
 
     private fun navigateToMeetDetails(meet: MeetingResponse) {
 
+        val currentUserId = tokenManager.getUserIdTelegram()!!
+        val secondUserId = meet.userIds?.firstOrNull { it != currentUserId }
 
         val bundle = Bundle().apply {
             putLong("meetingId", meet.meetingId ?: -1)
             putString("meetName", meet.name)
             putString("meetDescription", meet.description)
             putString("meetTime", meet.timeStart)
+            putLong("organisatorId", meet.organisatorId ?: -1)
+            putString("status", meet.meetingStatus)
+            putLong("userIdOur", currentUserId)
+            putLong("userIdSecond", secondUserId ?: -1)
         }
 
-//        val meetDetailsFragment = MeetDetailsFragment().apply {
-//            arguments = bundle
-//        }
-//
-//        parentFragmentManager.beginTransaction().apply {
-//            replace(R.id.layout_fragment, meetDetailsFragment)
-//            addToBackStack(null)
-//            commit()
-//        }
+        val participantDetailsFragment = QuickMeetFragment(NetworkingFragment()).apply {
+            arguments = bundle
+        }
+
+        parentFragmentManager.beginTransaction().apply {
+            replace(R.id.layout_fragment, participantDetailsFragment)
+            addToBackStack(null)
+            commit()
+        }
+
     }
 
 }

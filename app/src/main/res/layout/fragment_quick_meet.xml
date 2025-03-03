@@ -125,6 +125,7 @@
                         android:textSize="16sp" />
 
                     <LinearLayout
+                        android:id="@+id/linear_accepted"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="16dp"
@@ -205,6 +206,14 @@
 
                     </LinearLayout>
 
+                    <FrameLayout
+                        android:id="@+id/frame_request"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:visibility="gone"
+                        android:layout_marginTop="16dp">
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/button_send_request"
                         android:layout_width="match_parent"
@@ -219,10 +228,129 @@
                         android:textColor="@color/white"
                         android:textSize="14sp"
                         app:cornerRadius="12dp"
-                        android:layout_marginTop="8dp"
+                        android:visibility="invisible"
+                        tools:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>
+
+                        <ProgressBar
+                            android:id="@+id/progress_login"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:indeterminateTint="@color/main_color"
+                            android:visibility="invisible"
+                            tools:visibility="visible"/>
+
+                        <TextView
+                            android:id="@+id/text_org"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:fontFamily="@font/sfp_semibold"
+                            android:includeFontPadding="false"
+                            android:text="Ожидание ответа"
+                            android:textColor="@color/main_color"
+                            android:visibility="invisible"
+                            android:textSize="18sp"/>
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/frame_answer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:layout_marginTop="16dp">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/button_send_answer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/main_color"
+                            android:fontFamily="@font/sfp_semibold"
+                            android:includeFontPadding="false"
+                            android:lineSpacingExtra="4sp"
+                            android:paddingHorizontal="16dp"
+                            android:paddingVertical="16dp"
+                            android:text="Ответить на встречу"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"
+                            app:cornerRadius="12dp"
+                            android:visibility="invisible"
+                            tools:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <ProgressBar
+                            android:id="@+id/progress_answer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:indeterminateTint="@color/main_color"
+                            android:visibility="invisible"
+                            tools:visibility="visible"/>
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/frame_answer_not"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:layout_marginTop="2dp">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/button_send_answer_not"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/selected_background_color"
+                            android:fontFamily="@font/sfp_semibold"
+                            android:includeFontPadding="false"
+                            android:lineSpacingExtra="4sp"
+                            android:paddingHorizontal="16dp"
+                            android:paddingVertical="16dp"
+                            android:text="Отклонить встречу"
+                            android:textColor="@color/main_color"
+                            android:textSize="14sp"
+                            app:cornerRadius="12dp"
+                            android:visibility="invisible"
+                            tools:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <ProgressBar
+                            android:id="@+id/progress_answer_not"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:indeterminateTint="@color/main_color"
+                            android:visibility="invisible"
+                            tools:visibility="visible"/>
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/text_org_not"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/sfp_semibold"
+                        android:includeFontPadding="false"
+                        android:text="Встреча была отклонена"
+                        android:textColor="@color/main_color"
+                        android:visibility="gone"
+                        android:textSize="18sp"/>
 
                 </LinearLayout>
 
@@ -250,6 +378,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="32dp"/>
+        android:layout_marginBottom="32dp"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
