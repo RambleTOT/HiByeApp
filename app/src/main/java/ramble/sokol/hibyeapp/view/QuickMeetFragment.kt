@@ -117,7 +117,11 @@ class QuickMeetFragment(
                 if (result.isSuccess) {
                     binding!!.buttonSendRequest.visibility = View.INVISIBLE
                     binding!!.progressLogin.visibility = View.INVISIBLE
-                    binding!!.textOrg.visibility = View.VISIBLE
+                    if (result.getOrNull()!!.meetingStatus == "REJECTED"){
+                        binding!!.textOrgNot.visibility = View.VISIBLE
+                    }else{
+                        binding!!.textOrg.visibility = View.VISIBLE
+                    }
                 } else if (result.isFailure) {
                     binding!!.buttonSendRequest.visibility = View.VISIBLE
                     binding!!.progressLogin.visibility = View.INVISIBLE

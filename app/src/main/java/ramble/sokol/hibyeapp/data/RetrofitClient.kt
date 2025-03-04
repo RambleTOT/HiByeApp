@@ -4,6 +4,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import ramble.sokol.hibyeapp.BuildConfig
 import ramble.sokol.hibyeapp.data.api.AuthApi
+import ramble.sokol.hibyeapp.data.api.ChatApi
 import ramble.sokol.hibyeapp.data.api.EventsApi
 import ramble.sokol.hibyeapp.data.api.MeetsApi
 import ramble.sokol.hibyeapp.data.api.ScheduleApi
@@ -60,6 +61,15 @@ object RetrofitClient {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ScheduleApi::class.java)
+    }
+
+    val instanceChat: ChatApi by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ChatApi::class.java)
     }
 
 }

@@ -1,60 +1,109 @@
 package ramble.sokol.hibyeapp.view
 
+import android.media.session.MediaSession.Token
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import ramble.sokol.hibyeapp.NonScrollLinearLayoutManager
 import ramble.sokol.hibyeapp.R
+import ramble.sokol.hibyeapp.data.model.chat.ChatResponse
+import ramble.sokol.hibyeapp.data.model.meets.MeetingResponse
+import ramble.sokol.hibyeapp.databinding.FragmentChatsBinding
+import ramble.sokol.hibyeapp.databinding.FragmentLoginBinding
+import ramble.sokol.hibyeapp.managers.TokenManager
+import ramble.sokol.hibyeapp.view.adapters.AllParticipantsAdapter
+import ramble.sokol.hibyeapp.view.adapters.ChatsAdapter
+import ramble.sokol.hibyeapp.view.adapters.MeetsAdapter
+import ramble.sokol.hibyeapp.view.adapters.ParticipantsAdapter
+import ramble.sokol.hibyeapp.view_model.ChatViewModel
+import ramble.sokol.hibyeapp.view_model.ChatViewModelFactory
+import ramble.sokol.hibyeapp.view_model.EventsViewModel
+import ramble.sokol.hibyeapp.view_model.MeetsViewModel
+import ramble.sokol.hibyeapp.view_model.MeetsViewModelFactory
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ChatsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ChatsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var binding: FragmentChatsBinding? = null
+    private lateinit var chatViewModel: ChatViewModel
+    private lateinit var chatsAdapter: ChatsAdapter
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chats, container, false)
+        binding = FragmentChatsBinding.inflate(inflater, container, false)
+        val view = binding!!.root
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ChatsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ChatsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        tokenManager = TokenManager(requireActivity())
+        val eventId = tokenManager.getCurrentEventId()
+        val userId = tokenManager.getUserIdTelegram()
+        chatViewModel = ViewModelProvider(
+            this,
+            ChatViewModelFactory((requireActivity().application as MyApplication).chatRepository)
+        ).get(ChatViewModel::class.java)
+
+        chatsAdapter = ChatsAdapter(emptyList()) { chat ->
+            navigateToChattDetails(chat)
+        }
+
+        binding?.recyclerView?.apply {
+            layoutManager = NonScrollLinearLayoutManager(requireContext())
+            adapter = chatsAdapter
+            isNestedScrollingEnabled = false
+        }
+
+        chatViewModel.getAllChat(eventId!!, userId!!)
+        chatViewModel.getAllChat.observe(viewLifecycleOwner, Observer { result ->
+            if (result.isSuccess) {
+                val chats = result.getOrNull() ?: emptyList()
+                chatsAdapter.updateChats(chats)
+            } else if (result.isFailure) {
+                val exception = result.exceptionOrNull()
+                Log.e("NetworkingFragment", "Error loading participants: ${exception?.message}")
             }
+        })
+
+        lifecycleScope.launch {
+            while (true) {
+                delay(2000)
+                chatViewModel.getAllChat(eventId, userId)
+            }
+        }
+
     }
+
+    private fun navigateToChattDetails(chat: ChatResponse) {
+
+        val bundle = Bundle().apply {
+            putLong("chatId", chat.chatId ?: -1)
+            putString("chatName", chat.chatName)
+        }
+
+        val participantDetailsFragment = CurrentChatFragment().apply {
+            arguments = bundle
+        }
+
+        parentFragmentManager.beginTransaction().apply {
+            replace(R.id.layout_fragment, participantDetailsFragment)
+            addToBackStack(null)
+            commit()
+        }
+
+    }
+
 }

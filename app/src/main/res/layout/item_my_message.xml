@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/message_my_background"
+    android:paddingHorizontal="12dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="8dp"
+    android:layout_gravity="end"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/chat_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/sfp_regular"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:text="Business Talks"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/chat_message_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:fontFamily="@font/sfp_regular"
+        android:gravity="end"
+        android:includeFontPadding="false"
+        android:text="4:56"
+        android:layout_marginTop="6dp"
+        android:textColor="@color/white"
+        android:textSize="10sp" />
+
+</LinearLayout>
