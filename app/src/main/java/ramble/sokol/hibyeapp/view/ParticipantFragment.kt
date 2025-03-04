@@ -11,15 +11,11 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import ramble.sokol.hibyeapp.NonScrollLinearLayoutManager
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.data.model.events.CreateUserResponse
-import ramble.sokol.hibyeapp.databinding.FragmentNetworkingBinding
 import ramble.sokol.hibyeapp.databinding.FragmentParticipantBinding
 import ramble.sokol.hibyeapp.managers.TokenManager
 import ramble.sokol.hibyeapp.view.adapters.AllParticipantsAdapter
-import ramble.sokol.hibyeapp.view.adapters.ParticipantsAdapter
 import ramble.sokol.hibyeapp.view_model.EventsViewModel
 import ramble.sokol.hibyeapp.view_model.EventsViewModelFactory
 

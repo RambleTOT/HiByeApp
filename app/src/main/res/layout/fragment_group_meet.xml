@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.GroupMeetFragment"
+    android:fitsSystemWindows="true"
     android:background="@color/edit_text_background_nav_bar"
     android:orientation="vertical">
 

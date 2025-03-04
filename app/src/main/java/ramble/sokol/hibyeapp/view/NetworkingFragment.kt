@@ -16,7 +16,6 @@ import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.data.model.events.CreateUserResponse
 import ramble.sokol.hibyeapp.data.model.meets.MeetingResponse
 import ramble.sokol.hibyeapp.databinding.FragmentNetworkingBinding
-import ramble.sokol.hibyeapp.managers.NameAndPhotoManager
 import ramble.sokol.hibyeapp.managers.TokenManager
 import ramble.sokol.hibyeapp.view.adapters.FirstItemMarginDecoration
 import ramble.sokol.hibyeapp.view.adapters.MeetsAdapter

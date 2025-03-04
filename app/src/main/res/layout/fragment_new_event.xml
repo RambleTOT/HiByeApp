@@ -6,7 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.NewEventFragment"
     android:orientation="vertical"
-    android:background="@color/edit_text_background_nav_bar">
+    android:background="@color/edit_text_background_nav_bar"
+    android:fitsSystemWindows="true">
 
     <ScrollView
         android:layout_width="match_parent"

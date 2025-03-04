@@ -26,7 +26,6 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.data.model.events.CreateUserEntity
-import ramble.sokol.hibyeapp.databinding.FragmentCreateProfileBinding
 import ramble.sokol.hibyeapp.databinding.FragmentCreateUserBinding
 import ramble.sokol.hibyeapp.managers.NameAndPhotoManager
 import ramble.sokol.hibyeapp.managers.TokenManager

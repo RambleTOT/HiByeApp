@@ -17,14 +17,11 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import ramble.sokol.hibyeapp.R
-import ramble.sokol.hibyeapp.data.model.auth.RegistrationTelegramEntity
 import ramble.sokol.hibyeapp.databinding.FragmentCodeEventBinding
 import ramble.sokol.hibyeapp.managers.EmptyEventsManager
 import ramble.sokol.hibyeapp.managers.NameAndPhotoManager
 import ramble.sokol.hibyeapp.managers.ProfileAndCodeManager
 import ramble.sokol.hibyeapp.managers.TokenManager
-import ramble.sokol.hibyeapp.view_model.AuthViewModel
-import ramble.sokol.hibyeapp.view_model.AuthViewModelFactory
 import ramble.sokol.hibyeapp.view_model.EventsViewModel
 import ramble.sokol.hibyeapp.view_model.EventsViewModelFactory
 

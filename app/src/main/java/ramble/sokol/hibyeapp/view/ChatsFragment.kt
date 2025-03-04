@@ -1,6 +1,5 @@
 package ramble.sokol.hibyeapp.view
 
-import android.media.session.MediaSession.Token
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,22 +11,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import ramble.sokol.hibyeapp.NonScrollLinearLayoutManager
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.data.model.chat.ChatResponse
-import ramble.sokol.hibyeapp.data.model.meets.MeetingResponse
 import ramble.sokol.hibyeapp.databinding.FragmentChatsBinding
-import ramble.sokol.hibyeapp.databinding.FragmentLoginBinding
 import ramble.sokol.hibyeapp.managers.TokenManager
-import ramble.sokol.hibyeapp.view.adapters.AllParticipantsAdapter
 import ramble.sokol.hibyeapp.view.adapters.ChatsAdapter
-import ramble.sokol.hibyeapp.view.adapters.MeetsAdapter
-import ramble.sokol.hibyeapp.view.adapters.ParticipantsAdapter
 import ramble.sokol.hibyeapp.view_model.ChatViewModel
 import ramble.sokol.hibyeapp.view_model.ChatViewModelFactory
-import ramble.sokol.hibyeapp.view_model.EventsViewModel
-import ramble.sokol.hibyeapp.view_model.MeetsViewModel
-import ramble.sokol.hibyeapp.view_model.MeetsViewModelFactory
 
 class ChatsFragment : Fragment() {
 

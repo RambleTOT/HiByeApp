@@ -9,24 +9,13 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import ramble.sokol.hibyeapp.NonScrollLinearLayoutManager
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.data.model.schedule.ScheduleItem
-import ramble.sokol.hibyeapp.databinding.FragmentLoginBinding
 import ramble.sokol.hibyeapp.databinding.FragmentScheduleBinding
 import ramble.sokol.hibyeapp.managers.TokenManager
-import ramble.sokol.hibyeapp.view.adapters.ParticipantsAdapter
 import ramble.sokol.hibyeapp.view.adapters.ScheduleAdapter
-import ramble.sokol.hibyeapp.view_model.AuthViewModel
-import ramble.sokol.hibyeapp.view_model.AuthViewModelFactory
-import ramble.sokol.hibyeapp.view_model.EventsViewModel
-import ramble.sokol.hibyeapp.view_model.EventsViewModelFactory
 import ramble.sokol.hibyeapp.view_model.ScheduleViewModel
 import ramble.sokol.hibyeapp.view_model.ScheduleViewModelFactory
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.Locale
-import java.util.TimeZone
 
 
 class ScheduleFragment : Fragment() {

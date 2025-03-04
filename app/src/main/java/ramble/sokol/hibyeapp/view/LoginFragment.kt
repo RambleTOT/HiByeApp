@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -21,7 +20,6 @@ import ramble.sokol.hibyeapp.data.model.auth.RegistrationTelegramEntity
 import ramble.sokol.hibyeapp.databinding.FragmentLoginBinding
 import ramble.sokol.hibyeapp.managers.EmptyEventsManager
 import ramble.sokol.hibyeapp.managers.ProfileAndCodeManager
-import ramble.sokol.hibyeapp.view.dialog.AllEventsDialog
 import ramble.sokol.hibyeapp.view_model.AuthViewModel
 import ramble.sokol.hibyeapp.view_model.AuthViewModelFactory
 import ramble.sokol.hibyeapp.view_model.EventsViewModel

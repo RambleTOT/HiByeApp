@@ -19,19 +19,10 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
-import org.w3c.dom.Text
 import ramble.sokol.hibyeapp.R
-import ramble.sokol.hibyeapp.data.api.EventsApi
-import ramble.sokol.hibyeapp.data.model.events.EventsEntity
-import ramble.sokol.hibyeapp.managers.NameAndPhotoManager
 import ramble.sokol.hibyeapp.managers.TokenManager
-import ramble.sokol.hibyeapp.view.BottomNavBarFragment
 import ramble.sokol.hibyeapp.view.MyApplication
-import ramble.sokol.hibyeapp.view.NetworkingFragment
-import ramble.sokol.hibyeapp.view.adapters.AllEventsAdapter
 import ramble.sokol.hibyeapp.view_model.EventsViewModel
 import ramble.sokol.hibyeapp.view_model.EventsViewModelFactory
 

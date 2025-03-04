@@ -18,12 +18,8 @@ import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.data.model.schedule.ScheduleAddFavoriteEntity
 import ramble.sokol.hibyeapp.databinding.FragmentCurrentEventBinding
 import ramble.sokol.hibyeapp.managers.TokenManager
-import ramble.sokol.hibyeapp.view.adapters.ScheduleAdapter
-import ramble.sokol.hibyeapp.view_model.MeetsViewModel
-import ramble.sokol.hibyeapp.view_model.MeetsViewModelFactory
 import ramble.sokol.hibyeapp.view_model.ScheduleViewModel
 import ramble.sokol.hibyeapp.view_model.ScheduleViewModelFactory
-import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone

@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".view.QuickMeetFragment"
     android:background="@color/edit_text_background_nav_bar"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:id="@+id/linearLayout3"
