@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ramble.sokol.hibyeapp.R
@@ -35,14 +36,15 @@ class CurrentChatFragment : Fragment() {
     private var userId: Long = -1
     private var chatId: Long = -1
 
+    private var messagesJob: Job? = null // Для управления корутиной
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentCurrentChatBinding.inflate(inflater, container, false)
-        val view = binding!!.root
-        return view
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,28 +72,32 @@ class CurrentChatFragment : Fragment() {
             sendMessage()
         }
 
-        lifecycleScope.launch {
+        // Запускаем корутину для периодического обновления сообщений
+        messagesJob = lifecycleScope.launch {
             while (true) {
                 delay(1500)
-                loadMessages()
+                if (isAdded && view != null) { // Проверяем, что фрагмент добавлен и View существует
+                    loadMessages()
+                }
             }
         }
 
         val scaleDown = AnimationUtils.loadAnimation(requireActivity(), R.anim.text_click_anim)
         val scaleUp = AnimationUtils.loadAnimation(requireActivity(), R.anim.text_click_anim_back)
-        binding!!.iconBack.setOnClickListener {
-            binding!!.iconBack.startAnimation(scaleDown)
-            binding!!.iconBack.startAnimation(scaleUp)
+        binding?.iconBack?.setOnClickListener {
+            it.startAnimation(scaleDown)
+            it.startAnimation(scaleUp)
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            val bottomNavigationFragment = BottomNavBarFragment(ChatsFragment())
-            transaction.replace(R.id.layout_fragment, bottomNavigationFragment)
+            val registrationFragment = BottomNavBarFragment(ChatsFragment())
+            transaction.replace(R.id.layout_fragment, registrationFragment)
             transaction.disallowAddToBackStack()
             transaction.commit()
         }
-
     }
 
     private fun loadMessages() {
+        if (!isAdded || view == null) return // Проверяем, что фрагмент добавлен и View существует
+
         chatViewModel.getAllChatMessage(eventId, userId, chatId)
 
         chatViewModel.getAllChatMessage.observe(viewLifecycleOwner, Observer { result ->
@@ -131,4 +137,10 @@ class CurrentChatFragment : Fragment() {
         })
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Останавливаем корутину при уничтожении View
+        messagesJob?.cancel()
+        binding = null
+    }
 }

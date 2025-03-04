@@ -42,7 +42,13 @@ class ChatMessagesAdapter(
             layoutParams.topMargin = 12.dpToPx(holder.itemView.context) // Отступ между сообщениями
         }
 
-        // Отступ снизу для последнего элемента
+        if (position == itemCount - 2) {
+            val previousLastItemView = (holder.itemView.parent as? ViewGroup)?.getChildAt(position)
+            previousLastItemView?.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                bottomMargin = 0
+            }
+        }
+
         if (position == itemCount - 1) {
             layoutParams.bottomMargin = 16.dpToPx(holder.itemView.context)
         } else {
