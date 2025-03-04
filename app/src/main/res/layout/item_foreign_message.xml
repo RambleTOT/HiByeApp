@@ -4,33 +4,35 @@
     android:layout_height="wrap_content"
     android:background="@drawable/message_foreign_background"
     android:paddingHorizontal="12dp"
-    android:paddingTop="12dp"
+    android:paddingTop="8dp"
     android:paddingBottom="8dp"
+    android:orientation="vertical"
     android:layout_gravity="start"
-    android:orientation="vertical">
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp">
 
     <TextView
         android:id="@+id/chat_message"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="start"
         android:fontFamily="@font/sfp_regular"
-        android:gravity="center"
+        android:gravity="start"
         android:includeFontPadding="false"
-        android:text="Business Talks"
+        android:text="Чужое сообщение"
         android:textColor="@color/black"
         android:textSize="16sp" />
 
     <TextView
         android:id="@+id/chat_message_date"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:fontFamily="@font/sfp_regular"
         android:gravity="end"
         android:includeFontPadding="false"
-        android:text="4:56"
-        android:layout_marginTop="6dp"
+        android:text="19:00"
+        android:layout_marginTop="4dp"
         android:textColor="@color/black"
         android:textSize="10sp" />
 
