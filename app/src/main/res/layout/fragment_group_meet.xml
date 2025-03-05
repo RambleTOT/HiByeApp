@@ -33,10 +33,11 @@
                     android:layout_marginTop="24dp">
 
                     <LinearLayout
-                        android:id="@+id/linearLayout2"
+                        android:id="@+id/text_button_back"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:paddingVertical="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
@@ -47,7 +48,6 @@
                             android:src="@drawable/icon_back" />
 
                         <TextView
-                            android:id="@+id/text_button_create"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
@@ -144,6 +144,7 @@
                         android:textSize="16sp" />
 
                     <LinearLayout
+                        android:id="@+id/linear_accpeted"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="16dp"
@@ -265,7 +266,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_add_favorite"
+        android:id="@+id/button_join"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"

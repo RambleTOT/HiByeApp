@@ -25,7 +25,9 @@ class CustomCheckBox @JvmOverloads constructor(
 
         // Обработка кликов
         checkboxContainer.setOnClickListener {
-            toggle()
+            if (!isChecked) {
+                toggle()
+            }
         }
     }
 

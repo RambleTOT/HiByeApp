@@ -1,15 +1,20 @@
 package ramble.sokol.hibyeapp.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import ramble.sokol.hibyeapp.R
+import ramble.sokol.hibyeapp.data.model.meets.MeetingIdEntity
 import ramble.sokol.hibyeapp.databinding.FragmentGroupMeetBinding
 import ramble.sokol.hibyeapp.databinding.FragmentQuickMeetBinding
 import ramble.sokol.hibyeapp.managers.TokenManager
+import ramble.sokol.hibyeapp.view.adapters.ParticipantsAdapter
 import ramble.sokol.hibyeapp.view_model.MeetsViewModel
 import ramble.sokol.hibyeapp.view_model.MeetsViewModelFactory
 
@@ -53,6 +58,33 @@ class GroupMeetFragment : Fragment() {
 
         binding!!.descriptionMeet.text = meetDescription
         binding!!.name.text = meetName
+
+        val scaleDown = AnimationUtils.loadAnimation(requireActivity(), R.anim.text_click_anim)
+        val scaleUp = AnimationUtils.loadAnimation(requireActivity(), R.anim.text_click_anim_back)
+        binding!!.textButtonBack.setOnClickListener{
+            binding!!.textButtonBack.startAnimation(scaleDown)
+            binding!!.textButtonBack.startAnimation(scaleUp)
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.layout_fragment, BottomNavBarFragment(NetworkingFragment()))
+            transaction.disallowAddToBackStack()
+            transaction.commit()
+        }
+
+        binding!!.buttonJoin.setOnClickListener {
+            meetsViewModel.joinGroupMeeting(eventId!!, userTgId!!, MeetingIdEntity(meetingId))
+        }
+
+        meetsViewModel.joinGroupMeeting.observe(viewLifecycleOwner, Observer { result ->
+            if (result.isSuccess) {
+                binding!!.buttonJoin.visibility = View.GONE
+                binding!!.progressAnswer.visibility = View.GONE
+                binding!!.frameAnswer.visibility = View.GONE
+                binding!!.linearAccpeted.visibility = View.VISIBLE
+            } else if (result.isFailure) {
+                val exception = result.exceptionOrNull()
+                Log.e("NetworkingFragment", "Error loading participants: ${exception?.message}")
+            }
+        })
 
     }
 

@@ -28,9 +28,9 @@ class MeetsAdapter(
         val meet = meets[position]
         holder.bind(meet)
         holder.itemView.setOnClickListener {
-            if (meet.meetingStatus == "REQUEST") {
+            if (meet.meetingType == "REQUEST") {
                 onItemClick(meet)
-            } else if (meet.meetingStatus == "CUSTOM_MEETING") {
+            } else if (meet.meetingType == "CUSTOM_MEETING") {
                 onGroupMeetClick(meet)
             }
         }
