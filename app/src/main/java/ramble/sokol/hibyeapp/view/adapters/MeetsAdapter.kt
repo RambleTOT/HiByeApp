@@ -15,7 +15,8 @@ import java.time.format.DateTimeFormatter
 
 class MeetsAdapter(
     private val meets: List<MeetingResponse>,
-    private val onItemClick: (MeetingResponse) -> Unit
+    private val onItemClick: (MeetingResponse) -> Unit,
+    private val onGroupMeetClick: (MeetingResponse) -> Unit
 ) : RecyclerView.Adapter<MeetsAdapter.MeetViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MeetViewHolder {
@@ -27,7 +28,11 @@ class MeetsAdapter(
         val meet = meets[position]
         holder.bind(meet)
         holder.itemView.setOnClickListener {
-            onItemClick(meet)
+            if (meet.meetingStatus == "REQUEST") {
+                onItemClick(meet)
+            } else if (meet.meetingStatus == "CUSTOM_MEETING") {
+                onGroupMeetClick(meet)
+            }
         }
     }
 
@@ -41,9 +46,9 @@ class MeetsAdapter(
         fun bind(meet: MeetingResponse) {
             meetName.text = meet.name
             meetDescription.text = meet.description
-            if (meet.meetingType == "REQUEST"){
+            if (meet.meetingType == "REQUEST") {
                 meetTime.visibility = View.GONE
-            }else {
+            } else {
                 meetTime.text = formatDate(meet.timeStart)
             }
         }
@@ -61,6 +66,5 @@ class MeetsAdapter(
             val outputFormatter = DateTimeFormatter.ofPattern("'в' HH:mm")
             return zonedDateTime.format(outputFormatter)
         }
-
     }
 }

@@ -148,7 +148,8 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="16dp"
                         android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:weightSum="2"
+                        android:visibility="gone">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -237,7 +238,7 @@
                         android:textColor="@color/main_color"
                         android:textSize="16sp"
                         app:cornerRadius="12dp"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginTop="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -250,6 +251,18 @@
         </ScrollView>
 
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_answer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_add_favorite"
@@ -266,9 +279,17 @@
         android:textColor="@color/white"
         android:textSize="16sp"
         app:cornerRadius="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="24dp"/>
+        />
+
+        <ProgressBar
+            android:id="@+id/progress_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/main_color"
+            android:visibility="invisible"
+            tools:visibility="visible"/>
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

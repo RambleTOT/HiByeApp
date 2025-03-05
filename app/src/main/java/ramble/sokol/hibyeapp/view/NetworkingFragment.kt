@@ -71,9 +71,10 @@ class NetworkingFragment : Fragment() {
             navigateToParticipantDetails(participant)
         }
 
-        meetsAdapter = MeetsAdapter(emptyList()) { meet ->
-            navigateToMeetDetails(meet)
-        }
+        meetsAdapter = MeetsAdapter(emptyList(),
+            { meet -> navigateToMeetDetails(meet) },
+            { meet -> navigateToGroupMeetDetails(meet) }
+        )
 
 
         binding?.recyclerViewSections?.apply {
@@ -109,9 +110,10 @@ class NetworkingFragment : Fragment() {
             if (result.isSuccess) {
                 val meets = result.getOrNull() ?: emptyList()
                 listMeets = meets
-                meetsAdapter = MeetsAdapter(meets) { meet ->
-                    navigateToMeetDetails(meet)
-                }
+                meetsAdapter = MeetsAdapter(meets,
+                    { meet -> navigateToMeetDetails(meet) }, // Лямбда для индивидуальных встреч
+                    { meet -> navigateToGroupMeetDetails(meet) } // Лямбда для групповых встреч
+                )
                 binding?.recyclerViewMeets?.adapter = meetsAdapter
             } else if (result.isFailure) {
                 val exception = result.exceptionOrNull()
@@ -255,5 +257,30 @@ class NetworkingFragment : Fragment() {
         }
 
     }
+
+    private fun navigateToGroupMeetDetails(meet: MeetingResponse) {
+
+        val bundle = Bundle().apply {
+            putLong("meetingId", meet.meetingId ?: -1)
+            putString("meetName", meet.name)
+            putString("meetDescription", meet.description)
+            putString("meetTime", meet.timeStart)
+            putLong("organisatorId", meet.organisatorId ?: -1)
+            putString("status", meet.meetingStatus)
+            putString("count", meet.capacity.toString())
+        }
+
+        val participantDetailsFragment = GroupMeetFragment().apply {
+            arguments = bundle
+        }
+
+        parentFragmentManager.beginTransaction().apply {
+            replace(R.id.layout_fragment, participantDetailsFragment)
+            addToBackStack(null)
+            commit()
+        }
+
+    }
+
 
 }
