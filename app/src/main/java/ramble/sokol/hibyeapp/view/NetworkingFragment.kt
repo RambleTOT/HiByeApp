@@ -204,6 +204,7 @@ class NetworkingFragment : Fragment() {
             }else{
                 val stat = findCommonMeeting(participant.userId!!, listMeets)!!.meetingStatus
                 putBoolean("isMeet", true)
+                putLong("meetId", findCommonMeeting(participant.userId!!, listMeets)!!.meetingId ?: 1)
                 putString("isStat", stat)
                 if (findOrgMeeting(participant.userId, listMeets) == null){
                     putBoolean("isOrg", false)

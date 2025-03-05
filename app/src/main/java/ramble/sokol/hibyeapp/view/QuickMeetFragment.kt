@@ -10,9 +10,12 @@ import android.view.animation.AnimationUtils
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import ramble.sokol.hibyeapp.R
+import ramble.sokol.hibyeapp.data.model.meets.MeetingIdEntity
+import ramble.sokol.hibyeapp.data.model.meets.MeetingResponse
 import ramble.sokol.hibyeapp.data.model.meets.SendMeetingRequestEntity
 import ramble.sokol.hibyeapp.databinding.FragmentQuickMeetBinding
 import ramble.sokol.hibyeapp.managers.TokenManager
+import ramble.sokol.hibyeapp.view.adapters.ParticipantsAdapter
 import ramble.sokol.hibyeapp.view_model.MeetsViewModel
 import ramble.sokol.hibyeapp.view_model.MeetsViewModelFactory
 
@@ -51,7 +54,8 @@ class QuickMeetFragment(
         ).get(MeetsViewModel::class.java)
 
         var userId = arguments?.getLong("userId", -1) ?: -1
-        val meetingId = arguments?.getLong("meetingId", -1) ?: -1
+        var meetingId = arguments?.getLong("meetingId", -1) ?: -1
+        val meetId = arguments?.getLong("meetId", -1) ?: -1
         if (userId != -1L) {
             val userName = arguments?.getString("userName", "") ?: ""
             val userInfo = arguments?.getString("userInfo", "") ?: ""
@@ -248,6 +252,42 @@ class QuickMeetFragment(
             transaction.disallowAddToBackStack()
             transaction.commit()
         }
+
+        binding!!.layotMeetEnd.setOnClickListener {
+            binding!!.textButtonBack.startAnimation(scaleDown)
+            binding!!.textButtonBack.startAnimation(scaleUp)
+            if (meetingId == -1L){
+                meetingId = meetId
+            }
+            meetsViewModel.meetingFinished(eventId!!, MeetingIdEntity(meetingId))
+        }
+
+        binding!!.layotNotBegin.setOnClickListener {
+            binding!!.layotNotBegin.startAnimation(scaleDown)
+            binding!!.layotNotBegin.startAnimation(scaleUp)
+            if (meetingId == -1L){
+                meetingId = meetId
+            }
+            meetsViewModel.meetingNotBegin(eventId!!, userTgId!!,  MeetingIdEntity(meetingId))
+        }
+
+        meetsViewModel.meetingNotBegin.observe(viewLifecycleOwner, Observer { result ->
+            if (result.isSuccess) {
+                binding!!.linearAccepted.visibility = View.GONE
+            } else if (result.isFailure) {
+                val exception = result.exceptionOrNull()
+                Log.e("NetworkingFragment", "Error loading participants: ${exception?.message}")
+            }
+        })
+
+        meetsViewModel.meetingFinished.observe(viewLifecycleOwner, Observer { result ->
+            if (result.isSuccess) {
+                binding!!.linearAccepted.visibility = View.GONE
+            } else if (result.isFailure) {
+                val exception = result.exceptionOrNull()
+                Log.e("NetworkingFragment", "Error loading participants: ${exception?.message}")
+            }
+        })
 
     }
 

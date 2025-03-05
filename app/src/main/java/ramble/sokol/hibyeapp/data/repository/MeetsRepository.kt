@@ -155,4 +155,30 @@ class MeetsRepository(
         }
     }
 
+    suspend fun meetingNotBegin(eventId: Long, userId: Long, meetingIdEntity: MeetingIdEntity): Result<String> {
+        return try {
+            val response = meetsApi.meetingNotBegin(eventId, userId, meetingIdEntity).awaitResponse()
+            if (response.isSuccessful && response.body() != null) {
+                Result.success(response.body()!!)
+            } else {
+                Result.failure(Exception("${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun meetingFinished(eventId: Long, meetingIdEntity: MeetingIdEntity): Result<String> {
+        return try {
+            val response = meetsApi.meetingFinished(eventId, meetingIdEntity).awaitResponse()
+            if (response.isSuccessful && response.body() != null) {
+                Result.success(response.body()!!)
+            } else {
+                Result.failure(Exception("${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 }

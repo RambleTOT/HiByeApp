@@ -44,7 +44,13 @@ class MeetsViewModel(private val meetsRepository: MeetsRepository) : ViewModel()
     val createGroupMeeting: LiveData<Result<MeetingResponse>> get() = _createGroupMeeting
 
     private val _joinGroupMeeting = MutableLiveData<Result<MeetingResponse>>()
-    val joinGroupMeeting: LiveData<Result<MeetingResponse>> get() = joinGroupMeeting
+    val joinGroupMeeting: LiveData<Result<MeetingResponse>> get() = _joinGroupMeeting
+
+    private val _meetingNotBegin = MutableLiveData<Result<String>>()
+    val meetingNotBegin: LiveData<Result<String>> get() = _meetingNotBegin
+
+    private val _meetingFinished = MutableLiveData<Result<String>>()
+    val meetingFinished: LiveData<Result<String>> get() = _meetingFinished
 
 
     fun isFastMeetings(eventId: Long, userId: Long){
@@ -98,6 +104,18 @@ class MeetsViewModel(private val meetsRepository: MeetsRepository) : ViewModel()
     fun joinGroupMeeting(eventId: Long, userId: Long, meetingIdEntity: MeetingIdEntity){
         viewModelScope.launch {
             _joinGroupMeeting.value = meetsRepository.joinGroupMeeting(eventId, userId, meetingIdEntity)
+        }
+    }
+
+    fun meetingNotBegin(eventId: Long, userId: Long, meetingIdEntity: MeetingIdEntity){
+        viewModelScope.launch {
+            _meetingNotBegin.value = meetsRepository.meetingNotBegin(eventId, userId, meetingIdEntity)
+        }
+    }
+
+    fun meetingFinished(eventId: Long, meetingIdEntity: MeetingIdEntity){
+        viewModelScope.launch {
+            _meetingFinished.value = meetsRepository.meetingFinished(eventId, meetingIdEntity)
         }
     }
 

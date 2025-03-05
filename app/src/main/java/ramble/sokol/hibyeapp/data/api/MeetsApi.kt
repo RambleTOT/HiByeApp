@@ -63,6 +63,19 @@ interface MeetsApi {
         @Body meetingIdEntity: MeetingIdEntity
     ): Call<MeetingResponse>
 
+    @POST("/meeting/meeting_not_happend/{eventId}/{userId}")
+    fun meetingNotBegin(
+        @Path("eventId") eventId: Long,
+        @Path("userId") userId: Long,
+        @Body meetingIdEntity: MeetingIdEntity
+    ): Call<String>
+
+    @POST("/meeting/mark_meeting_finished/{eventId}")
+    fun meetingFinished(
+        @Path("eventId") eventId: Long,
+        @Body meetingIdEntity: MeetingIdEntity
+    ): Call<String>
+
 }
 
 
