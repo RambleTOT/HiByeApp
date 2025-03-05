@@ -254,11 +254,12 @@ class QuickMeetFragment(
         }
 
         binding!!.layotMeetEnd.setOnClickListener {
-            binding!!.textButtonBack.startAnimation(scaleDown)
-            binding!!.textButtonBack.startAnimation(scaleUp)
+            binding!!.layotMeetEnd.startAnimation(scaleDown)
+            binding!!.layotMeetEnd.startAnimation(scaleUp)
             if (meetingId == -1L){
                 meetingId = meetId
             }
+            binding!!.linearAccepted.visibility = View.GONE
             meetsViewModel.meetingFinished(eventId!!, MeetingIdEntity(meetingId))
         }
 
@@ -268,12 +269,13 @@ class QuickMeetFragment(
             if (meetingId == -1L){
                 meetingId = meetId
             }
+            binding!!.linearAccepted.visibility = View.GONE
             meetsViewModel.meetingNotBegin(eventId!!, userTgId!!,  MeetingIdEntity(meetingId))
         }
 
         meetsViewModel.meetingNotBegin.observe(viewLifecycleOwner, Observer { result ->
             if (result.isSuccess) {
-                binding!!.linearAccepted.visibility = View.GONE
+                //binding!!.linearAccepted.visibility = View.GONE
             } else if (result.isFailure) {
                 val exception = result.exceptionOrNull()
                 Log.e("NetworkingFragment", "Error loading participants: ${exception?.message}")
@@ -282,7 +284,7 @@ class QuickMeetFragment(
 
         meetsViewModel.meetingFinished.observe(viewLifecycleOwner, Observer { result ->
             if (result.isSuccess) {
-                binding!!.linearAccepted.visibility = View.GONE
+                //binding!!.linearAccepted.visibility = View.GONE
             } else if (result.isFailure) {
                 val exception = result.exceptionOrNull()
                 Log.e("NetworkingFragment", "Error loading participants: ${exception?.message}")

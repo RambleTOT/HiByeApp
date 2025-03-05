@@ -35,6 +35,7 @@ class CurrentChatFragment : Fragment() {
     private var eventId: Long = -1
     private var userId: Long = -1
     private var chatId: Long = -1
+    private var lastVisiblePosition: Int = 0
 
     private var messagesJob: Job? = null // Для управления корутиной
 
@@ -98,13 +99,22 @@ class CurrentChatFragment : Fragment() {
     private fun loadMessages() {
         if (!isAdded || view == null) return // Проверяем, что фрагмент добавлен и View существует
 
+        // Сохраняем текущую позицию прокрутки
+        val layoutManager = binding?.recyclerViewMessages?.layoutManager as LinearLayoutManager
+        lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
+
         chatViewModel.getAllChatMessage(eventId, userId, chatId)
 
         chatViewModel.getAllChatMessage.observe(viewLifecycleOwner, Observer { result ->
             if (result.isSuccess) {
                 val messages = result.getOrNull() ?: emptyList()
-                chatMessagesAdapter.submitList(messages)
-                binding?.recyclerViewMessages?.scrollToPosition(messages.size - 1)
+                val previousSize = chatMessagesAdapter.itemCount
+                chatMessagesAdapter.submitList(messages) {
+                    // Восстанавливаем позицию прокрутки только если пользователь не прокрутил вниз
+                    if (layoutManager.findLastCompletelyVisibleItemPosition() != previousSize - 1) {
+                        layoutManager.scrollToPosition(lastVisiblePosition)
+                    }
+                }
             } else if (result.isFailure) {
                 val exception = result.exceptionOrNull()
                 Log.e("CurrentChatFragment", "Error loading messages: ${exception?.message}")
@@ -129,13 +139,15 @@ class CurrentChatFragment : Fragment() {
         chatViewModel.sendMessage.observe(viewLifecycleOwner, Observer { result ->
             if (result.isSuccess) {
                 binding?.editTextMessage?.text?.clear() // Очистка поля ввода
-                loadMessages() // Обновление списка сообщений
+                loadMessages() // Обновление списка сообщений без прокрутки вниз
             } else if (result.isFailure) {
                 val exception = result.exceptionOrNull()
                 Log.e("CurrentChatFragment", "Error sending message: ${exception?.message}")
             }
         })
     }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()
