@@ -41,7 +41,7 @@
     <string name="text_meet_time">Время встречи</string>
     <string name="text_choose_time">Выбрать дату</string>
     <string name="text_limit_participant">Ограничение по участникам</string>
-    <string name="text_count_particiopant">Количество участников</string>
+    <string name="text_count_particiopant">Количество участников (Число)</string>
     <string name="text_meet_end">Встреча закончилась</string>
     <string name="text_meet_not_begin">Встреча не состоялась</string>
     <string name="text_go_to_chat">Перейти в чат</string>

@@ -163,8 +163,8 @@ class NetworkingFragment : Fragment() {
             transaction.commit()
         }
         binding!!.textButtonCreate.setOnClickListener {
-            binding!!.textButtonAllParticipant.startAnimation(scaleDown)
-            binding!!.textButtonAllParticipant.startAnimation(scaleUp)
+            binding!!.textButtonCreate.startAnimation(scaleDown)
+            binding!!.textButtonCreate.startAnimation(scaleUp)
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             val newEventFragment = NewEventFragment()
             transaction.replace(R.id.layout_fragment, newEventFragment)

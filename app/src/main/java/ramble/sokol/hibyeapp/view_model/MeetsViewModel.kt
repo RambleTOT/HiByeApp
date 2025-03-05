@@ -33,6 +33,9 @@ class MeetsViewModel(private val meetsRepository: MeetsRepository) : ViewModel()
     private val _sendAnswerMeetingNot = MutableLiveData<Result<MeetingResponse>>()
     val sendAnswerMeetingNot: LiveData<Result<MeetingResponse>> get() = _sendAnswerMeetingNot
 
+    private val _createGroupMeeting = MutableLiveData<Result<MeetingResponse>>()
+    val createGroupMeeting: LiveData<Result<MeetingResponse>> get() = _createGroupMeeting
+
 
     fun isFastMeetings(eventId: Long, userId: Long){
         viewModelScope.launch {
@@ -61,6 +64,12 @@ class MeetsViewModel(private val meetsRepository: MeetsRepository) : ViewModel()
     fun sendAnswerMeetingNot(eventId: Long, sendMeetingRequestEntity: SendMeetingRequestEntity){
         viewModelScope.launch {
             _sendAnswerMeeting.value = meetsRepository.postMeetingAnswer(eventId, sendMeetingRequestEntity)
+        }
+    }
+
+    fun createGroupMeeting(eventId: Long, meetingResponse: MeetingResponse){
+        viewModelScope.launch {
+            _createGroupMeeting.value = meetsRepository.createGroupMeeting(eventId, meetingResponse)
         }
     }
 

@@ -90,4 +90,20 @@ class MeetsRepository(
         }
     }
 
+    suspend fun createGroupMeeting(eventId: Long, meetingResponse: MeetingResponse): Result<MeetingResponse> {
+        return try {
+            val response = meetsApi.createGroupMeeting(eventId, meetingResponse).awaitResponse()
+            if (response.isSuccessful && response.body() != null) {
+                val result = response.body()!!
+                Log.d("MyLog", "Resullt^ ==: $result")
+                Result.success(response.body()!!)
+            } else {
+                Log.d("MyLog", "Response^ ==: $response")
+                Result.failure(Exception("${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 }
