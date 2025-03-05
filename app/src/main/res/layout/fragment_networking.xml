@@ -5,64 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NetworkingFragment"
+    tools:context=".view.NetworkingFragment"
     android:background="@color/edit_text_background_nav_bar">
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/top_menu_background"
-        android:orientation="horizontal"
-        android:paddingHorizontal="16dp"
-        android:paddingTop="32dp"
-        android:paddingBottom="16dp"
-        android:weightSum="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:src="@drawable/icon_profile" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="12dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_marginEnd="4dp"
-                android:src="@drawable/icon_all_events" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="4dp"
-                android:fontFamily="@font/sfp_semibold"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:maxLines="1"
-                android:text="Мероприятия"
-                android:textColor="@color/black"
-                android:textSize="22sp" />
-
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:src="@drawable/icon_chat" />
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -70,7 +14,7 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -79,26 +23,26 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="24dp">
+                android:layout_marginTop="44dp"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
                     android:orientation="horizontal"
-                    android:weightSum="1"
-                    android:layout_marginHorizontal="16dp">
+                    android:weightSum="1">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:gravity="start"
-                        android:fontFamily="@font/sfp_bold"
-                        android:includeFontPadding="false"
-                        android:text="@string/text_participant"
-                        android:maxLines="1"
                         android:layout_weight="1"
+                        android:fontFamily="@font/sfp_bold"
+                        android:gravity="start"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text="@string/text_participant"
                         android:textColor="@color/black"
                         android:textSize="26sp" />
 
@@ -106,16 +50,16 @@
                         android:id="@+id/text_button_all_participant"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/text_all"
-                        android:textSize="18sp"
-                        android:textColor="@color/main_color"
-                        android:layout_gravity="center"
-                        android:includeFontPadding="false"
                         android:layout_centerInParent="true"
+                        android:layout_gravity="center"
                         android:clickable="true"
                         android:focusable="true"
-                        android:fontFamily="@font/sfp_regular"/>
+                        android:fontFamily="@font/sfp_regular"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:text="@string/text_all"
+                        android:textColor="@color/main_color"
+                        android:textSize="18sp" />
 
                 </LinearLayout>
 
@@ -123,30 +67,30 @@
                     android:id="@+id/recycler_view_sections"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:listitem="@layout/item_participant"
-                    android:orientation="horizontal"
                     android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
                     tools:itemCount="2"
-                    android:layout_marginStart="16dp"/>
+                    android:scrollbars="none"
+                    tools:listitem="@layout/item_participant" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="1"
+                    android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="24dp"
-                    android:layout_marginHorizontal="16dp">
+                    android:orientation="horizontal"
+                    android:weightSum="1">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:gravity="start"
-                        android:fontFamily="@font/sfp_bold"
-                        android:includeFontPadding="false"
-                        android:text="@string/text_meetings"
-                        android:maxLines="1"
                         android:layout_weight="1"
+                        android:fontFamily="@font/sfp_bold"
+                        android:gravity="start"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text="@string/text_meetings"
                         android:textColor="@color/black"
                         android:textSize="26sp" />
 
@@ -154,27 +98,27 @@
                         android:id="@+id/text_button_create"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/text_create"
-                        android:textSize="18sp"
-                        android:textColor="@color/main_color"
-                        android:layout_gravity="center"
-                        android:includeFontPadding="false"
                         android:layout_centerInParent="true"
+                        android:layout_gravity="center"
                         android:clickable="true"
                         android:focusable="true"
-                        android:fontFamily="@font/sfp_regular"/>
+                        android:fontFamily="@font/sfp_regular"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:text="@string/text_create"
+                        android:paddingVertical="8dp"
+                        android:textColor="@color/main_color"
+                        android:textSize="18sp" />
 
                 </LinearLayout>
 
 
-                <LinearLayout
-                    xmlns:android="http://schemas.android.com/apk/res/android"
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginTop="12dp"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                     <HorizontalScrollView
                         android:layout_width="match_parent"
@@ -183,25 +127,25 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginStart="16dp">
+                            android:layout_marginStart="16dp"
+                            android:orientation="horizontal">
 
                             <ramble.sokol.hibyeapp.CustomCheckBox
                                 android:id="@+id/customCheckBox1"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content" />
 
                             <ramble.sokol.hibyeapp.CustomCheckBox
                                 android:id="@+id/customCheckBox2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="6dp"/>
+                                android:layout_marginStart="6dp" />
 
                             <ramble.sokol.hibyeapp.CustomCheckBox
                                 android:id="@+id/customCheckBox3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="6dp"/>
+                                android:layout_marginStart="6dp" />
 
                         </LinearLayout>
 
@@ -210,14 +154,15 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view_"
+                    android:id="@+id/recycler_view_meets"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:listitem="@layout/item_meets"
-                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="12dp"
+                    android:orientation="horizontal"
                     tools:itemCount="3"
-                    android:layout_marginStart="16dp"/>
+                    android:scrollbars="none"
+                    tools:listitem="@layout/item_meets" />
 
             </LinearLayout>
 
@@ -243,6 +188,7 @@
         app:cornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CodeEventFragment"
+    tools:context=".view.CodeEventFragment"
+    android:fitsSystemWindows="true"
     android:background="@color/white">
 
     <LinearLayout
@@ -15,6 +16,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/text_hello_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:fontFamily="@font/sfp_semibold"
+            android:includeFontPadding="false"
+            tools:text="Привет, Артём!"
+            android:layout_marginHorizontal="16dp"
+            android:textColor="@color/black"
+            android:textSize="22sp" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -151,24 +165,66 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/text_error_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:fontFamily="@font/sfp_regular"
+                android:includeFontPadding="false"
+                android:text="@string/text_error_code"
+                android:textColor="@color/color_error"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp"
+                android:visibility="gone"/>
+
         </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_login_event"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
             android:layout_marginHorizontal="40dp"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="@color/main_color"
-            android:fontFamily="@font/sfp_semibold"
+            android:layout_marginTop="16dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_login_event"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/main_color"
+                android:fontFamily="@font/sfp_semibold"
+                android:includeFontPadding="false"
+                android:lineSpacingExtra="4sp"
+                android:paddingHorizontal="31dp"
+                android:paddingVertical="16dp"
+                android:text="@string/text_event_login"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:cornerRadius="12dp"/>
+
+            <ProgressBar
+                android:id="@+id/progress_login"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:indeterminateTint="@color/main_color"
+                android:visibility="invisible"
+                tools:visibility="visible"/>
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/text_button_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/text_login_code"
             android:includeFontPadding="false"
-            android:lineSpacingExtra="4sp"
-            android:paddingHorizontal="31dp"
-            android:paddingVertical="16dp"
-            android:text="@string/text_event_login"
-            android:textColor="@color/white"
             android:textSize="18sp"
-            app:cornerRadius="12dp"/>
+            android:textColor="@color/main_color"
+            android:layout_gravity="center"
+            android:fontFamily="@font/sfp_regular"/>
 
     </LinearLayout>
 

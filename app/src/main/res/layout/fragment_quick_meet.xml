@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".QuickMeetFragment"
+    tools:context=".view.QuickMeetFragment"
     android:background="@color/edit_text_background_nav_bar"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:id="@+id/linearLayout3"
@@ -29,16 +30,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="24dp">
+                    android:layout_marginTop="32dp">
 
                     <LinearLayout
-                        android:id="@+id/linearLayout2"
+                        android:id="@+id/text_button_back"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:paddingVertical="4dp">
 
                         <ImageView
                             android:layout_width="20dp"
@@ -46,7 +48,6 @@
                             android:src="@drawable/icon_back" />
 
                         <TextView
-                            android:id="@+id/text_button_create"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
@@ -107,7 +108,7 @@
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:maxLines="1"
-                        android:text="Андрей Лосюков"
+                        tools:text="Андрей Лосюков"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
 
@@ -120,16 +121,18 @@
                         android:fontFamily="@font/sfp_regular"
                         android:gravity="center"
                         android:includeFontPadding="false"
-                        android:text="CEO HiBye, работаю в Pyrus, люблю собак"
+                        tools:text="CEO HiBye, работаю в Pyrus, люблю собак"
                         android:textColor="@color/text_hint_color"
                         android:textSize="16sp" />
 
                     <LinearLayout
+                        android:id="@+id/linear_accepted"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="16dp"
                         android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:weightSum="2"
+                        android:visibility="gone">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -204,6 +207,152 @@
 
                     </LinearLayout>
 
+                    <FrameLayout
+                        android:id="@+id/frame_request"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:visibility="gone"
+                        android:layout_marginTop="16dp">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_send_request"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/main_color"
+                        android:fontFamily="@font/sfp_semibold"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="4sp"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="16dp"
+                        android:text="Отправить запрос на встречу"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        app:cornerRadius="12dp"
+                        android:visibility="invisible"
+                        tools:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                        <ProgressBar
+                            android:id="@+id/progress_login"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:indeterminateTint="@color/main_color"
+                            android:visibility="invisible"
+                            tools:visibility="visible"/>
+
+                        <TextView
+                            android:id="@+id/text_org"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:fontFamily="@font/sfp_semibold"
+                            android:includeFontPadding="false"
+                            android:text="Ожидание ответа"
+                            android:textColor="@color/main_color"
+                            android:visibility="invisible"
+                            android:textSize="18sp"/>
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/frame_answer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:layout_marginTop="16dp">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/button_send_answer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/main_color"
+                            android:fontFamily="@font/sfp_semibold"
+                            android:includeFontPadding="false"
+                            android:lineSpacingExtra="4sp"
+                            android:paddingHorizontal="16dp"
+                            android:paddingVertical="16dp"
+                            android:text="Ответить на встречу"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"
+                            app:cornerRadius="12dp"
+                            android:visibility="invisible"
+                            tools:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <ProgressBar
+                            android:id="@+id/progress_answer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:indeterminateTint="@color/main_color"
+                            android:visibility="invisible"
+                            tools:visibility="visible"/>
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/frame_answer_not"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:layout_marginTop="2dp">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/button_send_answer_not"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/selected_background_color"
+                            android:fontFamily="@font/sfp_semibold"
+                            android:includeFontPadding="false"
+                            android:lineSpacingExtra="4sp"
+                            android:paddingHorizontal="16dp"
+                            android:paddingVertical="16dp"
+                            android:text="Отклонить встречу"
+                            android:textColor="@color/main_color"
+                            android:textSize="14sp"
+                            app:cornerRadius="12dp"
+                            android:visibility="invisible"
+                            tools:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <ProgressBar
+                            android:id="@+id/progress_answer_not"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:indeterminateTint="@color/main_color"
+                            android:visibility="invisible"
+                            tools:visibility="visible"/>
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/text_org_not"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/sfp_semibold"
+                        android:includeFontPadding="false"
+                        android:text="Встреча была отклонена"
+                        android:textColor="@color/main_color"
+                        android:visibility="gone"
+                        android:textSize="18sp"/>
+
                 </LinearLayout>
 
             </LinearLayout>
@@ -230,6 +379,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="32dp"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,9 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".NewEventFragment"
+    tools:context=".view.NewEventFragment"
     android:orientation="vertical"
-    android:background="@color/edit_text_background_nav_bar">
+    android:background="@color/edit_text_background_nav_bar"
+    android:fitsSystemWindows="true">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -37,6 +38,7 @@
                     android:text="@string/text_close_meet"
                     android:textColor="@color/main_color"
                     android:textSize="16sp"
+                    android:paddingVertical="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -68,10 +70,12 @@
                     android:focusable="true"
                     android:fontFamily="@font/sfp_semibold"
                     android:gravity="center"
+                    android:enabled="false"
                     android:includeFontPadding="false"
                     android:text="@string/text_create"
                     android:textColor="@color/text_hint_color"
                     android:textSize="16sp"
+                    android:paddingVertical="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -198,17 +202,18 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="8dp"
-                    android:visibility="gone"
                     tools:visibility="visible">
 
 
                     <LinearLayout
+                        android:id="@+id/layout_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_event_background"
                         android:paddingVertical="8dp"
                         android:paddingHorizontal="12dp"
-                        android:layout_gravity="center">
+                        android:layout_gravity="center"
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/textDate"
@@ -225,13 +230,15 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/layout_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_event_background"
                         android:paddingVertical="8dp"
                         android:paddingHorizontal="12dp"
                         android:layout_marginStart="8dp"
-                        android:layout_gravity="center">
+                        android:layout_gravity="center"
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/textTime"
@@ -248,6 +255,19 @@
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_error_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:fontFamily="@font/sfp_regular"
+                    android:includeFontPadding="false"
+                    android:text="@string/text_error_new_event"
+                    android:textColor="@color/color_error"
+                    android:textSize="14sp"
+                    android:layout_marginTop="4dp"
+                    android:visibility="gone"/>
 
                 <FrameLayout
                     android:layout_width="match_parent"

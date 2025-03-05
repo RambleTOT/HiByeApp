@@ -4,8 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".CreateProfileFragment"
+    tools:context=".view.CreateProfileFragment"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     android:background="@color/edit_text_background_nav_bar">
 
     <ScrollView
@@ -80,65 +81,71 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:textColorHint="@color/color_hint_event"-->
+<!--                    app:counterTextColor="@color/black"-->
+<!--                    app:hintEnabled="false"-->
+<!--                    app:hintAnimationEnabled="true"-->
+<!--                    style="@style/CustomTextInputLayout"-->
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    >-->
+
+<!--                    <com.google.android.material.textfield.TextInputEditText-->
+<!--                        android:id="@+id/edit_text_about_me"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="60dp"-->
+<!--                        android:background="@drawable/edit_text_event_background"-->
+<!--                        android:fontFamily="@font/sfp_regular"-->
+<!--                        android:includeFontPadding="false"-->
+<!--                        android:textFontWeight="500"-->
+<!--                        android:hint="@string/text_about_me"-->
+<!--                        android:inputType="text"-->
+<!--                        android:minHeight="60dp"-->
+<!--                        android:singleLine="true"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textColorHint="@color/color_hint_event"-->
+<!--                        android:textCursorDrawable="@drawable/cursor_style_background"-->
+<!--                        android:textSize="18sp" />-->
+
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:textColorHint="@color/color_hint_event"-->
+<!--                    app:counterTextColor="@color/black"-->
+<!--                    app:hintEnabled="false"-->
+<!--                    app:hintAnimationEnabled="true"-->
+<!--                    style="@style/CustomTextInputLayout"-->
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    >-->
+
+<!--                    <com.google.android.material.textfield.TextInputEditText-->
+<!--                        android:id="@+id/edit_text_request"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="60dp"-->
+<!--                        android:background="@drawable/edit_text_event_background"-->
+<!--                        android:fontFamily="@font/sfp_regular"-->
+<!--                        android:includeFontPadding="false"-->
+<!--                        android:textFontWeight="500"-->
+<!--                        android:hint="@string/text_request_profile"-->
+<!--                        android:inputType="text"-->
+<!--                        android:minHeight="60dp"-->
+<!--                        android:singleLine="true"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textColorHint="@color/color_hint_event"-->
+<!--                        android:textCursorDrawable="@drawable/cursor_style_background"-->
+<!--                        android:textSize="18sp" />-->
+
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
+
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textColorHint="@color/color_hint_event"
-                    app:counterTextColor="@color/black"
-                    app:hintEnabled="false"
-                    app:hintAnimationEnabled="true"
-                    style="@style/CustomTextInputLayout"
-                    android:layout_marginTop="8dp"
-                    >
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edit_text_about_me"
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:background="@drawable/edit_text_event_background"
-                        android:fontFamily="@font/sfp_regular"
-                        android:includeFontPadding="false"
-                        android:textFontWeight="500"
-                        android:hint="@string/text_about_me"
-                        android:inputType="text"
-                        android:minHeight="60dp"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/color_hint_event"
-                        android:textCursorDrawable="@drawable/cursor_style_background"
-                        android:textSize="18sp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textColorHint="@color/color_hint_event"
-                    app:counterTextColor="@color/black"
-                    app:hintEnabled="false"
-                    app:hintAnimationEnabled="true"
-                    style="@style/CustomTextInputLayout"
-                    android:layout_marginTop="8dp"
-                    >
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edit_text_request"
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:background="@drawable/edit_text_event_background"
-                        android:fontFamily="@font/sfp_regular"
-                        android:includeFontPadding="false"
-                        android:textFontWeight="500"
-                        android:hint="@string/text_request_profile"
-                        android:inputType="text"
-                        android:minHeight="60dp"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/color_hint_event"
-                        android:textCursorDrawable="@drawable/cursor_style_background"
-                        android:textSize="18sp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="16dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_save"
@@ -153,9 +160,18 @@
                     android:text="@string/text_save"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    app:cornerRadius="12dp"
-                    android:layout_marginTop="16dp"/>
+                    app:cornerRadius="12dp" />
 
+                <ProgressBar
+                    android:id="@+id/progress_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:indeterminateTint="@color/main_color"
+                    android:visibility="invisible"
+                    tools:visibility="visible"/>
+
+                </FrameLayout>
 
             </LinearLayout>
 
