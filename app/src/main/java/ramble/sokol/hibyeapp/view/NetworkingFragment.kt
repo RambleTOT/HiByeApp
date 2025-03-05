@@ -85,8 +85,9 @@ class NetworkingFragment : Fragment() {
         }
 
         binding?.recyclerViewMeets?.apply {
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = NonScrollLinearLayoutManager(requireContext())
             adapter = meetsAdapter
+            isNestedScrollingEnabled = false
         }
 
 
@@ -95,7 +96,8 @@ class NetworkingFragment : Fragment() {
         eventViewModel.getAllUsersEvent.observe(viewLifecycleOwner, Observer { result ->
             if (result.isSuccess) {
                 val participants = result.getOrNull() ?: emptyList()
-                participantsAdapter = ParticipantsAdapter(participants) { participant ->
+                val filteredParticipants = participants.filter { it.userId != userId }
+                participantsAdapter = ParticipantsAdapter(filteredParticipants) { participant ->
                     navigateToParticipantDetails(participant)
                 }
                 binding?.recyclerViewSections?.adapter = participantsAdapter
