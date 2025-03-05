@@ -2,6 +2,7 @@ package ramble.sokol.hibyeapp.data.api
 
 import ramble.sokol.hibyeapp.data.model.events.CreateUserEntity
 import ramble.sokol.hibyeapp.data.model.events.CreateUserResponse
+import ramble.sokol.hibyeapp.data.model.meets.MeetingIdEntity
 import ramble.sokol.hibyeapp.data.model.meets.MeetingResponse
 import ramble.sokol.hibyeapp.data.model.meets.SendMeetingRequestEntity
 import retrofit2.Call
@@ -37,10 +38,29 @@ interface MeetsApi {
         @Path("userId") userId: Long
     ): Call<List<MeetingResponse>>
 
+    @GET("/meeting/get_available_custom_meetings/{eventId}/{userId}")
+    fun getAllAvailableMeets(
+        @Path("eventId") eventId: Long,
+        @Path("userId") userId: Long
+    ): Call<List<MeetingResponse>>
+
+    @GET("/meeting/ended_user_meetings/{eventId}/{userId}")
+    fun getAllEndedMeets(
+        @Path("eventId") eventId: Long,
+        @Path("userId") userId: Long
+    ): Call<List<MeetingResponse>>
+
     @POST("/meeting/create_custom_meeting/{eventId}")
     fun createGroupMeeting(
         @Path("eventId") eventId: Long,
         @Body meetingResponse: MeetingResponse
+    ): Call<MeetingResponse>
+
+    @POST("/meeting/join_meeting/{eventId}/{userId}")
+    fun joinGroupMeeting(
+        @Path("eventId") eventId: Long,
+        @Path("userId") userId: Long,
+        @Body meetingIdEntity: MeetingIdEntity
     ): Call<MeetingResponse>
 
 }
