@@ -67,7 +67,7 @@
                     android:orientation="vertical"
                     android:scrollbars="none"
                     tools:itemCount="4"
-                    android:layout_marginBottom="40dp"
+                    android:layout_marginBottom="80dp"
                     tools:listitem="@layout/item_meets_event" />
 
             </LinearLayout>

@@ -14,10 +14,15 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 class MeetsAdapter(
-    private val meets: List<MeetingResponse>,
+    private var meets: List<MeetingResponse>,
     private val onItemClick: (MeetingResponse) -> Unit,
     private val onGroupMeetClick: (MeetingResponse) -> Unit
 ) : RecyclerView.Adapter<MeetsAdapter.MeetViewHolder>() {
+
+    fun updateData(newMeets: List<MeetingResponse>) {
+        meets = newMeets // Заменяем старый список на новый
+        notifyDataSetChanged() // Уведомляем адаптер об изменении данных
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MeetViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_meets, parent, false)

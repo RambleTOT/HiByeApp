@@ -105,6 +105,8 @@ class NetworkingFragment : Fragment() {
             }
         })
 
+        setupCheckBoxes(eventId, userId)
+
         meetsViewModel.getAllMeets(eventId, userId)
         meetsViewModel.getAllMeets.observe(viewLifecycleOwner, Observer { result ->
             if (result.isSuccess) {
@@ -121,6 +123,8 @@ class NetworkingFragment : Fragment() {
             }
         })
 
+        loadAllMeets(eventId, userId)
+
         meetsViewModel.isFastMeetings(eventId, userId)
         meetsViewModel.isFastMeetings.observe(viewLifecycleOwner, Observer { result ->
             if (result.isSuccess) {
@@ -136,22 +140,6 @@ class NetworkingFragment : Fragment() {
                 Log.e("NetworkingFragment", "Error loading participants: ${exception?.message}")
             }
         })
-
-        binding!!.customCheckBox1.findViewById<TextView>(R.id.checkbox_custom_text).text = "Мои встречи"
-        binding!!.customCheckBox2.findViewById<TextView>(R.id.checkbox_custom_text).text = "Доступные встречи"
-        binding!!.customCheckBox3.findViewById<TextView>(R.id.checkbox_custom_text).text = "История"
-
-        binding!!.customCheckBox1.setOnClickListener {
-            setChecked(binding!!.customCheckBox1)
-        }
-        binding!!.customCheckBox2.setOnClickListener {
-            setChecked(binding!!.customCheckBox2)
-        }
-        binding!!.customCheckBox3.setOnClickListener {
-            setChecked(binding!!.customCheckBox3)
-        }
-
-        setChecked(binding!!.customCheckBox1)
 
         val scaleDown = AnimationUtils.loadAnimation(requireActivity(), R.anim.text_click_anim)
         val scaleUp = AnimationUtils.loadAnimation(requireActivity(), R.anim.text_click_anim_back)
@@ -173,14 +161,6 @@ class NetworkingFragment : Fragment() {
             transaction.disallowAddToBackStack()
             transaction.commit()
         }
-    }
-
-    private fun setChecked(selectedCheckBox: CustomCheckBox) {
-        binding!!.customCheckBox1.setChecked(false)
-        binding!!.customCheckBox2.setChecked(false)
-        binding!!.customCheckBox3.setChecked(false)
-
-        selectedCheckBox.setChecked(true)
     }
 
     fun findCommonMeeting(participantUserId: Long, meets: List<MeetingResponse>): MeetingResponse? {
@@ -283,5 +263,80 @@ class NetworkingFragment : Fragment() {
 
     }
 
+    private fun loadAllMeets(eventId: Long, userId: Long) {
+        meetsViewModel.getAllMeets(eventId, userId)
+        meetsViewModel.getAllMeets.observe(viewLifecycleOwner, Observer { result ->
+            if (result.isSuccess) {
+                val meets = result.getOrNull() ?: emptyList()
+                listMeets = meets
+                meetsAdapter.updateData(meets)
+            } else if (result.isFailure) {
+                Log.e("NetworkingFragment", "Error loading meets: ${result.exceptionOrNull()?.message}")
+            }
+        })
+    }
+
+    private fun loadAvailableMeets(eventId: Long, userId: Long) {
+        meetsViewModel.getAllAvailableMeets(eventId, userId)
+        meetsViewModel.getAllAvailableMeets.observe(viewLifecycleOwner, Observer { result ->
+            if (result.isSuccess) {
+                val meets = result.getOrNull() ?: emptyList()
+                listMeets = meets
+                meetsAdapter.updateData(meets)
+            } else if (result.isFailure) {
+                Log.e("NetworkingFragment", "Error loading available meets: ${result.exceptionOrNull()?.message}")
+            }
+        })
+    }
+
+    private fun loadEndedMeets(eventId: Long, userId: Long) {
+        meetsViewModel.getAllEndedMeets(eventId, userId)
+        meetsViewModel.getAllEndedMeets.observe(viewLifecycleOwner, Observer { result ->
+            if (result.isSuccess) {
+                val meets = result.getOrNull() ?: emptyList()
+                listMeets = meets
+                meetsAdapter.updateData(meets)
+            } else if (result.isFailure) {
+                Log.e("NetworkingFragment", "Error loading ended meets: ${result.exceptionOrNull()?.message}")
+            }
+        })
+    }
+
+    private fun setupCheckBoxes(eventId: Long, userId: Long) {
+        binding!!.customCheckBox1.findViewById<TextView>(R.id.checkbox_custom_text).text = "Мои встречи"
+        binding!!.customCheckBox2.findViewById<TextView>(R.id.checkbox_custom_text).text = "Доступные встречи"
+        binding!!.customCheckBox3.findViewById<TextView>(R.id.checkbox_custom_text).text = "История"
+
+        // Устанавливаем слушатели для чекбоксов
+        binding!!.customCheckBox1.setOnCheckedChangeListener { isChecked ->
+            if (isChecked) {
+                setChecked(binding!!.customCheckBox1)
+                loadAllMeets(eventId, userId)
+            }
+        }
+
+        binding!!.customCheckBox2.setOnCheckedChangeListener { isChecked ->
+            if (isChecked) {
+                setChecked(binding!!.customCheckBox2)
+                loadAvailableMeets(eventId, userId)
+            }
+        }
+
+        binding!!.customCheckBox3.setOnCheckedChangeListener { isChecked ->
+            if (isChecked) {
+                setChecked(binding!!.customCheckBox3)
+                loadEndedMeets(eventId, userId)
+            }
+        }
+
+        // По умолчанию активен первый чекбокс
+        setChecked(binding!!.customCheckBox1)
+    }
+
+    private fun setChecked(selectedCheckBox: CustomCheckBox) {
+        binding!!.customCheckBox1.setChecked(selectedCheckBox == binding!!.customCheckBox1)
+        binding!!.customCheckBox2.setChecked(selectedCheckBox == binding!!.customCheckBox2)
+        binding!!.customCheckBox3.setChecked(selectedCheckBox == binding!!.customCheckBox3)
+    }
 
 }

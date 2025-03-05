@@ -11,7 +11,7 @@ import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.data.model.schedule.ScheduleItem
 
 class ScheduleAdapter(
-    private val items: List<ScheduleItem>,
+    private var items: List<ScheduleItem>,
     private val onItemClick: (ScheduleItem) -> Unit
 ) : RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
 
@@ -19,6 +19,11 @@ class ScheduleAdapter(
 
     fun submitList(newList: List<ScheduleItem>) {
         currentList = newList
+        notifyDataSetChanged()
+    }
+
+    fun updateData(newItems: List<ScheduleItem>) {
+        items = newItems
         notifyDataSetChanged()
     }
 
@@ -42,6 +47,7 @@ class ScheduleAdapter(
 
         @SuppressLint("MissingInflatedId")
         fun bind(item: ScheduleItem) {
+            layoutTags.removeAllViews()
 
             scheduleName.text = item.title
 
@@ -49,27 +55,20 @@ class ScheduleAdapter(
             val endTime = item.timeEnd?.substring(11, 16)
             scheduleTime.text = "$startTime - $endTime"
 
-            // Получаем массив цветов
             val tagColors: TypedArray = itemView.context.resources.obtainTypedArray(R.array.tag_colors)
 
-            // Добавляем каждый тег
             item.tags?.forEachIndexed { index, tag ->
                 val tagView = LayoutInflater.from(itemView.context).inflate(R.layout.item_tag, layoutTags, false)
                 val tagText = tagView.findViewById<TextView>(R.id.tag_text)
                 val cardView = tagView.findViewById<androidx.cardview.widget.CardView>(R.id.card_view)
 
-                // Устанавливаем текст тега
                 tagText.text = tag
 
-                // Устанавливаем цвет для CardView
                 val color = tagColors.getColor(index % tagColors.length(), itemView.context.getColor(R.color.main_color))
                 cardView.setCardBackgroundColor(color)
-
-                // Добавляем тег в контейнер
                 layoutTags.addView(tagView)
             }
 
-            // Освобождаем ресурсы TypedArray
             tagColors.recycle()
         }
     }

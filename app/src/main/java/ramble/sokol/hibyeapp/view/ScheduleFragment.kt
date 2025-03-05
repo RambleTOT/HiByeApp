@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import ramble.sokol.hibyeapp.CustomCheckBox
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.data.model.schedule.ScheduleItem
 import ramble.sokol.hibyeapp.databinding.FragmentScheduleBinding
@@ -25,15 +27,14 @@ class ScheduleFragment : Fragment() {
     private lateinit var tokenManager: TokenManager
     private lateinit var scheduleAdapter: ScheduleAdapter
     private lateinit var listFavorite: List<Long>
+    private var allItems: List<ScheduleItem> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentScheduleBinding.inflate(inflater, container, false)
-        val view = binding!!.root
-        return view
+        return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,14 +66,12 @@ class ScheduleFragment : Fragment() {
                 Log.d("MyLog", "ScheduleResponse: $scheduleResponse")
 
                 // Получаем элементы из `items`
-                val items = scheduleResponse?.items ?: emptyList()
+                allItems = scheduleResponse?.items ?: emptyList()
 
-                val par = if (items.size >= 0) items[0].parentId
+                val par = if (allItems.isNotEmpty()) allItems[0].parentId
                 else scheduleResponse!!.parentId
 
-                scheduleAdapter = ScheduleAdapter(items) { item ->
-                    navigateToScheduleDetails(item)
-                }
+                scheduleAdapter.updateData(allItems)
 
                 binding?.recyclerView?.apply {
                     layoutManager = NonScrollLinearLayoutManager(requireContext())
@@ -90,7 +89,6 @@ class ScheduleFragment : Fragment() {
             }
         })
 
-
         scheduleViewModel.getFavorite.observe(viewLifecycleOwner, Observer { result ->
             if (result.isSuccess) {
                 Log.d("MyLog", result.toString())
@@ -103,32 +101,36 @@ class ScheduleFragment : Fragment() {
             }
         })
 
-        val customCheckBoxAll = binding?.customCheckBoxAll
-        val customCheckBoxFavorite = binding?.customCheckBoxFavorite
+        setupCheckBoxes()
+    }
 
-        customCheckBoxAll?.setChecked(true)
-        customCheckBoxFavorite?.setChecked(false)
+    private fun setupCheckBoxes() {
+        binding!!.customCheckBoxAll.findViewById<TextView>(R.id.checkbox_custom_text).text = "Все"
+        binding!!.customCheckBoxFavorite.findViewById<TextView>(R.id.checkbox_custom_text).text = "Избранное"
 
-        customCheckBoxAll?.setOnClickListener {
-            if (!customCheckBoxAll.isChecked()) {
-                customCheckBoxAll.setChecked(true)
-                customCheckBoxFavorite?.setChecked(false)
-                scheduleAdapter.submitList(scheduleViewModel.getSchedule.value?.getOrNull()?.items ?: emptyList())
+        // Устанавливаем слушатели для чекбоксов
+        binding!!.customCheckBoxAll.setOnCheckedChangeListener { isChecked ->
+            if (isChecked) {
+                setChecked(binding!!.customCheckBoxAll)
+                scheduleAdapter.updateData(allItems)
             }
         }
 
-        customCheckBoxFavorite?.setOnClickListener {
-            if (!customCheckBoxFavorite.isChecked()) {
-                customCheckBoxFavorite.setChecked(true)
-                customCheckBoxAll?.setChecked(false)
-                val filteredItems = scheduleAdapter.currentList.filter { item ->
-                    listFavorite.contains(item.scheduleId)
-                }
-                scheduleAdapter.submitList(filteredItems)
-
+        binding!!.customCheckBoxFavorite.setOnCheckedChangeListener { isChecked ->
+            if (isChecked) {
+                setChecked(binding!!.customCheckBoxFavorite)
+                val favoriteItems = allItems.filter { item -> listFavorite.contains(item.scheduleId) }
+                scheduleAdapter.updateData(favoriteItems)
             }
         }
 
+        // По умолчанию активен первый чекбокс
+        setChecked(binding!!.customCheckBoxAll)
+    }
+
+    private fun setChecked(selectedCheckBox: CustomCheckBox) {
+        binding!!.customCheckBoxAll.setChecked(selectedCheckBox == binding!!.customCheckBoxAll)
+        binding!!.customCheckBoxFavorite.setChecked(selectedCheckBox == binding!!.customCheckBoxFavorite)
     }
 
     private fun navigateToScheduleDetails(item: ScheduleItem) {
@@ -143,9 +145,6 @@ class ScheduleFragment : Fragment() {
             putLong("parentId", item.parentId ?: -1)
             putStringArrayList("tags", ArrayList(item.tags))
             putLongArray("favoriteScheduleIds", listFavorite.toLongArray())
-
-
-
         }
 
         val detailsFragment = CurrentEventFragment().apply {
@@ -157,5 +156,4 @@ class ScheduleFragment : Fragment() {
             .addToBackStack(null)
             .commit()
     }
-
 }
