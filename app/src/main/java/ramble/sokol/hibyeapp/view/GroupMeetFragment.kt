@@ -56,7 +56,9 @@ class GroupMeetFragment : Fragment() {
         val meetingId = arguments?.getLong("meetingId", -1) ?: -1
         val status = arguments?.getString("status", "") ?: ""
         val count = arguments?.getString("count", "") ?: ""
+        val countSize = arguments?.getString("countSize", "") ?: ""
 
+        binding!!.countMeet.text = "$countSize из $count"
         binding!!.descriptionMeet.text = meetDescription
         binding!!.name.text = meetName
 
@@ -76,28 +78,116 @@ class GroupMeetFragment : Fragment() {
             binding!!.frameAnswer.visibility = View.GONE
             binding!!.buttonFilters.visibility = View.GONE
             binding!!.linearAccpeted.visibility = View.GONE
+            binding!!.frameLeft.visibility = View.GONE
         }else if (isAvailable){
             binding!!.textHistory.visibility = View.GONE
             binding!!.frameAnswer.visibility = View.VISIBLE
             binding!!.buttonFilters.visibility = View.VISIBLE
             binding!!.linearAccpeted.visibility = View.GONE
+            binding!!.frameLeft.visibility = View.GONE
         }else{
             binding!!.textHistory.visibility = View.GONE
             binding!!.frameAnswer.visibility = View.GONE
             binding!!.buttonFilters.visibility = View.VISIBLE
-            binding!!.linearAccpeted.visibility = View.VISIBLE
+            if (organisatorId == userTgId){
+                binding!!.linearAccpeted.visibility = View.VISIBLE
+                binding!!.frameLeft.visibility = View.GONE
+            }else{
+                binding!!.linearAccpeted.visibility = View.GONE
+                binding!!.frameLeft.visibility = View.VISIBLE
+                binding!!.buttonLeft.visibility = View.VISIBLE
+            }
+
         }
 
         binding!!.buttonJoin.setOnClickListener {
             meetsViewModel.joinGroupMeeting(eventId!!, userTgId!!, MeetingIdEntity(meetingId))
         }
 
+        binding!!.layoutMeetEnd.setOnClickListener {
+            binding!!.layoutMeetEnd.startAnimation(scaleDown)
+            binding!!.layoutMeetEnd.startAnimation(scaleUp)
+            binding!!.linearAccpeted.visibility = View.GONE
+            binding!!.buttonFilters.visibility = View.GONE
+            meetsViewModel.meetingFinished(eventId!!, MeetingIdEntity(meetingId))
+        }
+
+        binding!!.layoutNotBegin.setOnClickListener {
+            binding!!.layoutNotBegin.startAnimation(scaleDown)
+            binding!!.layoutNotBegin.startAnimation(scaleUp)
+            binding!!.linearAccpeted.visibility = View.GONE
+            binding!!.buttonFilters.visibility = View.GONE
+            meetsViewModel.meetingNotBegin(eventId!!, userTgId!!,  MeetingIdEntity(meetingId))
+        }
+
+        binding!!.buttonLeft.setOnClickListener {
+            binding!!.linearAccpeted.visibility = View.GONE
+            binding!!.buttonLeft.visibility = View.GONE
+            binding!!.progressLeft.visibility = View.VISIBLE
+            binding!!.buttonFilters.visibility = View.GONE
+            meetsViewModel.meetingLeft(eventId!!, userTgId!!,  MeetingIdEntity(meetingId))
+        }
+
+        meetsViewModel.meetingLeft.observe(viewLifecycleOwner, Observer { result ->
+            if (result.isSuccess) {
+                binding!!.progressLeft.visibility = View.GONE
+                binding!!.frameLeft.visibility = View.GONE
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.layout_fragment, BottomNavBarFragment(NetworkingFragment()))
+                transaction.disallowAddToBackStack()
+                transaction.commit()
+            } else if (result.isFailure) {
+                binding!!.buttonFilters.visibility = View.VISIBLE
+                binding!!.progressLeft.visibility = View.GONE
+                val exception = result.exceptionOrNull()
+                Log.e("NetworkingFragment", "Error loading participants: ${exception?.message}")
+            }
+        })
+
+        meetsViewModel.meetingNotBegin.observe(viewLifecycleOwner, Observer { result ->
+            if (result.isSuccess) {
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.layout_fragment, BottomNavBarFragment(NetworkingFragment()))
+                transaction.disallowAddToBackStack()
+                transaction.commit()
+            } else if (result.isFailure) {
+                val exception = result.exceptionOrNull()
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.layout_fragment, BottomNavBarFragment(NetworkingFragment()))
+                transaction.disallowAddToBackStack()
+                transaction.commit()
+                Log.e("NetworkingFragment", "Error loading participants: ${exception?.message}")
+            }
+        })
+
+        meetsViewModel.meetingFinished.observe(viewLifecycleOwner, Observer { result ->
+            if (result.isSuccess) {
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.layout_fragment, BottomNavBarFragment(NetworkingFragment()))
+                transaction.disallowAddToBackStack()
+                transaction.commit()
+            } else if (result.isFailure) {
+                val exception = result.exceptionOrNull()
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.layout_fragment, BottomNavBarFragment(NetworkingFragment()))
+                transaction.disallowAddToBackStack()
+                transaction.commit()
+                Log.e("NetworkingFragment", "Error loading participants: ${exception?.message}")
+            }
+        })
+
         meetsViewModel.joinGroupMeeting.observe(viewLifecycleOwner, Observer { result ->
             if (result.isSuccess) {
                 binding!!.buttonJoin.visibility = View.GONE
                 binding!!.progressAnswer.visibility = View.GONE
                 binding!!.frameAnswer.visibility = View.GONE
-                binding!!.linearAccpeted.visibility = View.VISIBLE
+                if (organisatorId == userTgId){
+                    binding!!.linearAccpeted.visibility = View.VISIBLE
+                    binding!!.frameLeft.visibility = View.GONE
+                }else{
+                    binding!!.linearAccpeted.visibility = View.GONE
+                    binding!!.frameLeft.visibility = View.VISIBLE
+                }
             } else if (result.isFailure) {
                 val exception = result.exceptionOrNull()
                 Log.e("NetworkingFragment", "Error loading participants: ${exception?.message}")

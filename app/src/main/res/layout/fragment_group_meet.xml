@@ -103,6 +103,7 @@
                             android:src="@drawable/image_count_participant" />
 
                         <TextView
+                            android:id="@+id/count_meet"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -153,6 +154,7 @@
                         android:visibility="gone">
 
                         <LinearLayout
+                            android:id="@+id/layout_meet_end"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="4dp"
@@ -188,6 +190,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/layout_not_begin"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginStart="4dp"
@@ -224,6 +227,46 @@
                         </LinearLayout>
 
                     </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/frame_left"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:layout_marginTop="16dp">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/button_left"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/main_color"
+                            android:fontFamily="@font/sfp_semibold"
+                            android:includeFontPadding="false"
+                            android:lineSpacingExtra="4sp"
+                            android:paddingHorizontal="16dp"
+                            android:paddingVertical="16dp"
+                            android:text="Покинуть встречу"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            app:cornerRadius="12dp"
+                            android:visibility="invisible"
+                            tools:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <ProgressBar
+                            android:id="@+id/progress_left"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:indeterminateTint="@color/main_color"
+                            android:visibility="invisible"
+                            tools:visibility="visible"/>
+
+                    </FrameLayout>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/button_filters"

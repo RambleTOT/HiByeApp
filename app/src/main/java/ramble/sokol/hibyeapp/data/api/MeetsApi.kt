@@ -76,6 +76,13 @@ interface MeetsApi {
         @Body meetingIdEntity: MeetingIdEntity
     ): Call<String>
 
+    @POST("/meeting/left_meeting/{eventId}/{userId}")
+    fun meetingLeft(
+        @Path("eventId") eventId: Long,
+        @Path("userId") userId: Long,
+        @Body meetingIdEntity: MeetingIdEntity
+    ): Call<String>
+
 }
 
 

@@ -2,6 +2,7 @@ package ramble.sokol.hibyeapp.view
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -17,13 +18,43 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.amazonaws.ClientConfiguration
+import com.amazonaws.Protocol
+import com.amazonaws.auth.BasicAWSCredentials
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
+import com.amazonaws.regions.Region
+import com.amazonaws.regions.Regions
+import com.amazonaws.services.s3.AmazonS3Client
+import com.amazonaws.services.s3.model.ObjectMetadata
+import com.amazonaws.services.s3.model.PutObjectRequest
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.Response
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.databinding.FragmentCreateProfileBinding
 import ramble.sokol.hibyeapp.managers.NameAndPhotoManager
 import ramble.sokol.hibyeapp.managers.ProfileAndCodeManager
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.UUID
+import javax.crypto.Mac
+import javax.crypto.spec.SecretKeySpec
 
 class CreateProfileFragment : Fragment() {
 
@@ -48,14 +79,15 @@ class CreateProfileFragment : Fragment() {
         init()
     }
 
-    private fun init(){
+    private fun init() {
 
         profileAndCodeManager = ProfileAndCodeManager(requireActivity())
         nameAndPhotoManager = NameAndPhotoManager(requireActivity())
 
         binding!!.editTextName.addTextChangedListener(nameTextWatcher)
         binding!!.editTextName.setOnClickListener {
-            binding!!.editTextName.background = ContextCompat.getDrawable(requireActivity(),
+            binding!!.editTextName.background = ContextCompat.getDrawable(
+                requireActivity(),
                 R.drawable.edit_text_background
             )
         }
@@ -71,8 +103,9 @@ class CreateProfileFragment : Fragment() {
 
         binding!!.buttonSave.setOnClickListener {
             val name = binding!!.editTextName.text.toString()
-            if (name.isEmpty()){
-                binding!!.editTextName.background = ContextCompat.getDrawable(requireActivity(),
+            if (name.isEmpty()) {
+                binding!!.editTextName.background = ContextCompat.getDrawable(
+                    requireActivity(),
                     R.drawable.edit_text_background_error
                 )
             }
@@ -97,7 +130,8 @@ class CreateProfileFragment : Fragment() {
         }
 
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            binding!!.editTextName.background = ContextCompat.getDrawable(requireActivity(),
+            binding!!.editTextName.background = ContextCompat.getDrawable(
+                requireActivity(),
                 R.drawable.edit_text_background
             )
         }
@@ -106,6 +140,7 @@ class CreateProfileFragment : Fragment() {
 
         }
     }
+
     private fun openGallery() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),

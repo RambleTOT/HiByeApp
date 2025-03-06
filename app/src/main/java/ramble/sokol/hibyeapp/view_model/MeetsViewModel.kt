@@ -52,6 +52,9 @@ class MeetsViewModel(private val meetsRepository: MeetsRepository) : ViewModel()
     private val _meetingFinished = MutableLiveData<Result<String>>()
     val meetingFinished: LiveData<Result<String>> get() = _meetingFinished
 
+    private val _meetingLeft = MutableLiveData<Result<String>>()
+    val meetingLeft: LiveData<Result<String>> get() = _meetingLeft
+
 
     fun isFastMeetings(eventId: Long, userId: Long){
         viewModelScope.launch {
@@ -116,6 +119,12 @@ class MeetsViewModel(private val meetsRepository: MeetsRepository) : ViewModel()
     fun meetingFinished(eventId: Long, meetingIdEntity: MeetingIdEntity){
         viewModelScope.launch {
             _meetingFinished.value = meetsRepository.meetingFinished(eventId, meetingIdEntity)
+        }
+    }
+
+    fun meetingLeft(eventId: Long, userId: Long, meetingIdEntity: MeetingIdEntity){
+        viewModelScope.launch {
+            _meetingFinished.value = meetsRepository.meetingLeft(eventId, userId, meetingIdEntity)
         }
     }
 

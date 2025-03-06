@@ -181,4 +181,17 @@ class MeetsRepository(
         }
     }
 
+    suspend fun meetingLeft(eventId: Long, userId: Long, meetingIdEntity: MeetingIdEntity): Result<String> {
+        return try {
+            val response = meetsApi.meetingLeft(eventId, userId, meetingIdEntity).awaitResponse()
+            if (response.isSuccessful && response.body() != null) {
+                Result.success(response.body()!!)
+            } else {
+                Result.failure(Exception("${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 }

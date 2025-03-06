@@ -260,6 +260,7 @@ class NetworkingFragment : Fragment() {
             putString("count", meet.capacity.toString())
             putBoolean("isAvailable", isAvailable)
             putBoolean("isHistory", isHistory)
+            putString("countSize", meet.userIds!!.size.toString())
         }
 
         val participantDetailsFragment = GroupMeetFragment().apply {
