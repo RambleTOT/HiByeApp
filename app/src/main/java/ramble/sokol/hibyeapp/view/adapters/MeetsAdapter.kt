@@ -4,6 +4,8 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ramble.sokol.hibyeapp.R
@@ -20,8 +22,8 @@ class MeetsAdapter(
 ) : RecyclerView.Adapter<MeetsAdapter.MeetViewHolder>() {
 
     fun updateData(newMeets: List<MeetingResponse>) {
-        meets = newMeets // Заменяем старый список на новый
-        notifyDataSetChanged() // Уведомляем адаптер об изменении данных
+        meets = newMeets
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MeetViewHolder {
@@ -47,15 +49,24 @@ class MeetsAdapter(
         private val meetName: TextView = itemView.findViewById(R.id.meet_name)
         private val meetDescription: TextView = itemView.findViewById(R.id.meet_description)
         private val meetTime: TextView = itemView.findViewById(R.id.meet_time)
+        private val imagePart: ImageView = itemView.findViewById(R.id.image_meet_part_item)
+        private val imageGroup: FrameLayout = itemView.findViewById(R.id.image_group_meeting_item)
+        private val textImageGroup: TextView = itemView.findViewById(R.id.count_meet_item)
 
         fun bind(meet: MeetingResponse) {
             meetName.text = meet.name
             meetDescription.text = meet.description
             if (meet.meetingType == "REQUEST") {
                 meetTime.visibility = View.GONE
+                imagePart.visibility = View.VISIBLE
+                imageGroup.visibility = View.GONE
             } else {
                 meetTime.text = formatDate(meet.timeStart)
+                imagePart.visibility = View.GONE
+                imageGroup.visibility = View.VISIBLE
+                textImageGroup.text = "${meet.userIds!!.size} из ${meet.capacity}"
             }
+
         }
 
         private fun formatDate(dateString: String?): String {

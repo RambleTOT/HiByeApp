@@ -9,11 +9,40 @@
     android:weightSum="1"
     android:layout_marginBottom="8dp">
 
-    <ImageView
-        android:id="@+id/image_participant"
+    <FrameLayout
+        android:id="@+id/image_group_meeting_item"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:src="@drawable/icon_profile"/>
+        android:visibility="gone"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:src="@drawable/image_count_participant" />
+
+        <TextView
+            android:id="@+id/count_meet_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/sfp_bold"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="2 из 5"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+    </FrameLayout>
+
+
+    <ImageView
+        android:id="@+id/image_meet_part_item"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:src="@drawable/icon_profile"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:layout_width="match_parent"
