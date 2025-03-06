@@ -16,6 +16,7 @@ import ramble.sokol.hibyeapp.data.model.schedule.ScheduleItem
 import ramble.sokol.hibyeapp.databinding.FragmentScheduleBinding
 import ramble.sokol.hibyeapp.managers.TokenManager
 import ramble.sokol.hibyeapp.view.adapters.ScheduleAdapter
+import ramble.sokol.hibyeapp.view.dialog.FilterDialogFragment
 import ramble.sokol.hibyeapp.view_model.ScheduleViewModel
 import ramble.sokol.hibyeapp.view_model.ScheduleViewModelFactory
 
@@ -65,7 +66,6 @@ class ScheduleFragment : Fragment() {
                 val scheduleResponse = result.getOrNull()
                 Log.d("MyLog", "ScheduleResponse: $scheduleResponse")
 
-                // Получаем элементы из `items`
                 allItems = scheduleResponse?.items ?: emptyList()
 
                 val par = if (allItems.isNotEmpty()) allItems[0].parentId
@@ -101,6 +101,23 @@ class ScheduleFragment : Fragment() {
             }
         })
 
+        binding!!.buttonFilters.setOnClickListener {
+            val tags = scheduleViewModel.getSchedule.value?.getOrNull()?.tags ?: emptyList()
+            val selectedTags = scheduleViewModel.selectedTags.value ?: emptySet()
+            val dialog = FilterDialogFragment(
+                tags = tags,
+                selectedTags = selectedTags.toList(), // Передаем выбранные теги
+                onApplyFilters = { selectedTags ->
+                    scheduleViewModel.setSelectedTags(selectedTags.toSet())
+                    applyFilters() // Применяем фильтры после выбора тегов
+                },
+                onClearFilters = {
+                    scheduleViewModel.setSelectedTags(emptySet())
+                    applyFilters() // Применяем фильтры после сброса
+                }
+            )
+            dialog.show(parentFragmentManager, "FilterDialogFragment")
+        }
         setupCheckBoxes()
     }
 
@@ -112,15 +129,14 @@ class ScheduleFragment : Fragment() {
         binding!!.customCheckBoxAll.setOnCheckedChangeListener { isChecked ->
             if (isChecked) {
                 setChecked(binding!!.customCheckBoxAll)
-                scheduleAdapter.updateData(allItems)
+                applyFilters()
             }
         }
 
         binding!!.customCheckBoxFavorite.setOnCheckedChangeListener { isChecked ->
             if (isChecked) {
                 setChecked(binding!!.customCheckBoxFavorite)
-                val favoriteItems = allItems.filter { item -> listFavorite.contains(item.scheduleId) }
-                scheduleAdapter.updateData(favoriteItems)
+                applyFilters()
             }
         }
 
@@ -128,10 +144,28 @@ class ScheduleFragment : Fragment() {
         setChecked(binding!!.customCheckBoxAll)
     }
 
+    private fun applyFilters() {
+        val selectedTags = scheduleViewModel.selectedTags.value ?: emptySet()
+
+        // Если выбран чекбокс "Избранное", фильтруем только по избранным элементам
+        if (binding!!.customCheckBoxFavorite.isChecked) {
+            val favoriteItems = allItems.filter { item -> listFavorite.contains(item.scheduleId) }
+            scheduleAdapter.updateData(favoriteItems)
+        } else {
+            // Иначе применяем фильтрацию по тегам
+            val filteredItems = allItems.filter { item ->
+                selectedTags.all { tag -> item.tags?.contains(tag) == true }
+            }
+            scheduleAdapter.updateData(filteredItems)
+        }
+    }
+
     private fun setChecked(selectedCheckBox: CustomCheckBox) {
         binding!!.customCheckBoxAll.setChecked(selectedCheckBox == binding!!.customCheckBoxAll)
         binding!!.customCheckBoxFavorite.setChecked(selectedCheckBox == binding!!.customCheckBoxFavorite)
     }
+
+
 
     private fun navigateToScheduleDetails(item: ScheduleItem) {
         // Переход на фрагмент с деталями элемента

@@ -29,6 +29,13 @@ class ScheduleViewModel(private val scheduleRepository: ScheduleRepository) : Vi
     private val _addFavorite = MutableLiveData<Result<Any>>()
     val addFavorite: LiveData<Result<Any>> get() = _addFavorite
 
+    private val _selectedTags = MutableLiveData<Set<String>>()
+    val selectedTags: LiveData<Set<String>> get() = _selectedTags
+
+    fun setSelectedTags(tags: Set<String>) {
+        _selectedTags.value = tags
+    }
+
     fun getSchedule(scheduleId: Long){
         viewModelScope.launch {
             _getSchedule.value = scheduleRepository.getSchedule(scheduleId)
