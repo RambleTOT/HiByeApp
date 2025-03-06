@@ -53,10 +53,10 @@ class BottomNavBarFragment(
         tokenManager = TokenManager(requireActivity())
         val tgId = tokenManager.getTelegramId()
 
-        // Восстанавливаем выбранный элемент BottomNavBar
-        if (savedInstanceState != null) {
-            selectedNavItemId = savedInstanceState.getInt("selectedNavItemId", R.id.navbar_networking)
-        }
+//        // Восстанавливаем выбранный элемент BottomNavBar
+//        if (savedInstanceState != null) {
+//            selectedNavItemId = savedInstanceState.getInt("selectedNavItemId", R.id.navbar_networking)
+//        }
 
         setSelectedNavigationIcon(currentFragment)
 
@@ -159,6 +159,8 @@ class BottomNavBarFragment(
 
             replaceFragment(currentFragment)
 
+            setSelectedNavigationIcon(currentFragment)
+
             binding!!.buttonNewAddEvent.setOnClickListener {
                 binding!!.buttonNewAddEvent.startAnimation(scaleDown)
                 binding!!.buttonNewAddEvent.startAnimation(scaleUp)
@@ -211,6 +213,7 @@ class BottomNavBarFragment(
     }
 
     private fun setSelectedNavigationIcon(fragment: Fragment) {
+        Log.d("MyLog", "Fragment ${fragment.toString()}")
         when (fragment) {
             is ScheduleFragment -> binding?.bottomNavigationView?.selectedItemId = R.id.navbar_schedule
             is NetworkingFragment -> binding?.bottomNavigationView?.selectedItemId = R.id.navbar_networking
