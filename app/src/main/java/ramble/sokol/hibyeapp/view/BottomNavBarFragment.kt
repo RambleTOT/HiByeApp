@@ -21,7 +21,6 @@ import ramble.sokol.hibyeapp.view_model.EventsViewModelFactory
 
 class BottomNavBarFragment(
     val currentFragment: Fragment,
-
 ) : Fragment() {
 
     private var binding: FragmentBottomNavBarBinding? = null
@@ -31,13 +30,15 @@ class BottomNavBarFragment(
     private lateinit var emptyEventsManager: EmptyEventsManager
     private lateinit var currentF: Fragment
 
+    // Переменная для хранения текущего выбранного элемента BottomNavBar
+    private var selectedNavItemId: Int = R.id.navbar_networking
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentBottomNavBarBinding.inflate(inflater, container, false)
-        val view = binding!!.root
-        return view
+        return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,6 +53,11 @@ class BottomNavBarFragment(
         tokenManager = TokenManager(requireActivity())
         val tgId = tokenManager.getTelegramId()
 
+        // Восстанавливаем выбранный элемент BottomNavBar
+        if (savedInstanceState != null) {
+            selectedNavItemId = savedInstanceState.getInt("selectedNavItemId", R.id.navbar_networking)
+        }
+
         setSelectedNavigationIcon(currentFragment)
 
         eventViewModel.events.observe(viewLifecycleOwner, Observer { events ->
@@ -64,7 +70,7 @@ class BottomNavBarFragment(
                         )
                         refreshFragment()
                     }.show(parentFragmentManager, "EventsDialog")
-                }else{
+                } else {
                     // Показываем диалоговое окно
                     val dialog = AllEventsDialog(events) { event ->
                         Log.d("MyLog", "Selected Event ID: ${event.eventId}, Schedule ID: ${event.scheduleId}")
@@ -79,21 +85,17 @@ class BottomNavBarFragment(
             }
         })
 
-
-        if (emptyEventsManager.getIsEvent() == false){
+        if (emptyEventsManager.getIsEvent() == false) {
             blockScreen(true)
             eventViewModel.fetchEvents(tgId!!)
-
-        }else {
-
+        } else {
             nameAndPhotoManager = NameAndPhotoManager(requireActivity())
             val nameEvent = tokenManager.getEventName()
             val eventId = tokenManager.getCurrentEventId()
             val userId = tokenManager.getUserIdTelegram()
             binding!!.eventName.text = nameEvent
             val scaleDown = AnimationUtils.loadAnimation(requireActivity(), R.anim.text_click_anim)
-            val scaleUp =
-                AnimationUtils.loadAnimation(requireActivity(), R.anim.text_click_anim_back)
+            val scaleUp = AnimationUtils.loadAnimation(requireActivity(), R.anim.text_click_anim_back)
 
             eventViewModel.getUser(
                 eventId = eventId!!,
@@ -119,7 +121,6 @@ class BottomNavBarFragment(
                     val exception = result.exceptionOrNull()
                     //Toast.makeText(context, "Login failed: ${exception!!.message}", Toast.LENGTH_SHORT).show()
                 }
-
             })
 
             binding!!.buttonNewAddEvent.setOnClickListener {
@@ -128,23 +129,24 @@ class BottomNavBarFragment(
                 eventViewModel.fetchEvents(tgId!!)
             }
 
-
-
             binding!!.bottomNavigationView.setOnItemSelectedListener {
                 when (it.itemId) {
                     R.id.navbar_schedule -> {
                         currentF = ScheduleFragment()
                         replaceFragment(ScheduleFragment())
+                        selectedNavItemId = R.id.navbar_schedule // Сохраняем выбранный элемент
                     }
 
                     R.id.navbar_networking -> {
                         currentF = NetworkingFragment()
                         replaceFragment(NetworkingFragment())
+                        selectedNavItemId = R.id.navbar_networking // Сохраняем выбранный элемент
                     }
 
                     R.id.navbar_chats -> {
                         currentF = ChatsFragment()
                         replaceFragment(ChatsFragment())
+                        selectedNavItemId = R.id.navbar_chats // Сохраняем выбранный элемент
                     }
 
                     else -> false
@@ -152,7 +154,8 @@ class BottomNavBarFragment(
                 true
             }
 
-            binding!!.bottomNavigationView.selectedItemId = R.id.navbar_networking
+            // Восстанавливаем выбранный элемент BottomNavBar
+            binding!!.bottomNavigationView.selectedItemId = selectedNavItemId
 
             replaceFragment(currentFragment)
 
@@ -174,32 +177,33 @@ class BottomNavBarFragment(
         }
     }
 
-    private fun replaceFragment(fragment: Fragment){
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        // Сохраняем выбранный элемент BottomNavBar
+        outState.putInt("selectedNavItemId", selectedNavItemId)
+    }
 
+    private fun replaceFragment(fragment: Fragment) {
         val fragmentManager = parentFragmentManager
         val fragmentTransition = fragmentManager.beginTransaction()
         fragmentTransition.replace(R.id.frame_layout, fragment)
         fragmentTransition.commit()
-
     }
 
     private fun refreshFragment() {
-        // Обновляем фрагмент
         parentFragmentManager.beginTransaction().apply {
             replace(R.id.layout_fragment, BottomNavBarFragment(currentF))
-            addToBackStack(null) // Добавляем в back stack (опционально)
-            commit() // Фиксируем транзакцию
+            addToBackStack(null)
+            commit()
         }
     }
 
     private fun blockScreen(isBlocked: Boolean) {
         if (isBlocked) {
-            // Затемняем экран и блокируем взаимодействие
             binding?.overlay?.visibility = View.VISIBLE
             binding?.overlay?.isClickable = true
             binding?.overlay?.isFocusable = true
         } else {
-            // Убираем затемнение и разблокируем экран
             binding?.overlay?.visibility = View.GONE
             binding?.overlay?.isClickable = false
             binding?.overlay?.isFocusable = false
@@ -214,5 +218,4 @@ class BottomNavBarFragment(
             else -> binding?.bottomNavigationView?.selectedItemId = R.id.navbar_networking
         }
     }
-
 }

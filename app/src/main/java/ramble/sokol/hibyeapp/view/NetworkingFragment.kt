@@ -115,8 +115,8 @@ class NetworkingFragment : Fragment() {
                 val meets = result.getOrNull() ?: emptyList()
                 listMeets = meets
                 meetsAdapter = MeetsAdapter(meets,
-                    { meet -> navigateToMeetDetails(meet) }, // Лямбда для индивидуальных встреч
-                    { meet -> navigateToGroupMeetDetails(meet) } // Лямбда для групповых встреч
+                    { meet -> navigateToMeetDetails(meet) },
+                    { meet -> navigateToGroupMeetDetails(meet) }
                 )
                 binding?.recyclerViewMeets?.adapter = meetsAdapter
             } else if (result.isFailure) {
@@ -181,12 +181,15 @@ class NetworkingFragment : Fragment() {
 
         val bundle = Bundle().apply {
 
-            if (findCommonMeeting(participant.userId!!, listMeets) == null){
+            val meetCommon = findCommonMeeting(participant.userId!!, listMeets)
+
+            if (meetCommon == null){
                 putBoolean("isMeet", false)
             }else{
-                val stat = findCommonMeeting(participant.userId!!, listMeets)!!.meetingStatus
+                val stat = meetCommon.meetingStatus
                 putBoolean("isMeet", true)
-                putLong("meetId", findCommonMeeting(participant.userId!!, listMeets)!!.meetingId ?: 1)
+                putLong("meetId", meetCommon.meetingId ?: -1)
+                putLong("chatId", meetCommon.chatId ?: -1)
                 putString("isStat", stat)
                 if (findOrgMeeting(participant.userId, listMeets) == null){
                     putBoolean("isOrg", false)
@@ -199,6 +202,7 @@ class NetworkingFragment : Fragment() {
             putString("userName", participant.userName)
             putString("userInfo", participant.userInfo)
             putString("photoLink", participant.photoLink)
+            putString("nameChat", participant.userName)
         }
 
         val participantDetailsFragment = QuickMeetFragment(NetworkingFragment()).apply {
@@ -221,12 +225,14 @@ class NetworkingFragment : Fragment() {
         val bundle = Bundle().apply {
             putLong("meetingId", meet.meetingId ?: -1)
             putString("meetName", meet.name)
+            putLong("chatId", meet.chatId ?: -1)
             putString("meetDescription", meet.description)
             putString("meetTime", meet.timeStart)
             putLong("organisatorId", meet.organisatorId ?: -1)
             putString("status", meet.meetingStatus)
             putLong("userIdOur", currentUserId)
             putLong("userIdSecond", secondUserId ?: -1)
+            putString("nameChat", meet.name)
         }
 
         val participantDetailsFragment = QuickMeetFragment(NetworkingFragment()).apply {

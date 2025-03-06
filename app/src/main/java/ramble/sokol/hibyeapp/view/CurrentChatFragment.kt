@@ -35,6 +35,7 @@ class CurrentChatFragment : Fragment() {
     private var eventId: Long = -1
     private var userId: Long = -1
     private var chatId: Long = -1
+    private var name: String = ""
     private var lastVisiblePosition: Int = 0
 
     private var messagesJob: Job? = null // Для управления корутиной
@@ -55,6 +56,7 @@ class CurrentChatFragment : Fragment() {
         eventId = tokenManager.getCurrentEventId() ?: -1
         userId = tokenManager.getUserIdTelegram() ?: -1
         chatId = arguments?.getLong("chatId", -1) ?: -1
+        name = arguments?.getString("chatName", "") ?: ""
 
         chatViewModel = ViewModelProvider(
             this,
@@ -68,6 +70,8 @@ class CurrentChatFragment : Fragment() {
         }
 
         loadMessages()
+
+        binding!!.chatName.text = name
 
         binding?.buttonSendMessage?.setOnClickListener {
             sendMessage()

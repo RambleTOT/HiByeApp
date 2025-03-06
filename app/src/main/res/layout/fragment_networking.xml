@@ -8,17 +8,13 @@
     tools:context=".view.NetworkingFragment"
     android:background="@color/edit_text_background_nav_bar">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -162,13 +158,12 @@
                     tools:itemCount="3"
                     android:orientation="vertical"
                     android:scrollbars="none"
+                    android:layout_marginBottom="60dp"
                     tools:listitem="@layout/item_meets" />
 
             </LinearLayout>
 
-        </ScrollView>
-
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_find_chat"

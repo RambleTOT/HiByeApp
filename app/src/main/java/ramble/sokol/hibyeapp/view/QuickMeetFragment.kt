@@ -56,6 +56,9 @@ class QuickMeetFragment(
         var userId = arguments?.getLong("userId", -1) ?: -1
         var meetingId = arguments?.getLong("meetingId", -1) ?: -1
         val meetId = arguments?.getLong("meetId", -1) ?: -1
+        val chatId = arguments?.getLong("chatId", -1) ?: -1
+        Log.d("MyLog", chatId.toString())
+        val chatName = arguments?.getString("nameChat", "") ?: ""
         if (userId != -1L) {
             val userName = arguments?.getString("userName", "") ?: ""
             val userInfo = arguments?.getString("userInfo", "") ?: ""
@@ -84,6 +87,7 @@ class QuickMeetFragment(
                 binding!!.frameAnswerNot.visibility = View.GONE
                 binding!!.frameAnswer.visibility = View.GONE
                 binding!!.linearAccepted.visibility = View.GONE
+                binding!!.buttonAddFavorite.visibility = View.GONE
                 binding!!.buttonSendRequest.visibility = View.VISIBLE
             } else {
                 if (isStat == "ACCEPTED"){
@@ -91,8 +95,10 @@ class QuickMeetFragment(
                     binding!!.frameAnswerNot.visibility = View.GONE
                     binding!!.frameAnswer.visibility = View.GONE
                     binding!!.linearAccepted.visibility = View.VISIBLE
+                    binding!!.buttonAddFavorite.visibility = View.VISIBLE
                 }else if (isStat == "REJECTED"){
                     binding!!.linearAccepted.visibility = View.GONE
+                    binding!!.buttonAddFavorite.visibility = View.GONE
                     binding!!.frameRequest.visibility = View.GONE
                     binding!!.frameAnswerNot.visibility = View.GONE
                     binding!!.frameAnswer.visibility = View.GONE
@@ -101,6 +107,7 @@ class QuickMeetFragment(
                     if (isOrg == true) {
                         binding!!.frameRequest.visibility = View.GONE
                         binding!!.linearAccepted.visibility = View.GONE
+                        binding!!.buttonAddFavorite.visibility = View.GONE
                         binding!!.frameAnswerNot.visibility = View.VISIBLE
                         binding!!.frameAnswer.visibility = View.VISIBLE
                         binding!!.buttonSendAnswerNot.visibility = View.VISIBLE
@@ -110,6 +117,7 @@ class QuickMeetFragment(
                         binding!!.frameAnswerNot.visibility = View.GONE
                         binding!!.frameAnswer.visibility = View.GONE
                         binding!!.linearAccepted.visibility = View.GONE
+                        binding!!.buttonAddFavorite.visibility = View.GONE
                         binding!!.textOrg.visibility = View.VISIBLE
                         binding!!.buttonSendRequest.visibility = View.INVISIBLE
                     }
@@ -153,11 +161,13 @@ class QuickMeetFragment(
 
             if (status == "ACCEPTED"){
                 binding!!.linearAccepted.visibility = View.VISIBLE
+                binding!!.buttonAddFavorite.visibility = View.VISIBLE
                 binding!!.frameRequest.visibility = View.GONE
                 binding!!.frameAnswerNot.visibility = View.GONE
                 binding!!.frameAnswer.visibility = View.GONE
             }else if(status == "REJECTED"){
                 binding!!.linearAccepted.visibility = View.GONE
+                binding!!.buttonAddFavorite.visibility = View.GONE
                 binding!!.frameRequest.visibility = View.GONE
                 binding!!.frameAnswerNot.visibility = View.GONE
                 binding!!.frameAnswer.visibility = View.GONE
@@ -165,12 +175,14 @@ class QuickMeetFragment(
             }else if (status == "AWAITING_RESPONSE"){
                 if (userIdOur == organisatorId){
                     binding!!.linearAccepted.visibility = View.GONE
+                    binding!!.buttonAddFavorite.visibility = View.GONE
                     binding!!.frameRequest.visibility = View.VISIBLE
                     binding!!.frameAnswerNot.visibility = View.GONE
                     binding!!.frameAnswer.visibility = View.GONE
                     binding!!.textOrg.visibility = View.VISIBLE
                 }else{
                     binding!!.linearAccepted.visibility = View.GONE
+                    binding!!.buttonAddFavorite.visibility = View.GONE
                     binding!!.frameRequest.visibility = View.GONE
                     binding!!.frameAnswerNot.visibility = View.VISIBLE
                     binding!!.frameAnswer.visibility = View.VISIBLE
@@ -214,6 +226,7 @@ class QuickMeetFragment(
                 binding!!.frameAnswer.visibility = View.GONE
                 binding!!.frameAnswerNot.visibility = View.GONE
                 binding!!.linearAccepted.visibility = View.VISIBLE
+                binding!!.buttonAddFavorite.visibility = View.VISIBLE
             } else if (result.isFailure) {
                 binding!!.buttonSendAnswer.visibility = View.VISIBLE
                 binding!!.buttonSendAnswerNot.visibility = View.VISIBLE
@@ -231,6 +244,7 @@ class QuickMeetFragment(
                 binding!!.frameAnswer.visibility = View.GONE
                 binding!!.frameAnswerNot.visibility = View.GONE
                 binding!!.linearAccepted.visibility = View.GONE
+                binding!!.buttonAddFavorite.visibility = View.GONE
                 binding!!.textOrgNot.visibility = View.VISIBLE
             } else if (result.isFailure) {
                 binding!!.buttonSendAnswer.visibility = View.VISIBLE
@@ -241,6 +255,25 @@ class QuickMeetFragment(
                 Log.e("NetworkingFragment", "Error loading participants: ${exception?.message}")
             }
         })
+
+        binding!!.buttonAddFavorite.setOnClickListener {
+            if (chatId > 0L) {
+                val bundle = Bundle().apply {
+                    putLong("chatId", chatId)
+                    putString("chatName", chatName)
+                }
+
+                val participantDetailsFragment = CurrentChatFragment().apply {
+                    arguments = bundle
+                }
+
+                parentFragmentManager.beginTransaction().apply {
+                    replace(R.id.layout_fragment, participantDetailsFragment)
+                    addToBackStack(null)
+                    commit()
+                }
+            }
+        }
 
         val scaleDown = AnimationUtils.loadAnimation(requireActivity(), R.anim.text_click_anim)
         val scaleUp = AnimationUtils.loadAnimation(requireActivity(), R.anim.text_click_anim_back)
@@ -260,6 +293,7 @@ class QuickMeetFragment(
                 meetingId = meetId
             }
             binding!!.linearAccepted.visibility = View.GONE
+            binding!!.buttonAddFavorite.visibility = View.GONE
             meetsViewModel.meetingFinished(eventId!!, MeetingIdEntity(meetingId))
         }
 
@@ -270,6 +304,7 @@ class QuickMeetFragment(
                 meetingId = meetId
             }
             binding!!.linearAccepted.visibility = View.GONE
+            binding!!.buttonAddFavorite.visibility = View.GONE
             meetsViewModel.meetingNotBegin(eventId!!, userTgId!!,  MeetingIdEntity(meetingId))
         }
 
