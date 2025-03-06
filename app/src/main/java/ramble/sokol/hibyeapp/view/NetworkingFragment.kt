@@ -217,10 +217,11 @@ class NetworkingFragment : Fragment() {
 
     }
 
-    private fun navigateToMeetDetails(meet: MeetingResponse) {
-
+    private fun navigateToMeetDetails(meet: MeetingResponse, isAvailable: Boolean = false, isHistory: Boolean = false) {
         val currentUserId = tokenManager.getUserIdTelegram()!!
         val secondUserId = meet.userIds?.firstOrNull { it != currentUserId }
+
+        Log.d("MyLog", isHistory.toString())
 
         val bundle = Bundle().apply {
             putLong("meetingId", meet.meetingId ?: -1)
@@ -233,6 +234,8 @@ class NetworkingFragment : Fragment() {
             putLong("userIdOur", currentUserId)
             putLong("userIdSecond", secondUserId ?: -1)
             putString("nameChat", meet.name)
+            putBoolean("isAvailable", isAvailable)
+            putBoolean("isHistory", isHistory)
         }
 
         val participantDetailsFragment = QuickMeetFragment(NetworkingFragment()).apply {
@@ -244,11 +247,9 @@ class NetworkingFragment : Fragment() {
             addToBackStack(null)
             commit()
         }
-
     }
 
-    private fun navigateToGroupMeetDetails(meet: MeetingResponse) {
-
+    private fun navigateToGroupMeetDetails(meet: MeetingResponse, isAvailable: Boolean = false, isHistory: Boolean = false) {
         val bundle = Bundle().apply {
             putLong("meetingId", meet.meetingId ?: -1)
             putString("meetName", meet.name)
@@ -257,6 +258,8 @@ class NetworkingFragment : Fragment() {
             putLong("organisatorId", meet.organisatorId ?: -1)
             putString("status", meet.meetingStatus)
             putString("count", meet.capacity.toString())
+            putBoolean("isAvailable", isAvailable)
+            putBoolean("isHistory", isHistory)
         }
 
         val participantDetailsFragment = GroupMeetFragment().apply {
@@ -268,7 +271,6 @@ class NetworkingFragment : Fragment() {
             addToBackStack(null)
             commit()
         }
-
     }
 
     private fun loadAllMeets(eventId: Long, userId: Long) {
@@ -277,9 +279,14 @@ class NetworkingFragment : Fragment() {
             if (result.isSuccess) {
                 val meets = result.getOrNull() ?: emptyList()
                 listMeets = meets
-                meetsAdapter.updateData(meets)
+                meetsAdapter = MeetsAdapter(meets,
+                    { meet -> navigateToMeetDetails(meet) },
+                    { meet -> navigateToGroupMeetDetails(meet) }
+                )
+                binding?.recyclerViewMeets?.adapter = meetsAdapter
             } else if (result.isFailure) {
-                Log.e("NetworkingFragment", "Error loading meets: ${result.exceptionOrNull()?.message}")
+                val exception = result.exceptionOrNull()
+                Log.e("NetworkingFragment", "Error loading meets: ${exception?.message}")
             }
         })
     }
@@ -290,9 +297,14 @@ class NetworkingFragment : Fragment() {
             if (result.isSuccess) {
                 val meets = result.getOrNull() ?: emptyList()
                 listMeets = meets
-                meetsAdapter.updateData(meets)
+                meetsAdapter = MeetsAdapter(meets,
+                    { meet -> navigateToMeetDetails(meet, isAvailable = true) },
+                    { meet -> navigateToGroupMeetDetails(meet, isAvailable = true) }
+                )
+                binding?.recyclerViewMeets?.adapter = meetsAdapter
             } else if (result.isFailure) {
-                Log.e("NetworkingFragment", "Error loading available meets: ${result.exceptionOrNull()?.message}")
+                val exception = result.exceptionOrNull()
+                Log.e("NetworkingFragment", "Error loading available meets: ${exception?.message}")
             }
         })
     }
@@ -303,9 +315,14 @@ class NetworkingFragment : Fragment() {
             if (result.isSuccess) {
                 val meets = result.getOrNull() ?: emptyList()
                 listMeets = meets
-                meetsAdapter.updateData(meets)
+                meetsAdapter = MeetsAdapter(meets,
+                    { meet -> navigateToMeetDetails(meet, isHistory = true) },
+                    { meet -> navigateToGroupMeetDetails(meet, isHistory = true) }
+                )
+                binding?.recyclerViewMeets?.adapter = meetsAdapter
             } else if (result.isFailure) {
-                Log.e("NetworkingFragment", "Error loading ended meets: ${result.exceptionOrNull()?.message}")
+                val exception = result.exceptionOrNull()
+                Log.e("NetworkingFragment", "Error loading ended meets: ${exception?.message}")
             }
         })
     }

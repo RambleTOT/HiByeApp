@@ -57,7 +57,6 @@ class QuickMeetFragment(
         var meetingId = arguments?.getLong("meetingId", -1) ?: -1
         val meetId = arguments?.getLong("meetId", -1) ?: -1
         val chatId = arguments?.getLong("chatId", -1) ?: -1
-        Log.d("MyLog", chatId.toString())
         val chatName = arguments?.getString("nameChat", "") ?: ""
         if (userId != -1L) {
             val userName = arguments?.getString("userName", "") ?: ""
@@ -153,41 +152,55 @@ class QuickMeetFragment(
             val organisatorId = arguments?.getLong("organisatorId", -1) ?: -1
             val userIdOur = arguments?.getLong("userIdOur", -1) ?: -1
             val status = arguments?.getString("status", "") ?: ""
+            val isHistory = arguments?.getBoolean("isHistory", false) ?: false
 
             binding!!.name.text = meetName
             binding!!.descriptionMeet.text = meetDescription
 
             Log.d("MyLog", status.toString())
 
-            if (status == "ACCEPTED"){
-                binding!!.linearAccepted.visibility = View.VISIBLE
-                binding!!.buttonAddFavorite.visibility = View.VISIBLE
-                binding!!.frameRequest.visibility = View.GONE
-                binding!!.frameAnswerNot.visibility = View.GONE
-                binding!!.frameAnswer.visibility = View.GONE
-            }else if(status == "REJECTED"){
+            if (isHistory){
                 binding!!.linearAccepted.visibility = View.GONE
                 binding!!.buttonAddFavorite.visibility = View.GONE
                 binding!!.frameRequest.visibility = View.GONE
                 binding!!.frameAnswerNot.visibility = View.GONE
                 binding!!.frameAnswer.visibility = View.GONE
-                binding!!.textOrgNot.visibility = View.VISIBLE
-            }else if (status == "AWAITING_RESPONSE"){
-                if (userIdOur == organisatorId){
-                    binding!!.linearAccepted.visibility = View.GONE
-                    binding!!.buttonAddFavorite.visibility = View.GONE
-                    binding!!.frameRequest.visibility = View.VISIBLE
+                binding!!.textHistory.visibility = View.VISIBLE
+            }else {
+                if (status == "ACCEPTED") {
+                    binding!!.linearAccepted.visibility = View.VISIBLE
+                    binding!!.buttonAddFavorite.visibility = View.VISIBLE
+                    binding!!.frameRequest.visibility = View.GONE
                     binding!!.frameAnswerNot.visibility = View.GONE
                     binding!!.frameAnswer.visibility = View.GONE
-                    binding!!.textOrg.visibility = View.VISIBLE
-                }else{
+                    binding!!.textHistory.visibility = View.GONE
+                } else if (status == "REJECTED") {
                     binding!!.linearAccepted.visibility = View.GONE
                     binding!!.buttonAddFavorite.visibility = View.GONE
                     binding!!.frameRequest.visibility = View.GONE
-                    binding!!.frameAnswerNot.visibility = View.VISIBLE
-                    binding!!.frameAnswer.visibility = View.VISIBLE
-                    binding!!.buttonSendAnswer.visibility = View.VISIBLE
-                    binding!!.buttonSendAnswerNot.visibility = View.VISIBLE
+                    binding!!.frameAnswerNot.visibility = View.GONE
+                    binding!!.frameAnswer.visibility = View.GONE
+                    binding!!.textOrgNot.visibility = View.VISIBLE
+                    binding!!.textHistory.visibility = View.GONE
+                } else if (status == "AWAITING_RESPONSE") {
+                    if (userIdOur == organisatorId) {
+                        binding!!.linearAccepted.visibility = View.GONE
+                        binding!!.buttonAddFavorite.visibility = View.GONE
+                        binding!!.frameRequest.visibility = View.VISIBLE
+                        binding!!.frameAnswerNot.visibility = View.GONE
+                        binding!!.frameAnswer.visibility = View.GONE
+                        binding!!.textHistory.visibility = View.GONE
+                        binding!!.textOrg.visibility = View.VISIBLE
+                    } else {
+                        binding!!.linearAccepted.visibility = View.GONE
+                        binding!!.buttonAddFavorite.visibility = View.GONE
+                        binding!!.frameRequest.visibility = View.GONE
+                        binding!!.frameAnswerNot.visibility = View.VISIBLE
+                        binding!!.frameAnswer.visibility = View.VISIBLE
+                        binding!!.buttonSendAnswer.visibility = View.VISIBLE
+                        binding!!.buttonSendAnswerNot.visibility = View.VISIBLE
+                        binding!!.textHistory.visibility = View.GONE
+                    }
                 }
             }
 

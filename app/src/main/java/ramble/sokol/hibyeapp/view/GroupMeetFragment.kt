@@ -47,7 +47,8 @@ class GroupMeetFragment : Fragment() {
             MeetsViewModelFactory((requireActivity().application as MyApplication).meetsRepository)
         ).get(MeetsViewModel::class.java)
 
-
+        val isAvailable = arguments?.getBoolean("isAvailable", false) ?: false
+        val isHistory = arguments?.getBoolean("isHistory", false) ?: false
         val meetName = arguments?.getString("meetName", "") ?: ""
         val meetDescription = arguments?.getString("meetDescription", "") ?: ""
         val meetTime = arguments?.getString("meetTime", "") ?: ""
@@ -68,6 +69,23 @@ class GroupMeetFragment : Fragment() {
             transaction.replace(R.id.layout_fragment, BottomNavBarFragment(NetworkingFragment()))
             transaction.disallowAddToBackStack()
             transaction.commit()
+        }
+
+        if (isHistory){
+            binding!!.textHistory.visibility = View.VISIBLE
+            binding!!.frameAnswer.visibility = View.GONE
+            binding!!.buttonFilters.visibility = View.GONE
+            binding!!.linearAccpeted.visibility = View.GONE
+        }else if (isAvailable){
+            binding!!.textHistory.visibility = View.GONE
+            binding!!.frameAnswer.visibility = View.VISIBLE
+            binding!!.buttonFilters.visibility = View.VISIBLE
+            binding!!.linearAccpeted.visibility = View.GONE
+        }else{
+            binding!!.textHistory.visibility = View.GONE
+            binding!!.frameAnswer.visibility = View.GONE
+            binding!!.buttonFilters.visibility = View.VISIBLE
+            binding!!.linearAccpeted.visibility = View.VISIBLE
         }
 
         binding!!.buttonJoin.setOnClickListener {
