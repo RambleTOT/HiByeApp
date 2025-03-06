@@ -16,6 +16,7 @@ import ramble.sokol.hibyeapp.databinding.FragmentGroupMeetBinding
 import ramble.sokol.hibyeapp.databinding.FragmentQuickMeetBinding
 import ramble.sokol.hibyeapp.managers.TokenManager
 import ramble.sokol.hibyeapp.view.adapters.ParticipantsAdapter
+import ramble.sokol.hibyeapp.view.dialog.ParticipantsDialog
 import ramble.sokol.hibyeapp.view_model.MeetsViewModel
 import ramble.sokol.hibyeapp.view_model.MeetsViewModelFactory
 
@@ -67,6 +68,8 @@ class GroupMeetFragment : Fragment() {
         val status = arguments?.getString("status", "") ?: ""
         val count = arguments?.getString("count", "") ?: ""
         val countSize = arguments?.getString("countSize", "") ?: ""
+        val userNames = arguments?.getStringArrayList("userNames") ?: emptyList()
+        val userDescriptions = arguments?.getStringArrayList("userDescriptions") ?: emptyList()
 
         binding!!.countMeet.text = "$countSize из $count"
         binding!!.descriptionMeet.text = meetDescription
@@ -112,6 +115,11 @@ class GroupMeetFragment : Fragment() {
 
         binding!!.buttonJoin.setOnClickListener {
             meetsViewModel.joinGroupMeeting(eventId!!, userTgId!!, MeetingIdEntity(meetingId))
+        }
+
+        binding!!.buttonFilters.setOnClickListener {
+            val dialog = ParticipantsDialog.newInstance(ArrayList(userNames), ArrayList(userDescriptions))
+            dialog.show(parentFragmentManager, "ParticipantsDialog")
         }
 
         binding!!.layoutMeetEnd.setOnClickListener {
@@ -197,6 +205,7 @@ class GroupMeetFragment : Fragment() {
                 }else{
                     binding!!.linearAccpeted.visibility = View.GONE
                     binding!!.frameLeft.visibility = View.VISIBLE
+                    binding!!.buttonLeft.visibility = View.VISIBLE
                 }
             } else if (result.isFailure) {
                 val exception = result.exceptionOrNull()

@@ -250,6 +250,16 @@ class NetworkingFragment : Fragment() {
     }
 
     private fun navigateToGroupMeetDetails(meet: MeetingResponse, isAvailable: Boolean = false, isHistory: Boolean = false) {
+        // Получаем список всех пользователей мероприятия
+        val allUsers = eventViewModel.getAllUsersEvent.value?.getOrNull() ?: emptyList()
+
+        val filteredUsers = allUsers.filter { user ->
+            meet.userIds?.contains(user.userId) == true
+        }
+
+        val userNames = filteredUsers.map { it.userName ?: "Unknown" }
+        val userDescriptions = filteredUsers.map { it.userInfo ?: "No description" }
+
         val bundle = Bundle().apply {
             putLong("meetingId", meet.meetingId ?: -1)
             putString("meetName", meet.name)
@@ -261,6 +271,8 @@ class NetworkingFragment : Fragment() {
             putBoolean("isAvailable", isAvailable)
             putBoolean("isHistory", isHistory)
             putString("countSize", meet.userIds!!.size.toString())
+            putStringArrayList("userNames", ArrayList(userNames))
+            putStringArrayList("userDescriptions", ArrayList(userDescriptions))
         }
 
         val participantDetailsFragment = GroupMeetFragment().apply {
