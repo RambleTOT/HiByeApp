@@ -127,6 +127,7 @@ class ScheduleFragment : Fragment() {
 
         // Устанавливаем слушатели для чекбоксов
         binding!!.customCheckBoxAll.setOnCheckedChangeListener { isChecked ->
+            binding!!.buttonFilters.visibility = View.VISIBLE
             if (isChecked) {
                 setChecked(binding!!.customCheckBoxAll)
                 applyFilters()
@@ -134,6 +135,7 @@ class ScheduleFragment : Fragment() {
         }
 
         binding!!.customCheckBoxFavorite.setOnCheckedChangeListener { isChecked ->
+            binding!!.buttonFilters.visibility = View.GONE
             if (isChecked) {
                 setChecked(binding!!.customCheckBoxFavorite)
                 applyFilters()
