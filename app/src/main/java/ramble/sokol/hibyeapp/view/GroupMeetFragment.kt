@@ -70,6 +70,9 @@ class GroupMeetFragment : Fragment() {
         val countSize = arguments?.getString("countSize", "") ?: ""
         val userNames = arguments?.getStringArrayList("userNames") ?: emptyList()
         val userDescriptions = arguments?.getStringArrayList("userDescriptions") ?: emptyList()
+        val photoLink = arguments?.getStringArrayList("photoLink") ?: emptyList()
+
+
 
         binding!!.countMeet.text = "$countSize из $count"
         binding!!.descriptionMeet.text = meetDescription
@@ -118,7 +121,7 @@ class GroupMeetFragment : Fragment() {
         }
 
         binding!!.buttonFilters.setOnClickListener {
-            val dialog = ParticipantsDialog.newInstance(ArrayList(userNames), ArrayList(userDescriptions))
+            val dialog = ParticipantsDialog.newInstance(ArrayList(userNames), ArrayList(userDescriptions), ArrayList(photoLink))
             dialog.show(parentFragmentManager, "ParticipantsDialog")
         }
 

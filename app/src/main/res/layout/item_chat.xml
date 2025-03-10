@@ -11,7 +11,7 @@
     android:background="@color/edit_text_background_nav_bar">
 
     <ImageView
-        android:id="@+id/image_participant"
+        android:id="@+id/image_participant_chat"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:src="@drawable/icon_profile"/>

@@ -2,6 +2,7 @@ package ramble.sokol.hibyeapp.view.dialog
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,11 +27,13 @@ class ParticipantsDialog : DialogFragment() {
         // Получаем массивы имен и описаний из аргументов
         val userNames = arguments?.getStringArrayList("userNames") ?: emptyList()
         val userDescriptions = arguments?.getStringArrayList("userDescriptions") ?: emptyList()
+        val photoLink = arguments?.getStringArrayList("photoLink") ?: emptyList()
+
 
         // Настройка RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewEvents)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        adapter = ParticipantsDialogAdapter(userNames, userDescriptions)
+        adapter = ParticipantsDialogAdapter(userNames, userDescriptions, photoLink)
         recyclerView.adapter = adapter
 
         // Настройка кнопки закрытия
@@ -42,11 +45,12 @@ class ParticipantsDialog : DialogFragment() {
     }
 
     companion object {
-        fun newInstance(userNames: ArrayList<String>, userDescriptions: ArrayList<String>): ParticipantsDialog {
+        fun newInstance(userNames: ArrayList<String>, userDescriptions: ArrayList<String>, photoLink: ArrayList<String>): ParticipantsDialog {
             val dialog = ParticipantsDialog()
             val args = Bundle()
             args.putStringArrayList("userNames", userNames)
             args.putStringArrayList("userDescriptions", userDescriptions)
+            args.putStringArrayList("photoLink", photoLink)
             dialog.arguments = args
             return dialog
         }

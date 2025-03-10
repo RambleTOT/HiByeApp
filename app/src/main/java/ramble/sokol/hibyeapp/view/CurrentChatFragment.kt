@@ -1,5 +1,6 @@
 package ramble.sokol.hibyeapp.view
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,6 +13,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -37,9 +45,10 @@ class CurrentChatFragment : Fragment() {
     private var userId: Long = -1
     private var chatId: Long = -1
     private var name: String = ""
+    private var chatPhoto: String = ""
     private var lastVisiblePosition: Int = 0
 
-    private var messagesJob: Job? = null // Для управления корутиной
+    private var messagesJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,6 +76,39 @@ class CurrentChatFragment : Fragment() {
         userId = tokenManager.getUserIdTelegram() ?: -1
         chatId = arguments?.getLong("chatId", -1) ?: -1
         name = arguments?.getString("chatName", "") ?: ""
+        chatPhoto = arguments?.getString("chatPhoto", "") ?: ""
+
+        if (!chatPhoto.isNullOrEmpty()) {
+
+            Glide.with(binding!!.imageParticipant.context)
+                .load(chatPhoto)
+                .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        binding!!.imageParticipant.setImageResource(R.drawable.icon_profile)
+                        return true
+                    }
+
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+
+                        return false
+                    }
+                })
+                .into(binding!!.imageParticipant)
+        } else {
+            binding!!.imageParticipant.setImageResource(R.drawable.icon_profile)
+        }
 
         chatViewModel = ViewModelProvider(
             this,
@@ -87,11 +129,10 @@ class CurrentChatFragment : Fragment() {
             sendMessage()
         }
 
-        // Запускаем корутину для периодического обновления сообщений
         messagesJob = lifecycleScope.launch {
             while (true) {
                 delay(1500)
-                if (isAdded && view != null) { // Проверяем, что фрагмент добавлен и View существует
+                if (isAdded && view != null) {
                     loadMessages()
                 }
             }

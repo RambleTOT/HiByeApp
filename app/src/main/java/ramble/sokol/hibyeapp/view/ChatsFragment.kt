@@ -82,6 +82,7 @@ class ChatsFragment : Fragment() {
         val bundle = Bundle().apply {
             putLong("chatId", chat.chatId ?: -1)
             putString("chatName", chat.chatName)
+            putString("chatPhoto", chat.chatPhoto)
         }
 
         val participantDetailsFragment = CurrentChatFragment().apply {

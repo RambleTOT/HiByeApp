@@ -2,11 +2,21 @@ package ramble.sokol.hibyeapp.view.adapters
 
 import android.annotation.SuppressLint
 import android.content.res.TypedArray
+import android.graphics.drawable.Drawable
+import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.data.model.schedule.ScheduleItem
 
@@ -44,6 +54,7 @@ class ScheduleAdapter(
         private val scheduleName: TextView = itemView.findViewById(R.id.schedule_name)
         private val scheduleTime: TextView = itemView.findViewById(R.id.schedule_time)
         private val layoutTags: ViewGroup = itemView.findViewById(R.id.layout_tags)
+        private val imageParticipant: ImageView = itemView.findViewById(R.id.image_participant)
 
         @SuppressLint("MissingInflatedId")
         fun bind(item: ScheduleItem) {
@@ -54,6 +65,38 @@ class ScheduleAdapter(
             val startTime = item.timeStart?.substring(11, 16)
             val endTime = item.timeEnd?.substring(11, 16)
             scheduleTime.text = "$startTime - $endTime"
+
+            if (!item.imageUrl.isNullOrEmpty()) {
+
+                Glide.with(imageParticipant.context)
+                    .load(item.imageUrl)
+                    .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                    .listener(object : RequestListener<Drawable> {
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            imageParticipant.setImageResource(R.drawable.icon_profile)
+                            return true
+                        }
+
+                        override fun onResourceReady(
+                            resource: Drawable?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+
+                            return false
+                        }
+                    })
+                    .into(imageParticipant)
+            } else {
+                imageParticipant.setImageResource(R.drawable.icon_profile)
+            }
 
             val tagColors: TypedArray = itemView.context.resources.obtainTypedArray(R.array.tag_colors)
 

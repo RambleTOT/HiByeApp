@@ -1,5 +1,6 @@
 package ramble.sokol.hibyeapp.view
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,6 +11,13 @@ import android.view.animation.AnimationUtils
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.data.model.meets.MeetingIdEntity
 import ramble.sokol.hibyeapp.data.model.meets.MeetingResponse
@@ -58,6 +66,40 @@ class QuickMeetFragment(
         val eventId = tokenManager.getCurrentEventId()
         val userTgId = tokenManager.getUserIdTelegram()
 
+        val photoLink = arguments?.getString("photoLink", "") ?: ""
+
+        if (!photoLink.isNullOrEmpty()) {
+
+            Glide.with(binding!!.imageParticipant.context)
+                .load(photoLink)
+                .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        binding!!.imageParticipant.setImageResource(R.drawable.icon_profile)
+                        return true
+                    }
+
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+
+                        return false
+                    }
+                })
+                .into(binding!!.imageParticipant)
+        } else {
+            binding!!.imageParticipant.setImageResource(R.drawable.icon_profile)
+        }
+
         meetsViewModel = ViewModelProvider(
             this,
             MeetsViewModelFactory((requireActivity().application as MyApplication).meetsRepository)
@@ -71,10 +113,11 @@ class QuickMeetFragment(
         if (userId != -1L) {
             val userName = arguments?.getString("userName", "") ?: ""
             val userInfo = arguments?.getString("userInfo", "") ?: ""
-            val photoLink = arguments?.getString("photoLink", "") ?: ""
             val isMeet = arguments?.getBoolean("isMeet", false)
             val isOrg = arguments?.getBoolean("isOrg", false)
             val isStat = arguments?.getString("isStat", "") ?: ""
+
+            Log.d("MyLog", photoLink)
 
             binding!!.name.text = userName
             binding!!.descriptionMeet.text = userInfo

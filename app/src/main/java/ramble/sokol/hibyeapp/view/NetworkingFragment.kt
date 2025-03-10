@@ -35,6 +35,7 @@ class NetworkingFragment : Fragment() {
     private lateinit var meetsAdapter: MeetsAdapter
     private var isViewButtonFastMeetings: Boolean = false
     private lateinit var listMeets: List<MeetingResponse>
+    private lateinit var allUsers: List<CreateUserResponse>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,6 +55,7 @@ class NetworkingFragment : Fragment() {
     private fun init(){
 
         listMeets = listOf()
+        allUsers = listOf()
         tokenManager = TokenManager(requireActivity())
         val eventId = tokenManager.getCurrentEventId()
         val userId = tokenManager.getUserIdTelegram()!!
@@ -71,11 +73,6 @@ class NetworkingFragment : Fragment() {
             navigateToParticipantDetails(participant)
         }
 
-        meetsAdapter = MeetsAdapter(emptyList(),
-            { meet -> navigateToMeetDetails(meet) },
-            { meet -> navigateToGroupMeetDetails(meet) }
-        )
-
 
         binding?.recyclerViewSections?.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -84,17 +81,12 @@ class NetworkingFragment : Fragment() {
             addItemDecoration(FirstItemMarginDecoration(marginStart))
         }
 
-        binding?.recyclerViewMeets?.apply {
-            layoutManager = NonScrollLinearLayoutManager(requireContext())
-            adapter = meetsAdapter
-            isNestedScrollingEnabled = false
-        }
-
 
 
         eventViewModel.getAllUsersEvent(eventId!!)
         eventViewModel.getAllUsersEvent.observe(viewLifecycleOwner, Observer { result ->
             if (result.isSuccess) {
+                allUsers = result.getOrNull() ?: emptyList()
                 val participants = result.getOrNull() ?: emptyList()
                 val filteredParticipants = participants.filter { it.userId != userId }
                 participantsAdapter = ParticipantsAdapter(filteredParticipants) { participant ->
@@ -107,6 +99,17 @@ class NetworkingFragment : Fragment() {
             }
         })
 
+        meetsAdapter = MeetsAdapter(emptyList(),allUsers,
+            { meet -> navigateToMeetDetails(meet) },
+            { meet -> navigateToGroupMeetDetails(meet) }
+        )
+
+        binding?.recyclerViewMeets?.apply {
+            layoutManager = NonScrollLinearLayoutManager(requireContext())
+            adapter = meetsAdapter
+            isNestedScrollingEnabled = false
+        }
+
         setupCheckBoxes(eventId, userId)
 
         meetsViewModel.getAllMeets(eventId, userId)
@@ -114,7 +117,7 @@ class NetworkingFragment : Fragment() {
             if (result.isSuccess) {
                 val meets = result.getOrNull() ?: emptyList()
                 listMeets = meets
-                meetsAdapter = MeetsAdapter(meets,
+                meetsAdapter = MeetsAdapter(meets, allUsers,
                     { meet -> navigateToMeetDetails(meet) },
                     { meet -> navigateToGroupMeetDetails(meet) }
                 )
@@ -221,7 +224,11 @@ class NetworkingFragment : Fragment() {
         val currentUserId = tokenManager.getUserIdTelegram()!!
         val secondUserId = meet.userIds?.firstOrNull { it != currentUserId }
 
-        Log.d("MyLog", isHistory.toString())
+
+
+        val secondUser = allUsers.find { it.userId == secondUserId }
+
+        val photoLink = secondUser?.photoLink
 
         val bundle = Bundle().apply {
             putLong("meetingId", meet.meetingId ?: -1)
@@ -236,6 +243,8 @@ class NetworkingFragment : Fragment() {
             putString("nameChat", meet.name)
             putBoolean("isAvailable", isAvailable)
             putBoolean("isHistory", isHistory)
+            Log.d("MyLog", photoLink.toString())
+            putString("photoLink", photoLink)
         }
 
         val participantDetailsFragment = QuickMeetFragment(NetworkingFragment()).apply {
@@ -259,6 +268,7 @@ class NetworkingFragment : Fragment() {
 
         val userNames = filteredUsers.map { it.userName ?: "Unknown" }
         val userDescriptions = filteredUsers.map { it.userInfo ?: "No description" }
+        val photoLink = filteredUsers.map { it.photoLink ?: "No description" }
 
         val bundle = Bundle().apply {
             putLong("meetingId", meet.meetingId ?: -1)
@@ -273,6 +283,7 @@ class NetworkingFragment : Fragment() {
             putString("countSize", meet.userIds!!.size.toString())
             putStringArrayList("userNames", ArrayList(userNames))
             putStringArrayList("userDescriptions", ArrayList(userDescriptions))
+            putStringArrayList("photoLink", ArrayList(photoLink))
         }
 
         val participantDetailsFragment = GroupMeetFragment().apply {
@@ -292,7 +303,7 @@ class NetworkingFragment : Fragment() {
             if (result.isSuccess) {
                 val meets = result.getOrNull() ?: emptyList()
                 listMeets = meets
-                meetsAdapter = MeetsAdapter(meets,
+                meetsAdapter = MeetsAdapter(meets, allUsers,
                     { meet -> navigateToMeetDetails(meet) },
                     { meet -> navigateToGroupMeetDetails(meet) }
                 )
@@ -310,7 +321,7 @@ class NetworkingFragment : Fragment() {
             if (result.isSuccess) {
                 val meets = result.getOrNull() ?: emptyList()
                 listMeets = meets
-                meetsAdapter = MeetsAdapter(meets,
+                meetsAdapter = MeetsAdapter(meets, allUsers,
                     { meet -> navigateToMeetDetails(meet, isAvailable = true) },
                     { meet -> navigateToGroupMeetDetails(meet, isAvailable = true) }
                 )
@@ -328,7 +339,7 @@ class NetworkingFragment : Fragment() {
             if (result.isSuccess) {
                 val meets = result.getOrNull() ?: emptyList()
                 listMeets = meets
-                meetsAdapter = MeetsAdapter(meets,
+                meetsAdapter = MeetsAdapter(meets, allUsers,
                     { meet -> navigateToMeetDetails(meet, isHistory = true) },
                     { meet -> navigateToGroupMeetDetails(meet, isHistory = true) }
                 )

@@ -1,7 +1,7 @@
 package ramble.sokol.hibyeapp.view.adapters
 
 
-import android.graphics.drawable.Drawable // Правильный импорт Drawable
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
