@@ -125,7 +125,6 @@ class ScheduleFragment : Fragment() {
         binding!!.customCheckBoxAll.findViewById<TextView>(R.id.checkbox_custom_text).text = "Все"
         binding!!.customCheckBoxFavorite.findViewById<TextView>(R.id.checkbox_custom_text).text = "Избранное"
 
-        // Устанавливаем слушатели для чекбоксов
         binding!!.customCheckBoxAll.setOnCheckedChangeListener { isChecked ->
             binding!!.buttonFilters.visibility = View.VISIBLE
             if (isChecked) {

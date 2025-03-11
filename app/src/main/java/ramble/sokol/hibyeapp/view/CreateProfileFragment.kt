@@ -64,6 +64,9 @@ class CreateProfileFragment : Fragment() {
     private val PICK_IMAGE_REQUEST = 1
     private val REQUEST_CODE_PERMISSIONS = 100
 
+    private lateinit var transferUtility: TransferUtility
+    private lateinit var s3Client: AmazonS3Client
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -77,6 +80,7 @@ class CreateProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+        initAWS()
     }
 
     private fun init() {
@@ -124,6 +128,88 @@ class CreateProfileFragment : Fragment() {
         }
     }
 
+    private fun initAWS() {
+        val credentials = BasicAWSCredentials("8TC3UFX2FVA7V60TCY8O", "v3OhhkJldIN6b2xc0uOclxcHa78u42jWPYIxVDnx")
+
+
+        val clientConfiguration = ClientConfiguration()
+        clientConfiguration.protocol = Protocol.HTTPS
+
+
+        val endpoint = "https://s3.timeweb.cloud"
+
+        s3Client = AmazonS3Client(credentials, clientConfiguration)
+        s3Client.setEndpoint(endpoint)
+
+        // Инициализация TransferUtility
+        transferUtility = TransferUtility.builder()
+            .s3Client(s3Client)
+            .context(requireContext())
+            .build()
+    }
+
+    private fun uploadImageToS3(imageUri: Uri) {
+        // Получаем InputStream из Uri
+        val inputStream: InputStream? = requireContext().contentResolver.openInputStream(imageUri)
+        if (inputStream == null) {
+            Toast.makeText(requireContext(), "Failed to open image stream", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Создаем временный файл
+        val file = createTempFileFromInputStream(inputStream)
+        if (file == null) {
+            Toast.makeText(requireContext(), "Failed to create temp file", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val key = "images/${file.name}"
+
+        val uploadObserver = transferUtility.upload(
+            "94cd268c-92ba957c-8780-46b1-ad91-5ce39903e72e", // Bucket name
+            key,
+            file
+        )
+
+        uploadObserver.setTransferListener(object : TransferListener {
+            override fun onStateChanged(id: Int, state: TransferState) {
+                if (state == TransferState.COMPLETED) {
+                    val imageUrl = s3Client.getUrl("94cd268c-92ba957c-8780-46b1-ad91-5ce39903e72e", key).toString()
+                    Log.d("MyLog", "Image URL: $imageUrl")
+                    loadImageWithGlide(imageUrl)
+                } else if (state == TransferState.FAILED) {
+                    Toast.makeText(requireContext(), "Failed to upload image", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
+                val percentDone = (bytesCurrent.toFloat() / bytesTotal.toFloat() * 100).toInt()
+                Log.d("MyLog", "Progress: $percentDone%")
+            }
+
+            override fun onError(id: Int, ex: Exception) {
+                ex.printStackTrace()
+                Toast.makeText(requireContext(), "Error uploading image", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    // Метод для создания временного файла из InputStream
+    private fun createTempFileFromInputStream(inputStream: InputStream): File? {
+        return try {
+            val tempFile = File.createTempFile("temp_image", ".jpg", requireContext().cacheDir)
+            tempFile.outputStream().use { output ->
+                inputStream.copyTo(output)
+            }
+            tempFile
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
+        } finally {
+            inputStream.close()
+        }
+    }
+
     private var nameTextWatcher = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
@@ -163,8 +249,7 @@ class CreateProfileFragment : Fragment() {
             if (imageUri != null) {
 
                 loadImageWithGlide(imageUri)
-
-                //uploadImageToS3(imageUri)
+                uploadImageToS3(imageUri)
             }
         }
     }

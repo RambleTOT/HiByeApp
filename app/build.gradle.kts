@@ -62,5 +62,6 @@ dependencies {
     implementation(libs.flexbox)
     implementation(libs.glide)
     implementation(libs.aws.android.sdk.s3)
+    implementation(libs.aws.android.sdk.core)
 
 }

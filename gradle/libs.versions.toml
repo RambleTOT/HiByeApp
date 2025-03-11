@@ -1,6 +1,6 @@
 [versions]
 agp = "8.5.2"
-awsAndroidSdkS3 = "2.70.0"
+awsAndroidSdkS3 = "2.7.3"
 converterGson = "2.9.0"
 flexbox = "3.0.0"
 glide = "4.12.0"
@@ -23,6 +23,7 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
 auth0-java-jwt = { module = "com.auth0:java-jwt", version.ref = "javaJwtVersion" }
+aws-android-sdk-core = { module = "com.amazonaws:aws-android-sdk-core", version.ref = "awsAndroidSdkS3" }
 aws-android-sdk-s3 = { module = "com.amazonaws:aws-android-sdk-s3", version.ref = "awsAndroidSdkS3" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "converterGson" }
