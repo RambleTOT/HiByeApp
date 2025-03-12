@@ -30,6 +30,7 @@
     <string name="text_add_favorite">Добавить в избранное</string>
     <string name="text_add_new_event">Добавить новое мероприятие</string>
     <string name="text_error_login">Неверный телефон или пароль</string>
+    <string name="text_error_photo">Обязательно добавьте фото</string>
     <string name="text_error_code">Неверный код мероприятия</string>
     <string name="text_error_new_event">Выберите время в будущем</string>
     <string name="text_meet">Встреча</string>

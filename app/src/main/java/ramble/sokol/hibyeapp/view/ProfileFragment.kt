@@ -1,5 +1,6 @@
 package ramble.sokol.hibyeapp.view
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,6 +11,13 @@ import android.view.animation.AnimationUtils
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import ramble.sokol.hibyeapp.R
 import ramble.sokol.hibyeapp.databinding.FragmentProfileBinding
 import ramble.sokol.hibyeapp.managers.TokenManager
@@ -26,6 +34,7 @@ class ProfileFragment(
     private var name = ""
     private var request = ""
     private var about = ""
+    private var photo = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,6 +75,7 @@ class ProfileFragment(
         binding!!.editTextName.isEnabled = false
         binding!!.editTextRequest.isEnabled = false
         binding!!.editTextAboutMe.isEnabled = false
+        binding!!.imageParticipant.isEnabled = false
 
         eventViewModel.getUser.observe(viewLifecycleOwner, Observer { result ->
             if (result.isSuccess) {
@@ -74,9 +84,43 @@ class ProfileFragment(
                 name = res!!.userName.toString()
                 about = res.userInfo.toString()
                 request = res.request.toString()
+                photo = res.photoLink.toString()
+                Log.d("MyLog", photo)
                 binding!!.editTextName.setText(name)
                 binding!!.editTextRequest.setText(request)
                 binding!!.editTextAboutMe.setText(about)
+                if (photo != null){
+                    binding!!.imageParticipant.isEnabled = false
+                    Glide.with(binding!!.imageParticipant.context)
+                        .load(photo)
+                        .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                        .listener(object : RequestListener<Drawable> {
+                            override fun onLoadFailed(
+                                e: GlideException?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                binding!!.imageParticipant.setImageResource(R.drawable.icon_profile)
+                                return true
+                            }
+
+                            override fun onResourceReady(
+                                resource: Drawable?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                dataSource: DataSource?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+
+                                return false
+                            }
+                        })
+                        .into(binding!!.imageParticipant)
+                } else {
+                    binding!!.imageParticipant.setImageResource(R.drawable.icon_profile)
+                    binding!!.imageParticipant.isEnabled = true
+                }
             } else if (result.isFailure) {
                 if (result.toString() == "Failure(java.lang.Exception: 400)"){
                     val transaction = requireActivity().supportFragmentManager.beginTransaction()

@@ -63,6 +63,7 @@ class CreateProfileFragment : Fragment() {
     private lateinit var profileAndCodeManager: ProfileAndCodeManager
     private val PICK_IMAGE_REQUEST = 1
     private val REQUEST_CODE_PERMISSIONS = 100
+    private var imageRequestBody = ""
 
     private lateinit var transferUtility: TransferUtility
     private lateinit var s3Client: AmazonS3Client
@@ -90,6 +91,7 @@ class CreateProfileFragment : Fragment() {
 
         binding!!.editTextName.addTextChangedListener(nameTextWatcher)
         binding!!.editTextName.setOnClickListener {
+            binding!!.textErrorLogin.visibility = View.GONE
             binding!!.editTextName.background = ContextCompat.getDrawable(
                 requireActivity(),
                 R.drawable.edit_text_background
@@ -106,6 +108,7 @@ class CreateProfileFragment : Fragment() {
         }
 
         binding!!.buttonSave.setOnClickListener {
+            binding!!.textErrorLogin.visibility = View.GONE
             val name = binding!!.editTextName.text.toString()
             if (name.isEmpty()) {
                 binding!!.editTextName.background = ContextCompat.getDrawable(
@@ -113,12 +116,18 @@ class CreateProfileFragment : Fragment() {
                     R.drawable.edit_text_background_error
                 )
             }
-            if (name.isNotEmpty()) {
+            if (imageRequestBody.isNullOrEmpty()){
+                binding!!.textErrorLogin.visibility = View.VISIBLE
+            }
+            if (name.isNotEmpty() && imageRequestBody.isNotEmpty()) {
                 binding!!.buttonSave.visibility = View.INVISIBLE
                 binding!!.progressLogin.visibility = View.VISIBLE
+                binding!!.textErrorLogin.visibility = View.GONE
+                binding!!.imageParticipant.isEnabled = false
+                nameAndPhotoManager.savePhoto(imageRequestBody)
                 nameAndPhotoManager.saveName(name)
                 profileAndCodeManager.saveProfile(true)
-                Log.d("MyLog", nameAndPhotoManager.getName().toString())
+                Log.d("MyLog", nameAndPhotoManager.getPhoto().toString())
                 val transaction = requireActivity().supportFragmentManager.beginTransaction()
                 val codeEventFragment = CodeEventFragment()
                 transaction.replace(R.id.layout_fragment, codeEventFragment)
@@ -175,6 +184,7 @@ class CreateProfileFragment : Fragment() {
             override fun onStateChanged(id: Int, state: TransferState) {
                 if (state == TransferState.COMPLETED) {
                     val imageUrl = s3Client.getUrl("94cd268c-92ba957c-8780-46b1-ad91-5ce39903e72e", key).toString()
+                    imageRequestBody = imageUrl
                     Log.d("MyLog", "Image URL: $imageUrl")
                     loadImageWithGlide(imageUrl)
                 } else if (state == TransferState.FAILED) {
@@ -194,7 +204,6 @@ class CreateProfileFragment : Fragment() {
         })
     }
 
-    // Метод для создания временного файла из InputStream
     private fun createTempFileFromInputStream(inputStream: InputStream): File? {
         return try {
             val tempFile = File.createTempFile("temp_image", ".jpg", requireContext().cacheDir)
@@ -216,6 +225,7 @@ class CreateProfileFragment : Fragment() {
         }
 
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            binding!!.textErrorLogin.visibility = View.GONE
             binding!!.editTextName.background = ContextCompat.getDrawable(
                 requireActivity(),
                 R.drawable.edit_text_background
